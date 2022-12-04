@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom/client';
 import { ExpensesComponent } from './components/expenses/expense-component';
 import { IncomeComponent } from './components/incomes/income-component';
 import { RoleComponent } from './components/roles/role-component';
+import { SavingsComponent } from './components/savings/savings-component';
 import './index.css';
 import { Expenses } from './models/expenses/expenses';
 import { Income } from './models/incomes/income';
 import { Role } from './models/roles/role';
+import { Savings } from './models/savings/savings';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -60,11 +62,21 @@ expenses.transportation.totalSpent.value = '0.00';
 expenses.utilities.category = 'Utilities';
 expenses.utilities.totalSpent.currency = '$';
 expenses.utilities.totalSpent.value = '0.00';
+const savings = new Savings();
+savings.cashOnHand.currency = '$';
+savings.cashOnHand.value = '1.00';
+savings.equity.currency = '$';
+savings.equity.value = '1.00';
+savings.total401k.currency = '$';
+savings.total401k.value = '1.00';
+savings.totalSaved.currency = '$';
+savings.totalSaved.value = '1.00';
 root.render(
     <React.StrictMode>
         <RoleComponent role={role} />
         <IncomeComponent income={income} />
         <ExpensesComponent expenses={expenses} />
+        <SavingsComponent savings={savings} />
     </React.StrictMode>
 );
 
