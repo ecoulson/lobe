@@ -1,5 +1,5 @@
 import { IncomeComponentProps } from './income-component-props';
-import { MoneyComponent } from './money-component';
+import { MoneyComponent } from '../money/money-component';
 
 export function IncomeComponent({ income }: IncomeComponentProps) {
     return (

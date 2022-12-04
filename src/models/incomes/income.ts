@@ -1,4 +1,4 @@
-import { Money } from './money';
+import { Money } from '../money/money';
 
 export class Income {
     public baseSalary: Money;
