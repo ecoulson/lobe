@@ -1,5 +1,5 @@
 import { Role } from '../../models/roles/role';
 
-export interface RoleProps {
+export interface RoleComponentProps {
     role: Role;
 }

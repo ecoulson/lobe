@@ -1,6 +1,6 @@
-import { RoleProps } from './role-props';
+import { RoleComponentProps } from './role-component-props';
 
-export function RoleComponent({ role }: RoleProps) {
+export function RoleComponent({ role }: RoleComponentProps) {
     return (
         <div>
             <h2>{role.company}</h2>
