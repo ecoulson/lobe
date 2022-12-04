@@ -1,3 +1,4 @@
+import { Money } from '../money/money';
 import { ExpenseCategory } from './expense-category';
 
 export class Expenses {
@@ -11,6 +12,7 @@ export class Expenses {
     public personal: ExpenseCategory;
     public entertainment: ExpenseCategory;
     public miscellaneous: ExpenseCategory;
+    public totalExpenses: Money;
 
     constructor() {
         this.healthcare = new ExpenseCategory();
@@ -23,5 +25,6 @@ export class Expenses {
         this.personal = new ExpenseCategory();
         this.entertainment = new ExpenseCategory();
         this.miscellaneous = new ExpenseCategory();
+        this.totalExpenses = new Money();
     }
 }
