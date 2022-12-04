@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BudgetColumnComponent } from './components/budget/budget-column-component';
+import { BudgetTableComponent } from './components/budget/budget-table-component';
 import { ExpensesComponent } from './components/expenses/expense-component';
 import { IncomeComponent } from './components/incomes/income-component';
 import { RoleComponent } from './components/roles/role-component';
@@ -9,6 +10,7 @@ import { SavingsStatisticsComponent } from './components/savings/savings-statist
 import { WealthProjectionComponent } from './components/wealth-projections/wealth-projection-component';
 import './index.css';
 import { BudgetColumn } from './models/budget/budget-column';
+import { BudgetTable } from './models/budget/budget-table';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -78,10 +80,12 @@ budgetColumn.wealthProjection.expectedNetWorth.currency = '$';
 budgetColumn.wealthProjection.expectedNetWorth.value = '69.00';
 budgetColumn.wealthProjection.expectedNetWorthAfterCapitalGains.currency = '$';
 budgetColumn.wealthProjection.expectedNetWorthAfterCapitalGains.value = '69.00';
+const budgetTable = new BudgetTable();
+budgetTable.columns = [budgetColumn, budgetColumn, budgetColumn];
 
 root.render(
     <React.StrictMode>
-        <BudgetColumnComponent budgetColumn={budgetColumn} />
+        <BudgetTableComponent budgetTable={budgetTable} />
     </React.StrictMode>
 );
 

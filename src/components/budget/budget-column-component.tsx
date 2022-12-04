@@ -8,13 +8,13 @@ import { BudgetColumnComponentProps } from './budget-column-component-props';
 
 export function BudgetColumnComponent({ budgetColumn }: BudgetColumnComponentProps) {
     return (
-        <>
+        <div>
             <RoleComponent role={budgetColumn.role} />
             <IncomeComponent income={budgetColumn.income} />
             <ExpensesComponent expenses={budgetColumn.expenses} />
             <SavingsComponent savings={budgetColumn.savings} />
             <SavingsStatisticsComponent savingsStatistics={budgetColumn.savingsStatistics} />
             <WealthProjectionComponent wealthProjection={budgetColumn.wealthProjection} />
-        </>
+        </div>
     );
 }
