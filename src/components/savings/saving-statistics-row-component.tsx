@@ -1,4 +1,5 @@
 import { BudgetRowComponent } from '../budget/budget-row-component';
+import { BudgetSectionComponent } from '../budget/budget-section-component';
 import { BalanceComponent } from '../money/balance-component';
 import { MoneyComponent } from '../money/money-component';
 import { PercentageComponent } from '../money/percentage-component';
@@ -8,8 +9,7 @@ export function SavingStatisticsRowComponent({
     savingStatisticsList,
 }: SavingStatisticsRowComponentProps) {
     return (
-        <div>
-            <h2>Saving Statistics</h2>
+        <BudgetSectionComponent heading="Saving Statistics">
             <BudgetRowComponent
                 field="Goal to Save"
                 cells={savingStatisticsList.map((savingStatistics) => (
@@ -28,6 +28,6 @@ export function SavingStatisticsRowComponent({
                     <PercentageComponent percentage={savingStatistics.percentageSaved} />
                 ))}
             />
-        </div>
+        </BudgetSectionComponent>
     );
 }

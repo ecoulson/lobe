@@ -1,10 +1,10 @@
 import { BudgetRowComponent } from '../budget/budget-row-component';
+import { BudgetSectionComponent } from '../budget/budget-section-component';
 import { RoleRowComponentProps } from './role-row-component-props';
 
 export function RoleRowComponent({ roleList: roles }: RoleRowComponentProps) {
     return (
-        <div>
-            <h2>Role</h2>
+        <BudgetSectionComponent heading="Role">
             <BudgetRowComponent
                 field="Company"
                 cells={roles.map((role) => (
@@ -43,6 +43,6 @@ export function RoleRowComponent({ roleList: roles }: RoleRowComponentProps) {
                     <p key={role.state}>{role.state}</p>
                 ))}
             />
-        </div>
+        </BudgetSectionComponent>
     );
 }

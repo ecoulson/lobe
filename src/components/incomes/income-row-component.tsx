@@ -1,11 +1,11 @@
 import { BudgetRowComponent } from '../budget/budget-row-component';
+import { BudgetSectionComponent } from '../budget/budget-section-component';
 import { MoneyComponent } from '../money/money-component';
 import { IncomeRowComponentProps } from './income-row-component-props';
 
 export function IncomeRowComponent({ incomeList }: IncomeRowComponentProps) {
     return (
-        <div>
-            <h2>Income</h2>
+        <BudgetSectionComponent heading="Income">
             <BudgetRowComponent
                 field="Base Salary"
                 cells={incomeList.map((income) => (
@@ -36,6 +36,6 @@ export function IncomeRowComponent({ incomeList }: IncomeRowComponentProps) {
                     <MoneyComponent money={income.totalIncome} />
                 ))}
             />
-        </div>
+        </BudgetSectionComponent>
     );
 }
