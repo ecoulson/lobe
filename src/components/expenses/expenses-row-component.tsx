@@ -1,6 +1,6 @@
-import { BudgetRowComponent } from '../budget/budget-row-component';
-import { BudgetSectionComponent } from '../budget/budget-section-component';
-import { MoneyComponent } from '../money/money-component';
+import { BudgetRowComponent } from '../budgets/budget-row-component';
+import { BudgetSectionComponent } from '../budgets/budget-section-component';
+import { MoneyComponent } from '../funds/money-component';
 import { ExpensesRowComponentProps } from './expenses-row-component-props';
 
 export function ExpensesRowComponent({ expensesList }: ExpensesRowComponentProps) {

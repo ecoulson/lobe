@@ -1,8 +1,8 @@
-import { BudgetRowComponent } from '../budget/budget-row-component';
-import { BudgetSectionComponent } from '../budget/budget-section-component';
-import { BalanceComponent } from '../money/balance-component';
-import { MoneyComponent } from '../money/money-component';
-import { PercentageComponent } from '../money/percentage-component';
+import { BudgetRowComponent } from '../budgets/budget-row-component';
+import { BudgetSectionComponent } from '../budgets/budget-section-component';
+import { BalanceComponent } from '../funds/balance-component';
+import { MoneyComponent } from '../funds/money-component';
+import { PercentageComponent } from '../statistics/percentage-component';
 import { SavingStatisticsRowComponentProps } from './saving-statistics-row-component-props';
 
 export function SavingStatisticsRowComponent({

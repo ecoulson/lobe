@@ -1,5 +1,6 @@
-import { BudgetRowComponent } from '../budget/budget-row-component';
-import { BudgetSectionComponent } from '../budget/budget-section-component';
+import { BudgetRowComponent } from '../budgets/budget-row-component';
+import { BudgetSectionComponent } from '../budgets/budget-section-component';
+import { InputComponent } from '../inputs/input-component';
 import { RoleRowComponentProps } from './role-row-component-props';
 
 export function RoleRowComponent({ roleList: roles }: RoleRowComponentProps) {
@@ -8,13 +9,13 @@ export function RoleRowComponent({ roleList: roles }: RoleRowComponentProps) {
             <BudgetRowComponent
                 field="Company"
                 cells={roles.map((role) => (
-                    <p key={role.company}>{role.company}</p>
+                    <InputComponent value={role.company} onChange={() => {}} />
                 ))}
             />
             <BudgetRowComponent
                 field="Level"
                 cells={roles.map((role) => (
-                    <p key={role.level}>{role.level}</p>
+                    <InputComponent value={role.level} onChange={() => {}} />
                 ))}
             />
             <BudgetRowComponent
@@ -32,15 +33,16 @@ export function RoleRowComponent({ roleList: roles }: RoleRowComponentProps) {
             <BudgetRowComponent
                 field="Estimated Years at Level"
                 cells={roles.map((role) => (
-                    <p key={role.estimatedYearsSpentInPosition}>
-                        {role.estimatedYearsSpentInPosition}
-                    </p>
+                    <InputComponent
+                        value={role.estimatedYearsSpentInPosition.toString()}
+                        onChange={() => {}}
+                    />
                 ))}
             />
             <BudgetRowComponent
                 field="State"
                 cells={roles.map((role) => (
-                    <p key={role.state}>{role.state}</p>
+                    <InputComponent value={role.state} onChange={() => {}} />
                 ))}
             />
         </BudgetSectionComponent>

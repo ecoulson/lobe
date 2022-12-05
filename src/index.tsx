@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BudgetTableComponent } from './components/budget/budget-table-component';
+import { BudgetTableComponent } from './components/budgets/budget-table-component';
 import './index.css';
 import { BudgetColumn } from './models/budget/budget-column';
 import { BudgetTable } from './models/budget/budget-table';
