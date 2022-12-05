@@ -8,7 +8,14 @@ export class MoneyController {
         this.moneyService = moneyService;
     }
 
-    format(value: number): Money {
-        return this.moneyService.createMoney(value);
+    formatForEditing(money: Money): Money {
+        return new Money({
+            ...money,
+            value: this.moneyService.getCurrencyAmount(money).toFixed(2),
+        });
+    }
+
+    formatForDisplay(money: Money): Money {
+        return this.moneyService.createMoney(parseFloat(money.value));
     }
 }

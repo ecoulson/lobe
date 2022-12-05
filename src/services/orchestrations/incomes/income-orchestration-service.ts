@@ -32,8 +32,8 @@ export class IncomeOrchestrationService {
             (income) => income.id === updatedIncome.id
         );
 
-        const baseSalary = this.moneyService.getDollarAmount(updatedIncome.baseSalary);
-        const yearly401kContributions = this.moneyService.getDollarAmount(
+        const baseSalary = this.moneyService.getCurrencyAmount(updatedIncome.baseSalary);
+        const yearly401kContributions = this.moneyService.getCurrencyAmount(
             budgetParameters.yearly401kContributions
         );
         const preTaxSalary = baseSalary - yearly401kContributions;

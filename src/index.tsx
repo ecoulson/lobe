@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BudgetParametersBroker } from './brokers/budget-parameters/budget-parameters-broker';
 import { BudgetTableBroker } from './brokers/budget-table/budget-table-broker';
+import { ExpenseBroker } from './brokers/expenses/expense-broker';
 import { IdBroker } from './brokers/ids/id-broker';
 import { IncomeBroker } from './brokers/incomes/income-broker';
 import { RoleBroker } from './brokers/roles/role-broker';
@@ -16,9 +17,11 @@ import { Percentage } from './models/statistics/percentage';
 import reportWebVitals from './reportWebVitals';
 import { BudgetTableAggregationService } from './services/aggregations/budget-tables/budget-table-aggregation-service';
 import { BudgetTableService } from './services/foundations/budget-tables/budget-table-service';
+import { ExpensesService } from './services/foundations/expenses/expenses-service';
 import { MoneyService } from './services/foundations/funds/money-service';
 import { IncomeService } from './services/foundations/incomes/income-service';
 import { RoleService } from './services/foundations/roles/role-service';
+import { ExpenseOrchestrationService } from './services/orchestrations/expenses/expense-orchestration-service';
 import { IncomeOrchestrationService } from './services/orchestrations/incomes/income-orchestration-service';
 import { RoleOrchestrationService } from './services/orchestrations/roles/role-orchestration-service';
 
@@ -46,6 +49,10 @@ container.register(
                 new IncomeService(new IncomeBroker(), new IdBroker()),
                 new MoneyService(),
                 new BudgetParametersBroker(budgetParameters)
+            ),
+            new ExpenseOrchestrationService(
+                new ExpensesService(new ExpenseBroker(), new IdBroker()),
+                new MoneyService()
             )
         )
     )

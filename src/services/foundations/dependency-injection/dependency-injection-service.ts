@@ -1,4 +1,4 @@
-import { DependencyInjectionBroker } from '../../brokers/dependency-injection/dependency-injection-broker';
+import { DependencyInjectionBroker } from '../../../brokers/dependency-injection/dependency-injection-broker';
 
 export class DependencyInjectionService {
     private readonly dependencyInjectionBroker: DependencyInjectionBroker;

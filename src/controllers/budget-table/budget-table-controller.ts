@@ -1,4 +1,5 @@
 import { BudgetTable } from '../../models/budget/budget-table';
+import { Expenses } from '../../models/expenses/expenses';
 import { Income } from '../../models/incomes/income';
 import { Role } from '../../models/roles/role';
 import { BudgetTableAggregationService } from '../../services/aggregations/budget-tables/budget-table-aggregation-service';
@@ -28,5 +29,9 @@ export class BudgetTableController {
 
     updateIncome(budgetTable: BudgetTable, income: Income) {
         return this.budgetTableAggregationService.updateIncome(budgetTable, income);
+    }
+
+    updateExpenses(budgetTable: BudgetTable, expenses: Expenses) {
+        return this.budgetTableAggregationService.updateExpenses(budgetTable, expenses);
     }
 }

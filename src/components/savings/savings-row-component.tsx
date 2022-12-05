@@ -16,7 +16,7 @@ export function SavingsRowComponent({ savingsList }: SavingsRowComponentProps) {
             <BudgetRowComponent
                 field="401k Contributions"
                 cells={savingsList.map((savings) => (
-                    <MoneyInputComponent money={savings.contributionsTo401k} onChange={() => {}} />
+                    <MoneyComponent money={savings.contributionsTo401k} />
                 ))}
             />
             <BudgetRowComponent

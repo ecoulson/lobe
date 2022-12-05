@@ -11,6 +11,7 @@ import { BudgetTable } from '../../models/budget/budget-table';
 import { Role } from '../../models/roles/role';
 import { Income } from '../../models/incomes/income';
 import { inject } from '../../clients/dependency-injection/inject';
+import { Expenses } from '../../models/expenses/expenses';
 
 export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTableController'>(
     {
@@ -37,6 +38,10 @@ export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTab
             setBudgetTable(budgetTableController.updateIncome(currentBudgetTable, income));
         }
 
+        function updateExpenses(expenses: Expenses) {
+            setBudgetTable(budgetTableController.updateExpenses(currentBudgetTable, expenses));
+        }
+
         return (
             <div>
                 <ButtonComponent onClick={addColumn}>Add Position</ButtonComponent>
@@ -45,7 +50,10 @@ export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTab
                     incomeList={currentBudgetTable.incomeList}
                     updateIncome={updateIncome}
                 />
-                <ExpensesRowComponent expensesList={currentBudgetTable.expensesList} />
+                <ExpensesRowComponent
+                    expensesList={currentBudgetTable.expensesList}
+                    updateExpenses={updateExpenses}
+                />
                 <SavingsRowComponent savingsList={currentBudgetTable.savingsList} />
                 <SavingStatisticsRowComponent
                     savingStatisticsList={currentBudgetTable.savingsStatisticsList}

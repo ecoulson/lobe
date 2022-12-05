@@ -11,7 +11,7 @@ export class MoneyService {
         return formattedMoney;
     }
 
-    getDollarAmount(money: Money): number {
+    getCurrencyAmount(money: Money): number {
         // parsing assuming USD
         const valueNoCommas = money.value.replaceAll(',', '');
         return parseFloat(valueNoCommas);

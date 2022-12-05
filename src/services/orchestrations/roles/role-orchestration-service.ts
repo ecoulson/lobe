@@ -30,7 +30,6 @@ export class RoleOrchestrationService {
             updatedRole.startAge + parseInt(updatedRole.estimatedYearsSpentInPosition);
         const roleIndex = budgetTable.roleList.findIndex((role) => role.id === updatedRole.id);
         budgetTable.roleList[roleIndex] = updatedRole;
-        updatedRole = this.roleService.updateRole(updatedRole);
         for (let i = roleIndex + 1; i < budgetTable.roleList.length; i++) {
             budgetTable.roleList[i].startAge = budgetTable.roleList[i - 1].endAge;
             budgetTable.roleList[i].endAge =
@@ -38,6 +37,6 @@ export class RoleOrchestrationService {
                 parseInt(budgetTable.roleList[i].estimatedYearsSpentInPosition);
             this.roleService.updateRole(budgetTable.roleList[i]);
         }
-        return updatedRole;
+        return this.roleService.updateRole(updatedRole);
     }
 }

@@ -2,6 +2,7 @@ import { Money } from '../funds/money';
 import { ExpenseCategory } from './expense-category';
 
 export class Expenses {
+    public id: string;
     public housing: ExpenseCategory;
     public transportation: ExpenseCategory;
     public food: ExpenseCategory;
@@ -16,6 +17,7 @@ export class Expenses {
 
     constructor(props?: Partial<Expenses>) {
         const {
+            id,
             healthcare,
             transportation,
             food,
@@ -28,6 +30,7 @@ export class Expenses {
             miscellaneous,
             totalExpenses,
         } = {
+            id: '',
             healthcare: new ExpenseCategory(),
             transportation: new ExpenseCategory(),
             food: new ExpenseCategory(),
@@ -41,6 +44,7 @@ export class Expenses {
             totalExpenses: new Money(),
             ...props,
         };
+        this.id = id;
         this.healthcare = healthcare;
         this.transportation = transportation;
         this.food = food;
