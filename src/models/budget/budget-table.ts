@@ -4,7 +4,6 @@ import { Role } from '../roles/role';
 import { SavingStatistics } from '../savings/saving-statistics';
 import { Savings } from '../savings/savings';
 import { WealthProjection } from '../wealth-projections/wealth-projection';
-import { BudgetTableProps } from './budget-table-props';
 
 export class BudgetTable {
     public id: string;
@@ -15,7 +14,7 @@ export class BudgetTable {
     public savingsStatisticsList: SavingStatistics[];
     public wealthProjectionList: WealthProjection[];
 
-    constructor(props?: Partial<BudgetTableProps>) {
+    constructor(props?: Partial<BudgetTable>) {
         const {
             id,
             roleList,

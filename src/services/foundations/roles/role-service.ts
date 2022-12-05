@@ -13,18 +13,18 @@ export class RoleService {
 
     createRole(role: Role): Role {
         role.id = this.idBroker.generateId();
-        return new Role(this.roleBroker.saveRole(role));
+        return this.roleBroker.saveRole(role);
     }
 
     updateRole(role: Role): Role {
-        return new Role(this.roleBroker.saveRole(role));
+        return this.roleBroker.saveRole(role);
     }
 
     getRole(id: string): Role {
-        return new Role(this.roleBroker.findRoleById(id));
+        return this.roleBroker.findRoleById(id);
     }
 
     removeRole(role: Role): Role {
-        return new Role(this.roleBroker.deleteRole(role));
+        return this.roleBroker.deleteRole(role);
     }
 }

@@ -1,16 +1,27 @@
+import { Income } from '../../models/incomes/income';
 import { BudgetRowComponent } from '../budgets/budget-row-component';
 import { BudgetSectionComponent } from '../budgets/budget-section-component';
 import { MoneyComponent } from '../funds/money-component';
 import { MoneyInputComponent } from '../funds/money-input-component';
 import { IncomeRowComponentProps } from './income-row-component-props';
 
-export function IncomeRowComponent({ incomeList }: IncomeRowComponentProps) {
+export function IncomeRowComponent({ incomeList, updateIncome }: IncomeRowComponentProps) {
     return (
         <BudgetSectionComponent heading="Income">
             <BudgetRowComponent
                 field="Base Salary"
                 cells={incomeList.map((income) => (
-                    <MoneyInputComponent onChange={() => {}} money={income.baseSalary} />
+                    <MoneyInputComponent
+                        onChange={(baseSalary) =>
+                            updateIncome(
+                                new Income({
+                                    ...income,
+                                    baseSalary,
+                                })
+                            )
+                        }
+                        money={income.baseSalary}
+                    />
                 ))}
             />
             <BudgetRowComponent

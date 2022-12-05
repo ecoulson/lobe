@@ -1,4 +1,4 @@
-import { Percentage } from '../../models/money/percentage';
+import { Percentage } from '../../models/statistics/percentage';
 
 export interface PercentageComponentProps {
     percentage: Percentage;

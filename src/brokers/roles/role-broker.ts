@@ -9,15 +9,15 @@ export class RoleBroker {
 
     saveRole(role: Role): Role {
         this.roleTable.set(role.id, role);
-        return role;
+        return new Role(role);
     }
 
     findRoleById(id: string): Role {
-        return this.roleTable.get(id) as Role;
+        return new Role(this.roleTable.get(id) as Role);
     }
 
     deleteRole(role: Role): Role {
         this.roleTable.delete(role.id);
-        return role;
+        return new Role(role);
     }
 }

@@ -9,15 +9,15 @@ export class BudgetTableBroker {
 
     saveBudgetTable(budgetTable: BudgetTable): BudgetTable {
         this.budgetTableTable.set(budgetTable.id, budgetTable);
-        return budgetTable;
+        return new BudgetTable(budgetTable);
     }
 
     findBudgetTableById(id: string): BudgetTable {
-        return this.budgetTableTable.get(id) as BudgetTable;
+        return new BudgetTable(this.budgetTableTable.get(id) as BudgetTable);
     }
 
     deleteBudgetTable(budgetTable: BudgetTable) {
         this.budgetTableTable.delete(budgetTable.id);
-        return budgetTable;
+        return new BudgetTable(budgetTable);
     }
 }

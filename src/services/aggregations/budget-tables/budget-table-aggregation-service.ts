@@ -4,17 +4,26 @@ import { Income } from '../../../models/incomes/income';
 import { Role } from '../../../models/roles/role';
 import { SavingStatistics } from '../../../models/savings/saving-statistics';
 import { Savings } from '../../../models/savings/savings';
+import { Percentage } from '../../../models/statistics/percentage';
+import { Tax } from '../../../models/taxes/tax';
 import { WealthProjection } from '../../../models/wealth-projections/wealth-projection';
 import { BudgetTableService } from '../../foundations/budget-tables/budget-table-service';
+import { IncomeOrchestrationService } from '../../orchestrations/incomes/income-orchestration-service';
 import { RoleOrchestrationService } from '../../orchestrations/roles/role-orchestration-service';
 
 export class BudgetTableAggregationService {
     private readonly budgetTableService: BudgetTableService;
     private readonly roleOrchestrationService: RoleOrchestrationService;
+    private readonly incomeOrchestrationService: IncomeOrchestrationService;
 
-    constructor(budgetTableService: BudgetTableService, roleService: RoleOrchestrationService) {
+    constructor(
+        budgetTableService: BudgetTableService,
+        roleOrchestrationService: RoleOrchestrationService,
+        incomeOrchestrationService: IncomeOrchestrationService
+    ) {
         this.budgetTableService = budgetTableService;
-        this.roleOrchestrationService = roleService;
+        this.roleOrchestrationService = roleOrchestrationService;
+        this.incomeOrchestrationService = incomeOrchestrationService;
     }
 
     upsertBudgetTable(budgetTable: BudgetTable): BudgetTable {
@@ -25,16 +34,28 @@ export class BudgetTableAggregationService {
         return this.budgetTableService.getBudgetTable(id);
     }
 
-    addColumn(budgetTable: BudgetTable) {
+    addColumn(budgetTable: BudgetTable): BudgetTable {
         budgetTable.expensesList.push(new Expenses());
-        budgetTable.incomeList.push(new Income());
         budgetTable.savingsList.push(new Savings());
         budgetTable.savingsStatisticsList.push(new SavingStatistics());
         budgetTable.wealthProjectionList.push(new WealthProjection());
-        return this.roleOrchestrationService.addRoleToBudgetTable(budgetTable);
+        this.incomeOrchestrationService.addIncomeToBudgetTable(budgetTable);
+        this.roleOrchestrationService.addRoleToBudgetTable(budgetTable);
+        return this.budgetTableService.upsertBudgetTable(budgetTable);
     }
 
     updateRole(budgetTable: BudgetTable, newRole: Role): BudgetTable {
-        return this.roleOrchestrationService.updateRoleInBudgetTable(budgetTable, newRole);
+        this.roleOrchestrationService.updateRoleInBudgetTable(budgetTable, newRole);
+        return this.budgetTableService.upsertBudgetTable(budgetTable);
+    }
+
+    updateIncome(budgetTable: BudgetTable, newIncome: Income): BudgetTable {
+        const tax = new Tax({
+            rate: new Percentage({
+                value: 30,
+            }),
+        });
+        this.incomeOrchestrationService.updateIncomeInBudgetTable(budgetTable, newIncome, tax);
+        return this.budgetTableService.upsertBudgetTable(budgetTable);
     }
 }

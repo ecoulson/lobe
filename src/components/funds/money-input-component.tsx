@@ -1,4 +1,4 @@
-import { Money } from '../../models/money/money';
+import { Money } from '../../models/funds/money';
 import { InputComponent } from '../bases/input-component';
 import { MoneyInputComponentProps } from './money-input-component-props';
 

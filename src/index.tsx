@@ -3,29 +3,44 @@ import ReactDOM from 'react-dom/client';
 import { BudgetParametersBroker } from './brokers/budget-parameters/budget-parameters-broker';
 import { BudgetTableBroker } from './brokers/budget-table/budget-table-broker';
 import { IdBroker } from './brokers/ids/id-broker';
+import { IncomeBroker } from './brokers/incomes/income-broker';
 import { RoleBroker } from './brokers/roles/role-broker';
 import { BudgetTableComponent } from './components/budgets/budget-table-component';
 import { BudgetTableController } from './controllers/budget-table/budget-table-controller';
 import './index.css';
 import { BudgetParameters } from './models/budget/budget-parameters';
+import { Money } from './models/funds/money';
+import { Percentage } from './models/statistics/percentage';
 import reportWebVitals from './reportWebVitals';
 import { BudgetTableAggregationService } from './services/aggregations/budget-tables/budget-table-aggregation-service';
 import { BudgetTableService } from './services/foundations/budget-tables/budget-table-service';
+import { MoneyService } from './services/foundations/funds/money-service';
+import { IncomeService } from './services/foundations/incomes/income-service';
 import { RoleService } from './services/foundations/roles/role-service';
+import { IncomeOrchestrationService } from './services/orchestrations/incomes/income-orchestration-service';
 import { RoleOrchestrationService } from './services/orchestrations/roles/role-orchestration-service';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const budgetParameters = new BudgetParameters({
+    currentAge: 22,
+    bonusGoal: new Percentage({
+        value: 20,
+    }),
+    yearly401kContributions: new Money({
+        value: '19,500',
+    }),
+});
 const budgetTableController = new BudgetTableController(
     new BudgetTableAggregationService(
         new BudgetTableService(new BudgetTableBroker()),
         new RoleOrchestrationService(
-            new BudgetTableService(new BudgetTableBroker()),
             new RoleService(new RoleBroker(), new IdBroker()),
-            new BudgetParametersBroker(
-                new BudgetParameters({
-                    currentAge: 22,
-                })
-            )
+            new BudgetParametersBroker(budgetParameters)
+        ),
+        new IncomeOrchestrationService(
+            new IncomeService(new IncomeBroker(), new IdBroker()),
+            new MoneyService(),
+            new BudgetParametersBroker(budgetParameters)
         )
     )
 );

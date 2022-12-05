@@ -1,5 +1,4 @@
-import { Money } from '../money/money';
-import { SavingsProps } from './savings-props';
+import { Money } from '../funds/money';
 
 export class Savings {
     public cashOnHand: Money;
@@ -7,7 +6,7 @@ export class Savings {
     public contributionsTo401k: Money;
     public totalSaved: Money;
 
-    constructor(props?: Partial<SavingsProps>) {
+    constructor(props?: Partial<Savings>) {
         const { cashOnHand, equity, contributionsTo401k, totalSaved } = {
             cashOnHand: new Money(),
             equity: new Money(),

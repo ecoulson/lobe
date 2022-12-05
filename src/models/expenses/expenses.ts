@@ -1,6 +1,5 @@
-import { Money } from '../money/money';
+import { Money } from '../funds/money';
 import { ExpenseCategory } from './expense-category';
-import { ExpensesProps } from './expenses-props';
 
 export class Expenses {
     public housing: ExpenseCategory;
@@ -15,7 +14,7 @@ export class Expenses {
     public miscellaneous: ExpenseCategory;
     public totalExpenses: Money;
 
-    constructor(props?: Partial<ExpensesProps>) {
+    constructor(props?: Partial<Expenses>) {
         const {
             healthcare,
             transportation,

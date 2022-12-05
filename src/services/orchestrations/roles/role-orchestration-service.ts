@@ -1,21 +1,14 @@
 import { BudgetParametersBroker } from '../../../brokers/budget-parameters/budget-parameters-broker';
 import { BudgetTable } from '../../../models/budget/budget-table';
 import { Role } from '../../../models/roles/role';
-import { BudgetTableService } from '../../foundations/budget-tables/budget-table-service';
 import { RoleService } from '../../foundations/roles/role-service';
 
 export class RoleOrchestrationService {
-    private readonly budgetTableService: BudgetTableService;
     private readonly roleService: RoleService;
     private readonly budgetParametersBroker: BudgetParametersBroker;
 
-    constructor(
-        budgetTableService: BudgetTableService,
-        roleService: RoleService,
-        budgetParametersBroker: BudgetParametersBroker
-    ) {
+    constructor(roleService: RoleService, budgetParametersBroker: BudgetParametersBroker) {
         this.budgetParametersBroker = budgetParametersBroker;
-        this.budgetTableService = budgetTableService;
         this.roleService = roleService;
     }
 
@@ -29,7 +22,7 @@ export class RoleOrchestrationService {
         }
         newRole.endAge = newRole.startAge + parseInt(newRole.estimatedYearsSpentInPosition);
         budgetTable.roleList.push(this.roleService.createRole(newRole));
-        return this.budgetTableService.upsertBudgetTable(budgetTable);
+        return newRole;
     }
 
     updateRoleInBudgetTable(budgetTable: BudgetTable, updatedRole: Role) {
@@ -45,6 +38,6 @@ export class RoleOrchestrationService {
                 parseInt(budgetTable.roleList[i].estimatedYearsSpentInPosition);
             this.roleService.updateRole(budgetTable.roleList[i]);
         }
-        return this.budgetTableService.upsertBudgetTable(budgetTable);
+        return updatedRole;
     }
 }

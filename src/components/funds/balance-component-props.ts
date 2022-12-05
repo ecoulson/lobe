@@ -1,4 +1,4 @@
-import { Balance } from '../../models/money/balance';
+import { Balance } from '../../models/funds/balance';
 
 export interface BalanceComponentProps {
     balance: Balance;

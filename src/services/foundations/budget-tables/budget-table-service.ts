@@ -9,14 +9,14 @@ export class BudgetTableService {
     }
 
     getBudgetTable(id: string): BudgetTable {
-        return new BudgetTable(this.budgetTableBroker.findBudgetTableById(id));
+        return this.budgetTableBroker.findBudgetTableById(id);
     }
 
     upsertBudgetTable(budgetTable: BudgetTable): BudgetTable {
-        return new BudgetTable(this.budgetTableBroker.saveBudgetTable(budgetTable));
+        return this.budgetTableBroker.saveBudgetTable(budgetTable);
     }
 
     removeBudgetTable(budgetTable: BudgetTable): BudgetTable {
-        return new BudgetTable(this.budgetTableBroker.deleteBudgetTable(budgetTable));
+        return this.budgetTableBroker.deleteBudgetTable(budgetTable);
     }
 }
