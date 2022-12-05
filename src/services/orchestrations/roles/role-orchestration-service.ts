@@ -1,21 +1,21 @@
-import { BudgetParametersBroker } from '../../../brokers/budget-parameters/budget-parameters-broker';
 import { BudgetTable } from '../../../models/budget/budget-table';
 import { Role } from '../../../models/roles/role';
+import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
 import { RoleService } from '../../foundations/roles/role-service';
 
 export class RoleOrchestrationService {
     private readonly roleService: RoleService;
-    private readonly budgetParametersBroker: BudgetParametersBroker;
+    private readonly budgetParametersService: BudgetParametersService;
 
-    constructor(roleService: RoleService, budgetParametersBroker: BudgetParametersBroker) {
-        this.budgetParametersBroker = budgetParametersBroker;
+    constructor(roleService: RoleService, budgetParametersService: BudgetParametersService) {
+        this.budgetParametersService = budgetParametersService;
         this.roleService = roleService;
     }
 
     addRoleToBudgetTable(budgetTable: BudgetTable) {
         const newRole = new Role();
         if (budgetTable.roleList.length === 0) {
-            const budgetParameters = this.budgetParametersBroker.retrieveBudgetParameters();
+            const budgetParameters = this.budgetParametersService.getParameters();
             newRole.startAge = budgetParameters.currentAge;
         } else {
             newRole.startAge = budgetTable.roleList[budgetTable.roleList.length - 1].endAge;

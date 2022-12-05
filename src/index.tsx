@@ -16,7 +16,8 @@ import { Money } from './models/funds/money';
 import { Percentage } from './models/statistics/percentage';
 import reportWebVitals from './reportWebVitals';
 import { BudgetTableAggregationService } from './services/aggregations/budget-tables/budget-table-aggregation-service';
-import { BudgetTableService } from './services/foundations/budget-tables/budget-table-service';
+import { BudgetParametersService } from './services/foundations/budgets/budget-parameters-service';
+import { BudgetTableService } from './services/foundations/budgets/budget-table-service';
 import { ExpensesService } from './services/foundations/expenses/expenses-service';
 import { MoneyService } from './services/foundations/funds/money-service';
 import { IncomeService } from './services/foundations/incomes/income-service';
@@ -36,6 +37,7 @@ const budgetParameters = new BudgetParameters({
         value: '19,500',
     }),
 });
+const budgetParametersBroker = new BudgetParametersBroker(budgetParameters);
 container.register(
     'BudgetTableController',
     new BudgetTableController(
@@ -43,12 +45,12 @@ container.register(
             new BudgetTableService(new BudgetTableBroker()),
             new RoleOrchestrationService(
                 new RoleService(new RoleBroker(), new IdBroker()),
-                new BudgetParametersBroker(budgetParameters)
+                new BudgetParametersService(budgetParametersBroker)
             ),
             new IncomeOrchestrationService(
                 new IncomeService(new IncomeBroker(), new IdBroker()),
                 new MoneyService(),
-                new BudgetParametersBroker(budgetParameters)
+                new BudgetParametersService(budgetParametersBroker)
             ),
             new ExpenseOrchestrationService(
                 new ExpensesService(new ExpenseBroker(), new IdBroker()),

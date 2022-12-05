@@ -7,7 +7,7 @@ import { Savings } from '../../../models/savings/savings';
 import { Percentage } from '../../../models/statistics/percentage';
 import { Tax } from '../../../models/taxes/tax';
 import { WealthProjection } from '../../../models/wealth-projections/wealth-projection';
-import { BudgetTableService } from '../../foundations/budget-tables/budget-table-service';
+import { BudgetTableService } from '../../foundations/budgets/budget-table-service';
 import { ExpenseOrchestrationService } from '../../orchestrations/expenses/expense-orchestration-service';
 import { IncomeOrchestrationService } from '../../orchestrations/incomes/income-orchestration-service';
 import { RoleOrchestrationService } from '../../orchestrations/roles/role-orchestration-service';

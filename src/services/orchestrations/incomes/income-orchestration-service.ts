@@ -1,22 +1,22 @@
-import { BudgetParametersBroker } from '../../../brokers/budget-parameters/budget-parameters-broker';
 import { BudgetTable } from '../../../models/budget/budget-table';
 import { Income } from '../../../models/incomes/income';
 import { IncomeService } from '../../foundations/incomes/income-service';
 import { MoneyService } from '../../foundations/funds/money-service';
 import { Tax } from '../../../models/taxes/tax';
+import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
 
 export class IncomeOrchestrationService {
     private readonly incomeService: IncomeService;
     private readonly moneyService: MoneyService;
-    private readonly budgetParametersBroker: BudgetParametersBroker;
+    private readonly budgetParametersService: BudgetParametersService;
 
     constructor(
         incomeService: IncomeService,
         moneyService: MoneyService,
-        budgetParametersBroker: BudgetParametersBroker
+        budgetParametersService: BudgetParametersService
     ) {
         this.incomeService = incomeService;
-        this.budgetParametersBroker = budgetParametersBroker;
+        this.budgetParametersService = budgetParametersService;
         this.moneyService = moneyService;
     }
 
@@ -27,7 +27,7 @@ export class IncomeOrchestrationService {
     }
 
     updateIncomeInBudgetTable(budgetTable: BudgetTable, updatedIncome: Income, tax: Tax) {
-        const budgetParameters = this.budgetParametersBroker.retrieveBudgetParameters();
+        const budgetParameters = this.budgetParametersService.getParameters();
         const incomeIndex = budgetTable.incomeList.findIndex(
             (income) => income.id === updatedIncome.id
         );
