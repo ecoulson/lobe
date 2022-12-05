@@ -5,8 +5,10 @@ import { BudgetTableBroker } from './brokers/budget-table/budget-table-broker';
 import { IdBroker } from './brokers/ids/id-broker';
 import { IncomeBroker } from './brokers/incomes/income-broker';
 import { RoleBroker } from './brokers/roles/role-broker';
+import { DependencyInjectionClient } from './clients/dependency-injection/dependency-injection-client';
 import { BudgetTableComponent } from './components/budgets/budget-table-component';
 import { BudgetTableController } from './controllers/budget-table/budget-table-controller';
+import { MoneyController } from './controllers/funds/money-controller';
 import './index.css';
 import { BudgetParameters } from './models/budget/budget-parameters';
 import { Money } from './models/funds/money';
@@ -21,6 +23,7 @@ import { IncomeOrchestrationService } from './services/orchestrations/incomes/in
 import { RoleOrchestrationService } from './services/orchestrations/roles/role-orchestration-service';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const container = new DependencyInjectionClient();
 const budgetParameters = new BudgetParameters({
     currentAge: 22,
     bonusGoal: new Percentage({
@@ -30,24 +33,28 @@ const budgetParameters = new BudgetParameters({
         value: '19,500',
     }),
 });
-const budgetTableController = new BudgetTableController(
-    new BudgetTableAggregationService(
-        new BudgetTableService(new BudgetTableBroker()),
-        new RoleOrchestrationService(
-            new RoleService(new RoleBroker(), new IdBroker()),
-            new BudgetParametersBroker(budgetParameters)
-        ),
-        new IncomeOrchestrationService(
-            new IncomeService(new IncomeBroker(), new IdBroker()),
-            new MoneyService(),
-            new BudgetParametersBroker(budgetParameters)
+container.register(
+    'BudgetTableController',
+    new BudgetTableController(
+        new BudgetTableAggregationService(
+            new BudgetTableService(new BudgetTableBroker()),
+            new RoleOrchestrationService(
+                new RoleService(new RoleBroker(), new IdBroker()),
+                new BudgetParametersBroker(budgetParameters)
+            ),
+            new IncomeOrchestrationService(
+                new IncomeService(new IncomeBroker(), new IdBroker()),
+                new MoneyService(),
+                new BudgetParametersBroker(budgetParameters)
+            )
         )
     )
 );
+container.register<MoneyController>('MoneyController', new MoneyController(new MoneyService()));
 
 root.render(
     <React.StrictMode>
-        <BudgetTableComponent budgetTableId="" budgetTableController={budgetTableController} />
+        <BudgetTableComponent budgetTableId="" />
     </React.StrictMode>
 );
 

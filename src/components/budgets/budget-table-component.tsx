@@ -10,47 +10,50 @@ import { useEffect, useState } from 'react';
 import { BudgetTable } from '../../models/budget/budget-table';
 import { Role } from '../../models/roles/role';
 import { Income } from '../../models/incomes/income';
+import { inject } from '../../clients/dependency-injection/inject';
 
-export function BudgetTableComponent({
-    budgetTableId,
-    budgetTableController,
-}: BudgetTableComponentProps) {
-    const [currentBudgetTable, setBudgetTable] = useState(new BudgetTable());
+export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTableController'>(
+    {
+        budgetTableController: 'BudgetTableController',
+    },
+    ({ budgetTableId, budgetTableController }: BudgetTableComponentProps) => {
+        const [currentBudgetTable, setBudgetTable] = useState(new BudgetTable());
 
-    useEffect(() => {
-        const budgetTable = new BudgetTable();
-        budgetTable.id = budgetTableId;
-        setBudgetTable(budgetTableController.upsertBudgetTable(budgetTable));
-    }, [budgetTableId, budgetTableController]);
+        useEffect(() => {
+            const budgetTable = new BudgetTable();
+            budgetTable.id = budgetTableId;
+            setBudgetTable(budgetTableController.upsertBudgetTable(budgetTable));
+        }, [budgetTableId, budgetTableController]);
 
-    function addColumn() {
-        setBudgetTable(budgetTableController.addColumn(currentBudgetTable));
+        function addColumn() {
+            setBudgetTable(budgetTableController.addColumn(currentBudgetTable));
+        }
+
+        function updateRole(role: Role) {
+            setBudgetTable(budgetTableController.updateRole(currentBudgetTable, role));
+        }
+
+        function updateIncome(income: Income) {
+            setBudgetTable(budgetTableController.updateIncome(currentBudgetTable, income));
+        }
+
+        return (
+            <div>
+                <ButtonComponent onClick={addColumn}>Add Position</ButtonComponent>
+                <RoleRowComponent roleList={currentBudgetTable.roleList} updateRole={updateRole} />
+                <IncomeRowComponent
+                    incomeList={currentBudgetTable.incomeList}
+                    updateIncome={updateIncome}
+                />
+                <ExpensesRowComponent expensesList={currentBudgetTable.expensesList} />
+                <SavingsRowComponent savingsList={currentBudgetTable.savingsList} />
+                <SavingStatisticsRowComponent
+                    savingStatisticsList={currentBudgetTable.savingsStatisticsList}
+                />
+                <WealthProjectionRowComponent
+                    wealthProjectionList={currentBudgetTable.wealthProjectionList}
+                />
+            </div>
+        );
     }
-
-    function updateRole(role: Role) {
-        setBudgetTable(budgetTableController.updateRole(currentBudgetTable, role));
-    }
-
-    function updateIncome(income: Income) {
-        setBudgetTable(budgetTableController.updateIncome(currentBudgetTable, income));
-    }
-
-    return (
-        <div>
-            <ButtonComponent onClick={addColumn}>Add Position</ButtonComponent>
-            <RoleRowComponent roleList={currentBudgetTable.roleList} updateRole={updateRole} />
-            <IncomeRowComponent
-                incomeList={currentBudgetTable.incomeList}
-                updateIncome={updateIncome}
-            />
-            <ExpensesRowComponent expensesList={currentBudgetTable.expensesList} />
-            <SavingsRowComponent savingsList={currentBudgetTable.savingsList} />
-            <SavingStatisticsRowComponent
-                savingStatisticsList={currentBudgetTable.savingsStatisticsList}
-            />
-            <WealthProjectionRowComponent
-                wealthProjectionList={currentBudgetTable.wealthProjectionList}
-            />
-        </div>
-    );
-}
+);

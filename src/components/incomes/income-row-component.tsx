@@ -12,6 +12,7 @@ export function IncomeRowComponent({ incomeList, updateIncome }: IncomeRowCompon
                 field="Base Salary"
                 cells={incomeList.map((income) => (
                     <MoneyInputComponent
+                        money={income.baseSalary}
                         onChange={(baseSalary) =>
                             updateIncome(
                                 new Income({
@@ -20,7 +21,6 @@ export function IncomeRowComponent({ incomeList, updateIncome }: IncomeRowCompon
                                 })
                             )
                         }
-                        money={income.baseSalary}
                     />
                 ))}
             />
