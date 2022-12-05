@@ -9,14 +9,14 @@ export class RoleService {
     }
 
     upsertRole(role: Role): Role {
-        return this.roleBroker.saveRole(role);
+        return new Role(this.roleBroker.saveRole(role));
     }
 
     getRole(id: string): Role {
-        return this.roleBroker.findRoleById(id);
+        return new Role(this.roleBroker.findRoleById(id));
     }
 
     removeRole(role: Role): Role {
-        return this.roleBroker.deleteRole(role);
+        return new Role(this.roleBroker.deleteRole(role));
     }
 }

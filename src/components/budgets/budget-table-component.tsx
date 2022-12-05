@@ -21,15 +21,13 @@ export function BudgetTableComponent({
         setBudgetTable(budgetTableController.upsertBudgetTable(budgetTable));
     }, [budgetTableId, budgetTableController]);
 
+    function addColumn() {
+        setBudgetTable(budgetTableController.addColumn(currentBudgetTable));
+    }
+
     return (
         <div>
-            <ButtonComponent
-                onClick={() =>
-                    setBudgetTable({ ...budgetTableController.addColumn(currentBudgetTable) })
-                }
-            >
-                Add Position
-            </ButtonComponent>
+            <ButtonComponent onClick={addColumn}>Add Position</ButtonComponent>
             <RoleRowComponent roleList={currentBudgetTable.roleList} />
             <IncomeRowComponent incomeList={currentBudgetTable.incomeList} />
             <ExpensesRowComponent expensesList={currentBudgetTable.expensesList} />
