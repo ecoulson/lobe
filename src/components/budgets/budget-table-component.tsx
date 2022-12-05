@@ -8,6 +8,7 @@ import { BudgetTableComponentProps } from './budget-table-component-props';
 import { ButtonComponent } from '../bases/button-component';
 import { useEffect, useState } from 'react';
 import { BudgetTable } from '../../models/budget/budget-table';
+import { Role } from '../../models/roles/role';
 
 export function BudgetTableComponent({
     budgetTableId,
@@ -25,10 +26,14 @@ export function BudgetTableComponent({
         setBudgetTable(budgetTableController.addColumn(currentBudgetTable));
     }
 
+    function updateRole(role: Role) {
+        setBudgetTable(budgetTableController.updateRole(currentBudgetTable, role));
+    }
+
     return (
         <div>
             <ButtonComponent onClick={addColumn}>Add Position</ButtonComponent>
-            <RoleRowComponent roleList={currentBudgetTable.roleList} />
+            <RoleRowComponent roleList={currentBudgetTable.roleList} updateRole={updateRole} />
             <IncomeRowComponent incomeList={currentBudgetTable.incomeList} />
             <ExpensesRowComponent expensesList={currentBudgetTable.expensesList} />
             <SavingsRowComponent savingsList={currentBudgetTable.savingsList} />

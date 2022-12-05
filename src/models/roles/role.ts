@@ -1,19 +1,17 @@
-import { RoleProps } from './role-props';
-
 export class Role {
     public id: string;
     public level: string;
-    public estimatedYearsSpentInPosition: number;
+    public estimatedYearsSpentInPosition: string;
     public startAge: number;
     public endAge: number;
     public company: string;
     public state: string;
 
-    constructor(props?: Partial<RoleProps>) {
+    constructor(props?: Partial<Role>) {
         const { id, level, estimatedYearsSpentInPosition, startAge, endAge, company, state } = {
             id: '',
             level: '',
-            estimatedYearsSpentInPosition: 0,
+            estimatedYearsSpentInPosition: '1',
             startAge: 0,
             endAge: 0,
             company: '',

@@ -1,14 +1,22 @@
+import { IdBroker } from '../../../brokers/ids/id-broker';
 import { RoleBroker } from '../../../brokers/roles/role-broker';
 import { Role } from '../../../models/roles/role';
 
 export class RoleService {
     private readonly roleBroker: RoleBroker;
+    private readonly idBroker: IdBroker;
 
-    constructor(roleBroker: RoleBroker) {
+    constructor(roleBroker: RoleBroker, idBroker: IdBroker) {
         this.roleBroker = roleBroker;
+        this.idBroker = idBroker;
     }
 
-    upsertRole(role: Role): Role {
+    createRole(role: Role): Role {
+        role.id = this.idBroker.generateId();
+        return new Role(this.roleBroker.saveRole(role));
+    }
+
+    updateRole(role: Role): Role {
         return new Role(this.roleBroker.saveRole(role));
     }
 
