@@ -3,36 +3,30 @@ import { BudgetSectionComponent } from '../budgets/budget-section-component';
 import { InputComponent } from '../inputs/input-component';
 import { RoleRowComponentProps } from './role-row-component-props';
 
-export function RoleRowComponent({ roleList: roles }: RoleRowComponentProps) {
+export function RoleRowComponent({ roleList }: RoleRowComponentProps) {
     return (
         <BudgetSectionComponent heading="Role">
             <BudgetRowComponent
                 field="Company"
-                cells={roles.map((role) => (
+                cells={roleList.map((role) => (
                     <InputComponent value={role.company} onChange={() => {}} />
                 ))}
             />
             <BudgetRowComponent
                 field="Level"
-                cells={roles.map((role) => (
+                cells={roleList.map((role) => (
                     <InputComponent value={role.level} onChange={() => {}} />
                 ))}
             />
             <BudgetRowComponent
-                field="Start Age"
-                cells={roles.map((role) => (
-                    <p key={role.startAge}>{role.startAge}</p>
-                ))}
-            />
-            <BudgetRowComponent
-                field="End Age"
-                cells={roles.map((role) => (
-                    <p key={role.endAge}>{role.endAge}</p>
+                field="State"
+                cells={roleList.map((role) => (
+                    <InputComponent value={role.state} onChange={() => {}} />
                 ))}
             />
             <BudgetRowComponent
                 field="Estimated Years at Level"
-                cells={roles.map((role) => (
+                cells={roleList.map((role) => (
                     <InputComponent
                         value={role.estimatedYearsSpentInPosition.toString()}
                         onChange={() => {}}
@@ -40,9 +34,15 @@ export function RoleRowComponent({ roleList: roles }: RoleRowComponentProps) {
                 ))}
             />
             <BudgetRowComponent
-                field="State"
-                cells={roles.map((role) => (
-                    <InputComponent value={role.state} onChange={() => {}} />
+                field="Start Age"
+                cells={roleList.map((role) => (
+                    <p key={role.startAge}>{role.startAge}</p>
+                ))}
+            />
+            <BudgetRowComponent
+                field="End Age"
+                cells={roleList.map((role) => (
+                    <p key={role.endAge}>{role.endAge}</p>
                 ))}
             />
         </BudgetSectionComponent>

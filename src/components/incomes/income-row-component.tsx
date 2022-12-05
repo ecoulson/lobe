@@ -1,6 +1,7 @@
 import { BudgetRowComponent } from '../budgets/budget-row-component';
 import { BudgetSectionComponent } from '../budgets/budget-section-component';
 import { MoneyComponent } from '../funds/money-component';
+import { MoneyInputComponent } from '../funds/money-input-component';
 import { IncomeRowComponentProps } from './income-row-component-props';
 
 export function IncomeRowComponent({ incomeList }: IncomeRowComponentProps) {
@@ -9,7 +10,7 @@ export function IncomeRowComponent({ incomeList }: IncomeRowComponentProps) {
             <BudgetRowComponent
                 field="Base Salary"
                 cells={incomeList.map((income) => (
-                    <MoneyComponent money={income.baseSalary} />
+                    <MoneyInputComponent onChange={() => {}} money={income.baseSalary} />
                 ))}
             />
             <BudgetRowComponent
