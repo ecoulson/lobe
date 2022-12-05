@@ -1,5 +1,7 @@
+import { RoleProps } from './role-props';
+
 export class Role {
-    public title: string;
+    public id: string;
     public level: string;
     public estimatedYearsSpentInPosition: number;
     public startAge: number;
@@ -7,13 +9,23 @@ export class Role {
     public company: string;
     public state: string;
 
-    constructor() {
-        this.title = '';
-        this.level = '';
-        this.estimatedYearsSpentInPosition = 0;
-        this.startAge = 0;
-        this.endAge = 0;
-        this.company = '';
-        this.state = '';
+    constructor(props?: Partial<RoleProps>) {
+        const { id, level, estimatedYearsSpentInPosition, startAge, endAge, company, state } = {
+            id: '',
+            level: '',
+            estimatedYearsSpentInPosition: 0,
+            startAge: 0,
+            endAge: 0,
+            company: '',
+            state: '',
+            ...props,
+        };
+        this.id = id;
+        this.level = level;
+        this.estimatedYearsSpentInPosition = estimatedYearsSpentInPosition;
+        this.startAge = startAge;
+        this.endAge = endAge;
+        this.company = company;
+        this.state = state;
     }
 }

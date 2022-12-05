@@ -7,16 +7,26 @@ export class BudgetParameters {
     public bonusGoal: Percentage;
     public currentAge: number;
     public signOnBonus: Money;
-    public matchLimit410k: Money;
-    public matchPercentage: Percentage;
 
-    constructor() {
-        this.targetPercentageOfIncomeToSave = new Percentage();
-        this.estimatedReturnRate = new Percentage();
-        this.bonusGoal = new Percentage();
-        this.currentAge = 0;
-        this.signOnBonus = new Money();
-        this.matchLimit410k = new Money();
-        this.matchPercentage = new Percentage();
+    constructor(props?: Partial<BudgetParameters>) {
+        const {
+            targetPercentageOfIncomeToSave,
+            estimatedReturnRate,
+            bonusGoal,
+            currentAge,
+            signOnBonus,
+        } = {
+            targetPercentageOfIncomeToSave: new Percentage(),
+            estimatedReturnRate: new Percentage(),
+            bonusGoal: new Percentage(),
+            currentAge: 18,
+            signOnBonus: new Money(),
+            ...props,
+        };
+        this.targetPercentageOfIncomeToSave = targetPercentageOfIncomeToSave;
+        this.estimatedReturnRate = estimatedReturnRate;
+        this.bonusGoal = bonusGoal;
+        this.currentAge = currentAge;
+        this.signOnBonus = signOnBonus;
     }
 }

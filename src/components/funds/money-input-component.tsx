@@ -1,5 +1,5 @@
 import { Money } from '../../models/money/money';
-import { InputComponent } from '../inputs/input-component';
+import { InputComponent } from '../bases/input-component';
 import { MoneyInputComponentProps } from './money-input-component-props';
 
 export function MoneyInputComponent({ onChange, money }: MoneyInputComponentProps) {

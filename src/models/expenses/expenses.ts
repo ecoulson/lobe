@@ -1,5 +1,6 @@
 import { Money } from '../money/money';
 import { ExpenseCategory } from './expense-category';
+import { ExpensesProps } from './expenses-props';
 
 export class Expenses {
     public housing: ExpenseCategory;
@@ -14,17 +15,43 @@ export class Expenses {
     public miscellaneous: ExpenseCategory;
     public totalExpenses: Money;
 
-    constructor() {
-        this.healthcare = new ExpenseCategory();
-        this.transportation = new ExpenseCategory();
-        this.food = new ExpenseCategory();
-        this.utilities = new ExpenseCategory();
-        this.insurance = new ExpenseCategory();
-        this.debtPayments = new ExpenseCategory();
-        this.housing = new ExpenseCategory();
-        this.personal = new ExpenseCategory();
-        this.entertainment = new ExpenseCategory();
-        this.miscellaneous = new ExpenseCategory();
-        this.totalExpenses = new Money();
+    constructor(props?: Partial<ExpensesProps>) {
+        const {
+            healthcare,
+            transportation,
+            food,
+            utilities,
+            insurance,
+            debtPayments,
+            housing,
+            personal,
+            entertainment,
+            miscellaneous,
+            totalExpenses,
+        } = {
+            healthcare: new ExpenseCategory(),
+            transportation: new ExpenseCategory(),
+            food: new ExpenseCategory(),
+            utilities: new ExpenseCategory(),
+            insurance: new ExpenseCategory(),
+            debtPayments: new ExpenseCategory(),
+            housing: new ExpenseCategory(),
+            personal: new ExpenseCategory(),
+            entertainment: new ExpenseCategory(),
+            miscellaneous: new ExpenseCategory(),
+            totalExpenses: new Money(),
+            ...props,
+        };
+        this.healthcare = healthcare;
+        this.transportation = transportation;
+        this.food = food;
+        this.utilities = utilities;
+        this.insurance = insurance;
+        this.debtPayments = debtPayments;
+        this.housing = housing;
+        this.personal = personal;
+        this.entertainment = entertainment;
+        this.miscellaneous = miscellaneous;
+        this.totalExpenses = totalExpenses;
     }
 }

@@ -5,12 +5,12 @@ export class Money {
     public value: string;
 
     constructor(props?: Partial<MoneyProps>) {
-        const completeProps = {
-            currency: '',
-            value: '',
+        const { currency, value } = {
+            currency: '$',
+            value: '0.00',
             ...props,
         };
-        this.currency = completeProps.currency;
-        this.value = completeProps.value;
+        this.currency = currency;
+        this.value = value;
     }
 }

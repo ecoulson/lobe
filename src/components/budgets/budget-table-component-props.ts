@@ -1,5 +1,6 @@
-import { BudgetTable } from '../../models/budget/budget-table';
+import { BudgetTableController } from '../../controllers/budget-table/budget-table-controller';
 
 export interface BudgetTableComponentProps {
-    budgetTable: BudgetTable;
+    budgetTableId: string;
+    budgetTableController: BudgetTableController;
 }

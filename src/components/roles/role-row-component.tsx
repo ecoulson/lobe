@@ -1,6 +1,6 @@
 import { BudgetRowComponent } from '../budgets/budget-row-component';
 import { BudgetSectionComponent } from '../budgets/budget-section-component';
-import { InputComponent } from '../inputs/input-component';
+import { InputComponent } from '../bases/input-component';
 import { RoleRowComponentProps } from './role-row-component-props';
 
 export function RoleRowComponent({ roleList }: RoleRowComponentProps) {
