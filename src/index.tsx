@@ -6,6 +6,7 @@ import { ExpenseBroker } from './brokers/expenses/expense-broker';
 import { IdBroker } from './brokers/ids/id-broker';
 import { IncomeBroker } from './brokers/incomes/income-broker';
 import { RoleBroker } from './brokers/roles/role-broker';
+import { SavingStatisticsBroker } from './brokers/savings/saving-statistics-broker';
 import { SavingsBroker } from './brokers/savings/savings-broker';
 import { DependencyInjectionClient } from './clients/dependency-injection/dependency-injection-client';
 import { BudgetTableComponent } from './components/budgets/budget-table-component';
@@ -23,10 +24,12 @@ import { ExpensesService } from './services/foundations/expenses/expenses-servic
 import { MoneyService } from './services/foundations/funds/money-service';
 import { IncomeService } from './services/foundations/incomes/income-service';
 import { RoleService } from './services/foundations/roles/role-service';
+import { SavingStatisticsService } from './services/foundations/savings/saving-statistics-service';
 import { SavingsService } from './services/foundations/savings/savings-service';
 import { ExpenseOrchestrationService } from './services/orchestrations/expenses/expense-orchestration-service';
 import { IncomeOrchestrationService } from './services/orchestrations/incomes/income-orchestration-service';
 import { RoleOrchestrationService } from './services/orchestrations/roles/role-orchestration-service';
+import { SavingStatisticsOrchestrationService } from './services/orchestrations/savings/saving-statistics-orchestration-service';
 import { SavingsOrchestrationService } from './services/orchestrations/savings/savings-orchestration-service';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -38,6 +41,12 @@ const budgetParameters = new BudgetParameters({
     }),
     yearly401kContributions: new Money({
         value: '19,500',
+    }),
+    targetPercentageOfIncomeToSave: new Percentage({
+        value: 70,
+    }),
+    matching401kPercentage: new Percentage({
+        value: 50,
     }),
 });
 const budgetParametersBroker = new BudgetParametersBroker(budgetParameters);
@@ -63,6 +72,11 @@ container.register(
                 new SavingsService(new SavingsBroker(), new IdBroker()),
                 new MoneyService(),
                 new BudgetParametersService(budgetParametersBroker)
+            ),
+            new SavingStatisticsOrchestrationService(
+                new BudgetParametersService(budgetParametersBroker),
+                new SavingStatisticsService(new SavingStatisticsBroker(), new IdBroker()),
+                new MoneyService()
             )
         )
     )

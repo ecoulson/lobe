@@ -23,8 +23,11 @@ export class SavingsOrchestrationService {
 
     addSavingsToBudgetTable(budgetTable: BudgetTable) {
         const budgetParameters = this.budgetParametersService.getParameters();
+        const contributionsTo401kWithMatching =
+            this.moneyService.getCurrencyAmount(budgetParameters.yearly401kContributions) *
+            (1 + budgetParameters.matching401kPercentage.value / 100);
         const savings = new Savings({
-            contributionsTo401k: budgetParameters.yearly401kContributions,
+            contributionsTo401k: this.moneyService.createMoney(contributionsTo401kWithMatching),
         });
         this.calculateSavings(savings, new Income(), new Expenses());
         budgetTable.savingsList.push(savings);
@@ -57,15 +60,19 @@ export class SavingsOrchestrationService {
         return this.savingsService.updateSavings(updatedSavings);
     }
 
-    recalculateSavingsFromIncome(budgetTable: BudgetTable, newIncome: Income) { 
-        const incomeIndex = budgetTable.incomeList.findIndex((income) => income.id === newIncome.id);
+    recalculateSavingsFromIncome(budgetTable: BudgetTable, newIncome: Income) {
+        const incomeIndex = budgetTable.incomeList.findIndex(
+            (income) => income.id === newIncome.id
+        );
         const savings = budgetTable.savingsList[incomeIndex];
-        this.updateSavings(budgetTable, savings)
+        this.updateSavings(budgetTable, savings);
     }
 
-    recalculateSavingsFromExpenses(budgetTable: BudgetTable, newExpenses: Expenses) { 
-        const incomeIndex = budgetTable.expensesList.findIndex((expense) => expense.id === newExpenses.id);
+    recalculateSavingsFromExpenses(budgetTable: BudgetTable, newExpenses: Expenses) {
+        const incomeIndex = budgetTable.expensesList.findIndex(
+            (expense) => expense.id === newExpenses.id
+        );
         const savings = budgetTable.savingsList[incomeIndex];
-        this.updateSavings(budgetTable, savings)
+        this.updateSavings(budgetTable, savings);
     }
 }

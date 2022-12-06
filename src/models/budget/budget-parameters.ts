@@ -8,6 +8,7 @@ export class BudgetParameters {
     public currentAge: number;
     public signOnBonus: Money;
     public yearly401kContributions: Money;
+    public matching401kPercentage: Percentage;
 
     constructor(props?: Partial<BudgetParameters>) {
         const {
@@ -17,6 +18,7 @@ export class BudgetParameters {
             currentAge,
             signOnBonus,
             yearly401kContributions,
+            matching401kPercentage,
         } = {
             targetPercentageOfIncomeToSave: new Percentage(),
             estimatedReturnRate: new Percentage(),
@@ -24,8 +26,10 @@ export class BudgetParameters {
             currentAge: 18,
             signOnBonus: new Money(),
             yearly401kContributions: new Money(),
+            matching401kPercentage: new Percentage(),
             ...props,
         };
+        this.matching401kPercentage = matching401kPercentage;
         this.targetPercentageOfIncomeToSave = targetPercentageOfIncomeToSave;
         this.yearly401kContributions = yearly401kContributions;
         this.estimatedReturnRate = estimatedReturnRate;
