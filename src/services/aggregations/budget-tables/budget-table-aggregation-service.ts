@@ -11,23 +11,27 @@ import { BudgetTableService } from '../../foundations/budgets/budget-table-servi
 import { ExpenseOrchestrationService } from '../../orchestrations/expenses/expense-orchestration-service';
 import { IncomeOrchestrationService } from '../../orchestrations/incomes/income-orchestration-service';
 import { RoleOrchestrationService } from '../../orchestrations/roles/role-orchestration-service';
+import { SavingsOrchestrationService } from '../../orchestrations/savings/savings-orchestration-service';
 
 export class BudgetTableAggregationService {
     private readonly budgetTableService: BudgetTableService;
     private readonly roleOrchestrationService: RoleOrchestrationService;
     private readonly incomeOrchestrationService: IncomeOrchestrationService;
     private readonly expensesOrchestrationService: ExpenseOrchestrationService;
+    private readonly savingsOrchestrationService: SavingsOrchestrationService;
 
     constructor(
         budgetTableService: BudgetTableService,
         roleOrchestrationService: RoleOrchestrationService,
         incomeOrchestrationService: IncomeOrchestrationService,
-        expensesOrchestrationService: ExpenseOrchestrationService
+        expensesOrchestrationService: ExpenseOrchestrationService,
+        savingsOrchestrationService: SavingsOrchestrationService
     ) {
         this.budgetTableService = budgetTableService;
         this.roleOrchestrationService = roleOrchestrationService;
         this.incomeOrchestrationService = incomeOrchestrationService;
         this.expensesOrchestrationService = expensesOrchestrationService;
+        this.savingsOrchestrationService = savingsOrchestrationService;
     }
 
     upsertBudgetTable(budgetTable: BudgetTable): BudgetTable {
@@ -39,11 +43,11 @@ export class BudgetTableAggregationService {
     }
 
     addColumn(budgetTable: BudgetTable): BudgetTable {
-        budgetTable.savingsList.push(new Savings());
         budgetTable.savingsStatisticsList.push(new SavingStatistics());
         budgetTable.wealthProjectionList.push(new WealthProjection());
         this.incomeOrchestrationService.addIncomeToBudgetTable(budgetTable);
         this.expensesOrchestrationService.addExpensesToBudgetTable(budgetTable);
+        this.savingsOrchestrationService.addSavingsToBudgetTable(budgetTable);
         this.roleOrchestrationService.addRoleToBudgetTable(budgetTable);
         return this.budgetTableService.upsertBudgetTable(budgetTable);
     }
@@ -59,12 +63,29 @@ export class BudgetTableAggregationService {
                 value: 30,
             }),
         });
-        this.incomeOrchestrationService.updateIncomeInBudgetTable(budgetTable, newIncome, tax);
+        const updatedIncome = this.incomeOrchestrationService.updateIncomeInBudgetTable(
+            budgetTable,
+            newIncome,
+            tax
+        );
+        this.savingsOrchestrationService.recalculateSavingsFromIncome(budgetTable, updatedIncome);
         return this.budgetTableService.upsertBudgetTable(budgetTable);
     }
 
     updateExpenses(budgetTable: BudgetTable, newExpenses: Expenses): BudgetTable {
-        this.expensesOrchestrationService.updateExpensesInBudgetTable(budgetTable, newExpenses);
+        const updatedExpenses = this.expensesOrchestrationService.updateExpensesInBudgetTable(
+            budgetTable,
+            newExpenses
+        );
+        this.savingsOrchestrationService.recalculateSavingsFromExpenses(
+            budgetTable,
+            updatedExpenses
+        );
+        return this.budgetTableService.upsertBudgetTable(budgetTable);
+    }
+
+    updateSavings(budgetTable: BudgetTable, savings: Savings): BudgetTable {
+        this.savingsOrchestrationService.updateSavings(budgetTable, savings);
         return this.budgetTableService.upsertBudgetTable(budgetTable);
     }
 }

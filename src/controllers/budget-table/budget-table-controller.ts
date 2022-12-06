@@ -2,6 +2,7 @@ import { BudgetTable } from '../../models/budget/budget-table';
 import { Expenses } from '../../models/expenses/expenses';
 import { Income } from '../../models/incomes/income';
 import { Role } from '../../models/roles/role';
+import { Savings } from '../../models/savings/savings';
 import { BudgetTableAggregationService } from '../../services/aggregations/budget-tables/budget-table-aggregation-service';
 
 export class BudgetTableController {
@@ -33,5 +34,9 @@ export class BudgetTableController {
 
     updateExpenses(budgetTable: BudgetTable, expenses: Expenses) {
         return this.budgetTableAggregationService.updateExpenses(budgetTable, expenses);
+    }
+
+    updateSavings(budgetTable: BudgetTable, savings: Savings) {
+        return this.budgetTableAggregationService.updateSavings(budgetTable, savings);
     }
 }

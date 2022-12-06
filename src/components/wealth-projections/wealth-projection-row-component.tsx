@@ -7,7 +7,7 @@ export function WealthProjectionRowComponent({
     wealthProjectionList,
 }: WealthProjectionRowComponentProps) {
     return (
-        <BudgetSectionComponent heading="Wealth Project">
+        <BudgetSectionComponent heading="Wealth Projection">
             <BudgetRowComponent
                 field="Expected Net Worth"
                 cells={wealthProjectionList.map((wealthProjection) => (

@@ -6,6 +6,7 @@ import { ExpenseBroker } from './brokers/expenses/expense-broker';
 import { IdBroker } from './brokers/ids/id-broker';
 import { IncomeBroker } from './brokers/incomes/income-broker';
 import { RoleBroker } from './brokers/roles/role-broker';
+import { SavingsBroker } from './brokers/savings/savings-broker';
 import { DependencyInjectionClient } from './clients/dependency-injection/dependency-injection-client';
 import { BudgetTableComponent } from './components/budgets/budget-table-component';
 import { BudgetTableController } from './controllers/budget-table/budget-table-controller';
@@ -22,9 +23,11 @@ import { ExpensesService } from './services/foundations/expenses/expenses-servic
 import { MoneyService } from './services/foundations/funds/money-service';
 import { IncomeService } from './services/foundations/incomes/income-service';
 import { RoleService } from './services/foundations/roles/role-service';
+import { SavingsService } from './services/foundations/savings/savings-service';
 import { ExpenseOrchestrationService } from './services/orchestrations/expenses/expense-orchestration-service';
 import { IncomeOrchestrationService } from './services/orchestrations/incomes/income-orchestration-service';
 import { RoleOrchestrationService } from './services/orchestrations/roles/role-orchestration-service';
+import { SavingsOrchestrationService } from './services/orchestrations/savings/savings-orchestration-service';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const container = new DependencyInjectionClient();
@@ -55,6 +58,11 @@ container.register(
             new ExpenseOrchestrationService(
                 new ExpensesService(new ExpenseBroker(), new IdBroker()),
                 new MoneyService()
+            ),
+            new SavingsOrchestrationService(
+                new SavingsService(new SavingsBroker(), new IdBroker()),
+                new MoneyService(),
+                new BudgetParametersService(budgetParametersBroker)
             )
         )
     )
