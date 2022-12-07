@@ -56,7 +56,11 @@ export class BudgetTableAggregationService {
             }),
         });
         const budgetColumn = new BudgetColumn();
-        budgetColumn.role = this.roleOrchestrationService.addRoleToBudgetTable(budgetTable);
+        const previousColumn = this.budgetTableOrchestrationService.getColumnByIndex(
+            budgetTable,
+            budgetTable.numberOfColumns - 1
+        );
+        budgetColumn.role = this.roleOrchestrationService.createCalculatedRole(previousColumn);
         budgetColumn.income = this.incomeOrchestrationService.createCalculatedIncome();
         budgetColumn.expenses = this.expensesOrchestrationService.createCalculatedExpenses();
         budgetColumn.savings =
@@ -68,38 +72,72 @@ export class BudgetTableAggregationService {
         budgetColumn.wealthProjection =
             this.wealthProjectionOrchestrationService.createCalculatedWealthProjection(
                 budgetColumn,
-                budgetTable.wealthProjectionList,
-                capitalGainsTax
+                capitalGainsTax,
+                previousColumn
             );
         return this.budgetTableOrchestrationService.addColumn(budgetTable, budgetColumn);
     }
 
     updateRole(budgetTable: BudgetTable, updatedRole: Role): BudgetTable {
-        const capitalGainsTax = new Tax({
-            rate: new Percentage({
-                value: 15,
-            }),
-        });
-        const budgetColumn = this.budgetTableOrchestrationService.getColumnOfRole(
+        let budgetColumn = this.budgetTableOrchestrationService.getColumnOfRole(
             budgetTable,
             updatedRole
         );
-        budgetColumn.role = this.roleOrchestrationService.updateRole(budgetTable, budgetColumn, updatedRole);
-        budgetColumn.wealthProjection =
-            this.wealthProjectionOrchestrationService.updateWealthProjection(
-                budgetColumn,
-                capitalGainsTax,
-                budgetTable.wealthProjectionList
-            );
-        return this.budgetTableOrchestrationService.upsertBudgetTable(budgetTable);
+        let previousColumn = this.budgetTableOrchestrationService.getColumnByIndex(
+            budgetTable,
+            budgetColumn.index - 1
+        );
+        budgetColumn.role = this.roleOrchestrationService.updateRole(updatedRole, previousColumn);
+        budgetTable = this.budgetTableOrchestrationService.updateColumn(budgetTable, budgetColumn);
+        budgetTable = this.updateDependantRoles(budgetTable, budgetColumn);
+        return this.updateDependantWealthProjections(budgetTable, budgetColumn, previousColumn);
     }
 
-    updateIncome(budgetTable: BudgetTable, updatedIncome: Income): BudgetTable {
+    private updateDependantRoles(budgetTable: BudgetTable, budgetColumn: BudgetColumn) {
+        let previousColumn = budgetColumn;
+        for (let i = budgetColumn.index + 1; i < budgetTable.numberOfColumns; i++) {
+            budgetColumn = this.budgetTableOrchestrationService.getColumnByIndex(budgetTable, i);
+            budgetColumn.role = this.roleOrchestrationService.updateRole(
+                budgetColumn.role,
+                previousColumn
+            );
+            budgetTable = this.budgetTableOrchestrationService.updateColumn(
+                budgetTable,
+                budgetColumn
+            );
+            previousColumn = budgetColumn;
+        }
+        return budgetTable;
+    }
+
+    private updateDependantWealthProjections(
+        budgetTable: BudgetTable,
+        budgetColumn: BudgetColumn,
+        previousColumn?: BudgetColumn
+    ) {
         const capitalGainsTax = new Tax({
             rate: new Percentage({
                 value: 15,
             }),
         });
+        for (let i = budgetColumn.index; i < budgetTable.numberOfColumns; i++) {
+            budgetColumn = this.budgetTableOrchestrationService.getColumnByIndex(budgetTable, i);
+            budgetColumn.wealthProjection =
+                this.wealthProjectionOrchestrationService.updateWealthProjection(
+                    budgetColumn,
+                    capitalGainsTax,
+                    previousColumn
+                );
+            budgetTable = this.budgetTableOrchestrationService.updateColumn(
+                budgetTable,
+                budgetColumn
+            );
+            previousColumn = budgetColumn;
+        }
+        return budgetTable;
+    }
+
+    updateIncome(budgetTable: BudgetTable, updatedIncome: Income): BudgetTable {
         const incomeTax = new Tax({
             rate: new Percentage({
                 value: 30,
@@ -122,21 +160,18 @@ export class BudgetTableAggregationService {
                 budgetColumn,
                 budgetColumn.savings
             );
-        budgetColumn.wealthProjection =
-            this.wealthProjectionOrchestrationService.updateWealthProjection(
-                budgetColumn,
-                capitalGainsTax,
-                budgetTable.wealthProjectionList
-            );
-        return this.budgetTableOrchestrationService.updateColumn(budgetTable, budgetColumn);
+        budgetTable = this.budgetTableOrchestrationService.updateColumn(budgetTable, budgetColumn);
+        return this.updateDependantWealthProjections(
+            budgetTable,
+            budgetColumn,
+            this.budgetTableOrchestrationService.getColumnByIndex(
+                budgetTable,
+                budgetColumn.index - 1
+            )
+        );
     }
 
     updateExpenses(budgetTable: BudgetTable, updatedExpenses: Expenses): BudgetTable {
-        const capitalGainsTax = new Tax({
-            rate: new Percentage({
-                value: 15,
-            }),
-        });
         const budgetColumn = this.budgetTableOrchestrationService.getColumnOfExpenses(
             budgetTable,
             updatedExpenses
@@ -151,21 +186,18 @@ export class BudgetTableAggregationService {
                 budgetColumn,
                 budgetColumn.savings
             );
-        budgetColumn.wealthProjection =
-            this.wealthProjectionOrchestrationService.updateWealthProjection(
-                budgetColumn,
-                capitalGainsTax,
-                budgetTable.wealthProjectionList
-            );
-        return this.budgetTableOrchestrationService.updateColumn(budgetTable, budgetColumn);
+        budgetTable = this.budgetTableOrchestrationService.updateColumn(budgetTable, budgetColumn);
+        return this.updateDependantWealthProjections(
+            budgetTable,
+            budgetColumn,
+            this.budgetTableOrchestrationService.getColumnByIndex(
+                budgetTable,
+                budgetColumn.index - 1
+            )
+        );
     }
 
     updateSavings(budgetTable: BudgetTable, updatedSavings: Savings): BudgetTable {
-        const capitalGainsTax = new Tax({
-            rate: new Percentage({
-                value: 15,
-            }),
-        });
         const budgetColumn = this.budgetTableOrchestrationService.getColumnOfSavings(
             budgetTable,
             updatedSavings
@@ -179,12 +211,14 @@ export class BudgetTableAggregationService {
                 budgetColumn,
                 updatedSavings
             );
-        budgetColumn.wealthProjection =
-            this.wealthProjectionOrchestrationService.updateWealthProjection(
-                budgetColumn,
-                capitalGainsTax,
-                budgetTable.wealthProjectionList
-            );
-        return this.budgetTableOrchestrationService.updateColumn(budgetTable, budgetColumn);
+        budgetTable = this.budgetTableOrchestrationService.updateColumn(budgetTable, budgetColumn);
+        return this.updateDependantWealthProjections(
+            budgetTable,
+            budgetColumn,
+            this.budgetTableOrchestrationService.getColumnByIndex(
+                budgetTable,
+                budgetColumn.index - 1
+            )
+        );
     }
 }

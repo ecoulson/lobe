@@ -7,6 +7,7 @@ import { WealthProjection } from '../wealth-projections/wealth-projection';
 
 export class BudgetTable {
     public id: string;
+    public numberOfColumns: number;
     public roleList: Role[];
     public incomeList: Income[];
     public expensesList: Expenses[];
@@ -17,6 +18,7 @@ export class BudgetTable {
     constructor(props?: Partial<BudgetTable>) {
         const {
             id,
+            numberOfColumns,
             roleList,
             incomeList,
             expensesList,
@@ -25,6 +27,7 @@ export class BudgetTable {
             wealthProjectionList,
         } = {
             id: '',
+            numberOfColumns: 0,
             roleList: [],
             incomeList: [],
             expensesList: [],
@@ -34,6 +37,7 @@ export class BudgetTable {
             ...props,
         };
         this.id = id;
+        this.numberOfColumns = numberOfColumns;
         this.roleList = roleList;
         this.incomeList = incomeList;
         this.expensesList = expensesList;

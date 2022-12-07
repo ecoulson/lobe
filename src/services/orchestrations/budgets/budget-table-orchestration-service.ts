@@ -38,19 +38,11 @@ export class BudgetTableOrchestrationService {
         budgetTable.savingsList.push(budgetColumn.savings);
         budgetTable.savingsStatisticsList.push(budgetColumn.savingsStatistics);
         budgetTable.wealthProjectionList.push(budgetColumn.wealthProjection);
+        budgetTable.numberOfColumns++;
         return this.budgetTableService.upsertBudgetTable(budgetTable);
     }
 
-    getColumnOfRole(budgetTable: BudgetTable, role: Role): BudgetColumn {
-        return this.createColumnFromIndex(budgetTable, 'roleList', role.id);
-    }
-
-    private createColumnFromIndex(
-        budgetTable: BudgetTable,
-        rowKey: Exclude<keyof BudgetTable, 'id'>,
-        cellKey: string
-    ) {
-        const index = budgetTable[rowKey].findIndex((obj) => obj.id === cellKey);
+    getColumnByIndex(budgetTable: BudgetTable, index: number) {
         return new BudgetColumn({
             index,
             role: budgetTable.roleList[index],
@@ -60,6 +52,22 @@ export class BudgetTableOrchestrationService {
             savingsStatistics: budgetTable.savingsStatisticsList[index],
             wealthProjection: budgetTable.wealthProjectionList[index],
         });
+    }
+
+    getColumnOfRole(budgetTable: BudgetTable, role: Role): BudgetColumn {
+        return this.createColumnFromIndex(budgetTable, 'roleList', role.id);
+    }
+
+    private createColumnFromIndex(
+        budgetTable: BudgetTable,
+        rowKey: Extract<
+            keyof BudgetTable,
+            'roleList' | 'incomeList' | 'expensesList' | 'savingsList'
+        >,
+        cellKey: string
+    ) {
+        const index = budgetTable[rowKey].findIndex((obj) => obj.id === cellKey);
+        return this.getColumnByIndex(budgetTable, index);
     }
 
     getColumnOfIncome(budgetTable: BudgetTable, income: Income): BudgetColumn {

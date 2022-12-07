@@ -24,15 +24,15 @@ export class WealthProjectionOrchestrationService {
 
     createCalculatedWealthProjection(
         budgetColumn: BudgetColumn,
-        wealthProjectionRow: WealthProjection[],
-        capitalGainsTax: Tax
+        capitalGainsTax: Tax,
+        previousColumn?: BudgetColumn
     ) {
         return this.wealthProjectionService.createWealthProjection(
             this.calculateWealthProjection(
                 budgetColumn.role,
                 budgetColumn.savings,
                 capitalGainsTax,
-                wealthProjectionRow[wealthProjectionRow.length - 1]
+                previousColumn?.wealthProjection
             )
         );
     }
@@ -44,6 +44,9 @@ export class WealthProjectionOrchestrationService {
         previousProjection?: WealthProjection,
         wealthProjection: WealthProjection = new WealthProjection()
     ) {
+        if (isNaN(role.estimatedYearsSpentInPosition)) {
+            return new WealthProjection();
+        }
         const budgetParameters = this.budgetParametersService.getParameters();
         let initialNetWorth = this.moneyService.getCurrencyAmount(budgetParameters.initialNetWorth);
         if (previousProjection) {
@@ -73,14 +76,14 @@ export class WealthProjectionOrchestrationService {
     updateWealthProjection(
         budgetColumn: BudgetColumn,
         capitalGainsTax: Tax,
-        wealthProjectionRow: WealthProjection[]
+        previousColumn?: BudgetColumn
     ) {
         return this.wealthProjectionService.updateWealthProjection(
             this.calculateWealthProjection(
                 budgetColumn.role,
                 budgetColumn.savings,
                 capitalGainsTax,
-                wealthProjectionRow[budgetColumn.index - 1],
+                previousColumn?.wealthProjection,
                 budgetColumn.wealthProjection
             )
         );

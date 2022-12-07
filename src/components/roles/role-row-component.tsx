@@ -11,6 +11,7 @@ export function RoleRowComponent({ roleList, updateRole }: RoleRowComponentProps
                 field="Company"
                 cells={roleList.map((role) => (
                     <InputComponent
+                        placeholder="Google"
                         value={role.company}
                         onChange={(company) =>
                             updateRole(
@@ -27,6 +28,7 @@ export function RoleRowComponent({ roleList, updateRole }: RoleRowComponentProps
                 field="Level"
                 cells={roleList.map((role) => (
                     <InputComponent
+                        placeholder="L3"
                         value={role.level}
                         onChange={(level) =>
                             updateRole(
@@ -43,6 +45,7 @@ export function RoleRowComponent({ roleList, updateRole }: RoleRowComponentProps
                 field="State"
                 cells={roleList.map((role) => (
                     <InputComponent
+                        placeholder="WA"
                         value={role.state}
                         onChange={(state) =>
                             updateRole(
@@ -59,6 +62,7 @@ export function RoleRowComponent({ roleList, updateRole }: RoleRowComponentProps
                 field="Estimated Years at Level"
                 cells={roleList.map((role) => (
                     <InputComponent
+                        placeholder="2"
                         value={
                             isNaN(role.estimatedYearsSpentInPosition)
                                 ? ''

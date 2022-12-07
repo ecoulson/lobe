@@ -1,5 +1,4 @@
 import { BudgetColumn } from '../../../models/budgets/budget-column';
-import { BudgetTable } from '../../../models/budgets/budget-table';
 import { Role } from '../../../models/roles/role';
 import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
 import { RoleService } from '../../foundations/roles/role-service';
@@ -13,28 +12,27 @@ export class RoleOrchestrationService {
         this.roleService = roleService;
     }
 
-    addRoleToBudgetTable(budgetTable: BudgetTable) {
-        const newRole = new Role();
-        if (budgetTable.roleList.length === 0) {
-            const budgetParameters = this.budgetParametersService.getParameters();
-            newRole.startAge = budgetParameters.currentAge;
-        } else {
-            newRole.startAge = budgetTable.roleList[budgetTable.roleList.length - 1].endAge;
-        }
-        newRole.endAge = newRole.startAge + newRole.estimatedYearsSpentInPosition;
-        return newRole;
+    createCalculatedRole(previousColumn?: BudgetColumn) {
+        return this.roleService.createRole(this.calculateRoleAge(new Role(), previousColumn?.role));
     }
 
-    updateRole(budgetTable: BudgetTable, budgetColumn: BudgetColumn, updatedRole: Role) {
-        updatedRole.endAge = updatedRole.startAge + updatedRole.estimatedYearsSpentInPosition;
-        budgetTable.roleList[budgetColumn.index] = updatedRole;
-        for (let i = budgetColumn.index + 1; i < budgetTable.roleList.length; i++) {
-            budgetTable.roleList[i].startAge = budgetTable.roleList[i - 1].endAge;
-            budgetTable.roleList[i].endAge =
-                budgetTable.roleList[i].startAge +
-                budgetTable.roleList[i].estimatedYearsSpentInPosition;
-            this.roleService.updateRole(budgetTable.roleList[i]);
+    private calculateRoleAge(role: Role, previousRole?: Role) {
+        const budgetParameters = this.budgetParametersService.getParameters();
+        role.startAge = budgetParameters.currentAge;
+        if (previousRole) {
+            role.startAge = previousRole.endAge;
         }
-        return this.roleService.updateRole(updatedRole);
+        if (isNaN(role.estimatedYearsSpentInPosition)) {
+            role.endAge = role.startAge;
+            return role;
+        }
+        role.endAge = role.startAge + role.estimatedYearsSpentInPosition;
+        return role;
+    }
+
+    updateRole(updatedRole: Role, previousColumn?: BudgetColumn) {
+        return this.roleService.updateRole(
+            this.calculateRoleAge(updatedRole, previousColumn?.role)
+        );
     }
 }

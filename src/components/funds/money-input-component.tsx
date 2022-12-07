@@ -12,17 +12,18 @@ export const MoneyInputComponent = inject<MoneyInputComponentProps, 'moneyContro
             <>
                 <span>{money.currency}</span>
                 <InputComponent
+                    placeholder="$0.00"
                     value={money.value}
                     onBlur={() => onChange(moneyController.formatForDisplay(money))}
                     onFocus={() => onChange(moneyController.formatForEditing(money))}
-                    onChange={(amount) =>
+                    onChange={(amount) => {
                         onChange(
                             new Money({
                                 currency: money.currency,
                                 value: amount,
                             })
-                        )
-                    }
+                        );
+                    }}
                 />
             </>
         );
