@@ -1,4 +1,4 @@
-import { BudgetTable } from '../../models/budget/budget-table';
+import { BudgetTable } from '../../models/budgets/budget-table';
 import { Expenses } from '../../models/expenses/expenses';
 import { Income } from '../../models/incomes/income';
 import { Role } from '../../models/roles/role';

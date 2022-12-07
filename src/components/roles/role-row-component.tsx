@@ -59,12 +59,18 @@ export function RoleRowComponent({ roleList, updateRole }: RoleRowComponentProps
                 field="Estimated Years at Level"
                 cells={roleList.map((role) => (
                     <InputComponent
-                        value={role.estimatedYearsSpentInPosition}
+                        value={
+                            isNaN(role.estimatedYearsSpentInPosition)
+                                ? ''
+                                : role.estimatedYearsSpentInPosition.toFixed(0)
+                        }
                         onChange={(estimatedYearsSpentInPosition) =>
                             updateRole(
                                 new Role({
                                     ...role,
-                                    estimatedYearsSpentInPosition: estimatedYearsSpentInPosition,
+                                    estimatedYearsSpentInPosition: parseInt(
+                                        estimatedYearsSpentInPosition
+                                    ),
                                 })
                             )
                         }

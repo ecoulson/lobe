@@ -1,5 +1,5 @@
 import { BudgetParametersBroker } from '../../../brokers/budget-parameters/budget-parameters-broker';
-import { BudgetParameters } from '../../../models/budget/budget-parameters';
+import { BudgetParameters } from '../../../models/budgets/budget-parameters';
 
 export class BudgetParametersService {
     private readonly budgetParametersBroker: BudgetParametersBroker;
@@ -13,6 +13,6 @@ export class BudgetParametersService {
     }
 
     updateParameters(budgetParameters: BudgetParameters) {
-        return this.budgetParametersBroker.modifyBudgetParameters(budgetParameters)
+        return this.budgetParametersBroker.modifyBudgetParameters(budgetParameters);
     }
 }

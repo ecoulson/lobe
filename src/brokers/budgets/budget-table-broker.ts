@@ -1,4 +1,4 @@
-import { BudgetTable } from '../../models/budget/budget-table';
+import { BudgetTable } from '../../models/budgets/budget-table';
 
 export class BudgetTableBroker {
     private readonly budgetTableTable: Map<string, BudgetTable>;

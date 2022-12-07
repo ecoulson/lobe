@@ -1,4 +1,5 @@
-import { BudgetTable } from '../../../models/budget/budget-table';
+import { BudgetColumn } from '../../../models/budgets/budget-column';
+import { BudgetTable } from '../../../models/budgets/budget-table';
 import { Role } from '../../../models/roles/role';
 import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
 import { RoleService } from '../../foundations/roles/role-service';
@@ -20,21 +21,18 @@ export class RoleOrchestrationService {
         } else {
             newRole.startAge = budgetTable.roleList[budgetTable.roleList.length - 1].endAge;
         }
-        newRole.endAge = newRole.startAge + parseInt(newRole.estimatedYearsSpentInPosition);
-        budgetTable.roleList.push(this.roleService.createRole(newRole));
+        newRole.endAge = newRole.startAge + newRole.estimatedYearsSpentInPosition;
         return newRole;
     }
 
-    updateRoleInBudgetTable(budgetTable: BudgetTable, updatedRole: Role) {
-        updatedRole.endAge =
-            updatedRole.startAge + parseInt(updatedRole.estimatedYearsSpentInPosition);
-        const roleIndex = budgetTable.roleList.findIndex((role) => role.id === updatedRole.id);
-        budgetTable.roleList[roleIndex] = updatedRole;
-        for (let i = roleIndex + 1; i < budgetTable.roleList.length; i++) {
+    updateRole(budgetTable: BudgetTable, budgetColumn: BudgetColumn, updatedRole: Role) {
+        updatedRole.endAge = updatedRole.startAge + updatedRole.estimatedYearsSpentInPosition;
+        budgetTable.roleList[budgetColumn.index] = updatedRole;
+        for (let i = budgetColumn.index + 1; i < budgetTable.roleList.length; i++) {
             budgetTable.roleList[i].startAge = budgetTable.roleList[i - 1].endAge;
             budgetTable.roleList[i].endAge =
                 budgetTable.roleList[i].startAge +
-                parseInt(budgetTable.roleList[i].estimatedYearsSpentInPosition);
+                budgetTable.roleList[i].estimatedYearsSpentInPosition;
             this.roleService.updateRole(budgetTable.roleList[i]);
         }
         return this.roleService.updateRole(updatedRole);

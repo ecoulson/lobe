@@ -1,4 +1,3 @@
-import { BudgetTable } from '../../../models/budget/budget-table';
 import { Income } from '../../../models/incomes/income';
 import { IncomeService } from '../../foundations/incomes/income-service';
 import { MoneyService } from '../../foundations/funds/money-service';
@@ -20,19 +19,18 @@ export class IncomeOrchestrationService {
         this.moneyService = moneyService;
     }
 
-    addIncomeToBudgetTable(budgetTable: BudgetTable) {
-        const income = this.incomeService.createIncome(new Income());
-        budgetTable.incomeList.push(income);
-        return income;
+    createCalculatedIncome() {
+        return this.incomeService.createIncome(this.calculateIncome());
     }
 
-    updateIncomeInBudgetTable(budgetTable: BudgetTable, updatedIncome: Income, tax: Tax) {
-        const budgetParameters = this.budgetParametersService.getParameters();
-        const incomeIndex = budgetTable.incomeList.findIndex(
-            (income) => income.id === updatedIncome.id
-        );
+    updateIncome(updatedIncome: Income, incomeTax: Tax) {
+        return this.incomeService.updateIncome(this.calculateIncome(updatedIncome, incomeTax));
+    }
 
-        const baseSalary = this.moneyService.getCurrencyAmount(updatedIncome.baseSalary);
+    private calculateIncome(income: Income = new Income(), tax: Tax = new Tax()) {
+        const budgetParameters = this.budgetParametersService.getParameters();
+
+        const baseSalary = this.moneyService.getCurrencyAmount(income.baseSalary);
         const yearly401kContributions = this.moneyService.getCurrencyAmount(
             budgetParameters.yearly401kContributions
         );
@@ -41,13 +39,11 @@ export class IncomeOrchestrationService {
         const bonus = baseSalary * (budgetParameters.bonusGoal.value / 100);
         const totalIncome = bonus + postTaxSalary;
 
-        updatedIncome.salaryPreTax = this.moneyService.createMoney(preTaxSalary);
-        updatedIncome.salaryPostTax = this.moneyService.createMoney(postTaxSalary);
-        updatedIncome.bonus = this.moneyService.createMoney(bonus);
-        updatedIncome.totalIncome = this.moneyService.createMoney(totalIncome);
-        this.incomeService.updateIncome(updatedIncome);
+        income.salaryPreTax = this.moneyService.createMoney(preTaxSalary);
+        income.salaryPostTax = this.moneyService.createMoney(postTaxSalary);
+        income.bonus = this.moneyService.createMoney(bonus);
+        income.totalIncome = this.moneyService.createMoney(totalIncome);
 
-        budgetTable.incomeList[incomeIndex] = updatedIncome;
-        return updatedIncome;
+        return income;
     }
 }

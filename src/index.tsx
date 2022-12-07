@@ -1,19 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BudgetParametersBroker } from './brokers/budget-parameters/budget-parameters-broker';
-import { BudgetTableBroker } from './brokers/budget-table/budget-table-broker';
+import { BudgetTableBroker } from './brokers/budgets/budget-table-broker';
 import { ExpenseBroker } from './brokers/expenses/expense-broker';
 import { IdBroker } from './brokers/ids/id-broker';
 import { IncomeBroker } from './brokers/incomes/income-broker';
 import { RoleBroker } from './brokers/roles/role-broker';
 import { SavingStatisticsBroker } from './brokers/savings/saving-statistics-broker';
 import { SavingsBroker } from './brokers/savings/savings-broker';
+import { WealthProjectionBroker } from './brokers/wealth-projections/wealth-projection-broker';
 import { DependencyInjectionClient } from './clients/dependency-injection/dependency-injection-client';
 import { BudgetTableComponent } from './components/budgets/budget-table-component';
 import { BudgetTableController } from './controllers/budget-table/budget-table-controller';
 import { MoneyController } from './controllers/funds/money-controller';
 import './index.css';
-import { BudgetParameters } from './models/budget/budget-parameters';
+import { BudgetParameters } from './models/budgets/budget-parameters';
 import { Money } from './models/funds/money';
 import { Percentage } from './models/statistics/percentage';
 import reportWebVitals from './reportWebVitals';
@@ -26,11 +27,14 @@ import { IncomeService } from './services/foundations/incomes/income-service';
 import { RoleService } from './services/foundations/roles/role-service';
 import { SavingStatisticsService } from './services/foundations/savings/saving-statistics-service';
 import { SavingsService } from './services/foundations/savings/savings-service';
+import { WealthProjectionService } from './services/foundations/wealth-projections/wealth-projection-service';
+import { BudgetTableOrchestrationService } from './services/orchestrations/budgets/budget-table-orchestration-service';
 import { ExpenseOrchestrationService } from './services/orchestrations/expenses/expense-orchestration-service';
 import { IncomeOrchestrationService } from './services/orchestrations/incomes/income-orchestration-service';
 import { RoleOrchestrationService } from './services/orchestrations/roles/role-orchestration-service';
 import { SavingStatisticsOrchestrationService } from './services/orchestrations/savings/saving-statistics-orchestration-service';
 import { SavingsOrchestrationService } from './services/orchestrations/savings/savings-orchestration-service';
+import { WealthProjectionOrchestrationService } from './services/orchestrations/wealth-projections/wealth-projection-orchestration-service';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const container = new DependencyInjectionClient();
@@ -48,13 +52,19 @@ const budgetParameters = new BudgetParameters({
     matching401kPercentage: new Percentage({
         value: 50,
     }),
+    initialNetWorth: new Money({
+        value: '21,000',
+    }),
+    estimatedReturnRate: new Percentage({
+        value: 6,
+    }),
 });
 const budgetParametersBroker = new BudgetParametersBroker(budgetParameters);
 container.register(
     'BudgetTableController',
     new BudgetTableController(
         new BudgetTableAggregationService(
-            new BudgetTableService(new BudgetTableBroker()),
+            new BudgetTableOrchestrationService(new BudgetTableService(new BudgetTableBroker())),
             new RoleOrchestrationService(
                 new RoleService(new RoleBroker(), new IdBroker()),
                 new BudgetParametersService(budgetParametersBroker)
@@ -76,6 +86,11 @@ container.register(
             new SavingStatisticsOrchestrationService(
                 new BudgetParametersService(budgetParametersBroker),
                 new SavingStatisticsService(new SavingStatisticsBroker(), new IdBroker()),
+                new MoneyService()
+            ),
+            new WealthProjectionOrchestrationService(
+                new WealthProjectionService(new WealthProjectionBroker(), new IdBroker()),
+                new BudgetParametersService(budgetParametersBroker),
                 new MoneyService()
             )
         )

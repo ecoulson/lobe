@@ -1,7 +1,7 @@
 export class Role {
     public id: string;
     public level: string;
-    public estimatedYearsSpentInPosition: string;
+    public estimatedYearsSpentInPosition: number;
     public startAge: number;
     public endAge: number;
     public company: string;
@@ -11,7 +11,7 @@ export class Role {
         const { id, level, estimatedYearsSpentInPosition, startAge, endAge, company, state } = {
             id: '',
             level: '',
-            estimatedYearsSpentInPosition: '1',
+            estimatedYearsSpentInPosition: 1,
             startAge: 0,
             endAge: 0,
             company: '',

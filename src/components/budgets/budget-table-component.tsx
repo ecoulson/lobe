@@ -7,7 +7,7 @@ import { WealthProjectionRowComponent } from '../wealth-projections/wealth-proje
 import { BudgetTableComponentProps } from './budget-table-component-props';
 import { ButtonComponent } from '../bases/button-component';
 import { useEffect, useState } from 'react';
-import { BudgetTable } from '../../models/budget/budget-table';
+import { BudgetTable } from '../../models/budgets/budget-table';
 import { Role } from '../../models/roles/role';
 import { Income } from '../../models/incomes/income';
 import { inject } from '../../clients/dependency-injection/inject';

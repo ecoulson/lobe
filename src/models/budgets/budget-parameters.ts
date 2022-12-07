@@ -2,6 +2,7 @@ import { Money } from '../funds/money';
 import { Percentage } from '../statistics/percentage';
 
 export class BudgetParameters {
+    public initialNetWorth: Money;
     public targetPercentageOfIncomeToSave: Percentage;
     public estimatedReturnRate: Percentage;
     public bonusGoal: Percentage;
@@ -12,6 +13,7 @@ export class BudgetParameters {
 
     constructor(props?: Partial<BudgetParameters>) {
         const {
+            initialNetWorth,
             targetPercentageOfIncomeToSave,
             estimatedReturnRate,
             bonusGoal,
@@ -20,6 +22,7 @@ export class BudgetParameters {
             yearly401kContributions,
             matching401kPercentage,
         } = {
+            initialNetWorth: new Money(),
             targetPercentageOfIncomeToSave: new Percentage(),
             estimatedReturnRate: new Percentage(),
             bonusGoal: new Percentage(),
@@ -29,6 +32,7 @@ export class BudgetParameters {
             matching401kPercentage: new Percentage(),
             ...props,
         };
+        this.initialNetWorth = initialNetWorth;
         this.matching401kPercentage = matching401kPercentage;
         this.targetPercentageOfIncomeToSave = targetPercentageOfIncomeToSave;
         this.yearly401kContributions = yearly401kContributions;

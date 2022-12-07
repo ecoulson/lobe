@@ -1,5 +1,5 @@
-import { BudgetTableBroker } from '../../../brokers/budget-table/budget-table-broker';
-import { BudgetTable } from '../../../models/budget/budget-table';
+import { BudgetTableBroker } from '../../../brokers/budgets/budget-table-broker';
+import { BudgetTable } from '../../../models/budgets/budget-table';
 
 export class BudgetTableService {
     private readonly budgetTableBroker: BudgetTableBroker;

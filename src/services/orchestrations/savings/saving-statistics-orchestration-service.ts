@@ -1,5 +1,4 @@
-import { BudgetTable } from '../../../models/budget/budget-table';
-import { Expenses } from '../../../models/expenses/expenses';
+import { BudgetColumn } from '../../../models/budgets/budget-column';
 import { Balance } from '../../../models/funds/balance';
 import { Income } from '../../../models/incomes/income';
 import { SavingStatistics } from '../../../models/savings/saving-statistics';
@@ -24,31 +23,28 @@ export class SavingStatisticsOrchestrationService {
         this.moneyService = moneyService;
     }
 
-    addSavingStatisticsToBudgetTable(budgetTable: BudgetTable) {
-        const savingStatistics = new SavingStatistics();
-        budgetTable.savingsStatisticsList.push(savingStatistics);
-        return this.savingStatisticsService.createSavingStatistics(savingStatistics);
+    createCalculatedSavingsStatistics(budgetColumn: BudgetColumn) {
+        return this.savingStatisticsService.createSavingStatistics(
+            this.calculateSavingsStatistics(budgetColumn.income, budgetColumn.savings)
+        );
     }
 
-    updateSavingStatistics(budgetTable: BudgetTable, updatedSavings: Savings) {
+    private calculateSavingsStatistics(currentIncome: Income, updatedSavings: Savings) {
         const budgetParameters = this.budgetParametersService.getParameters();
-        const savingsIndex = budgetTable.savingsList.findIndex(
-            (savings) => savings.id === updatedSavings.id
-        );
         const updatedStatistics = new SavingStatistics();
-        budgetTable.savingsStatisticsList[savingsIndex] = updatedStatistics;
-        const income = budgetTable.incomeList[savingsIndex];
         const totalSaved = this.moneyService.getCurrencyAmount(updatedSavings.totalSaved);
-        const totalIncome = this.moneyService.getCurrencyAmount(income.totalIncome);
+        const totalIncome = this.moneyService.getCurrencyAmount(currentIncome.totalIncome);
         const equity = this.moneyService.getCurrencyAmount(updatedSavings.equity);
         const contributionsTo401k = this.moneyService.getCurrencyAmount(
             updatedSavings.contributionsTo401k
         );
+
         const goalToSave =
             (totalIncome + equity + contributionsTo401k) *
             (budgetParameters.targetPercentageOfIncomeToSave.value / 100);
         const distanceFromGoal = totalSaved - goalToSave;
         const percentageSaved = (totalSaved / (totalIncome + equity + contributionsTo401k)) * 100;
+
         updatedStatistics.goalToSave = this.moneyService.createMoney(goalToSave);
         updatedStatistics.distanceFromSavingsGoal = new Balance({
             sign: distanceFromGoal < 0 ? '-' : '+',
@@ -57,22 +53,13 @@ export class SavingStatisticsOrchestrationService {
         updatedStatistics.percentageSaved = new Percentage({
             value: percentageSaved,
         });
-        return this.savingStatisticsService.updateSavingStatistics(updatedStatistics);
+
+        return updatedStatistics;
     }
 
-    updateSavingStatisticsFromIncome(budgetTable: BudgetTable, updatedIncome: Income) {
-        const incomeIndex = budgetTable.incomeList.findIndex(
-            (income) => income.id === updatedIncome.id
+    updateSavingsStatistics(budgetColumn: BudgetColumn, updatedSavings: Savings) {
+        return this.savingStatisticsService.updateSavingStatistics(
+            this.calculateSavingsStatistics(budgetColumn.income, updatedSavings)
         );
-        const savings = budgetTable.savingsList[incomeIndex];
-        return this.updateSavingStatistics(budgetTable, savings);
-    }
-
-    updateSavingStatisticsFromExpenses(budgetTable: BudgetTable, updatedExpenses: Expenses) {
-        const expensesIndex = budgetTable.expensesList.findIndex(
-            (expenses) => expenses.id === updatedExpenses.id
-        );
-        const savings = budgetTable.savingsList[expensesIndex];
-        return this.updateSavingStatistics(budgetTable, savings);
     }
 }

@@ -1,4 +1,4 @@
-import { BudgetParameters } from '../../models/budget/budget-parameters';
+import { BudgetParameters } from '../../models/budgets/budget-parameters';
 
 export class BudgetParametersBroker {
     private budgetParameters: BudgetParameters;
