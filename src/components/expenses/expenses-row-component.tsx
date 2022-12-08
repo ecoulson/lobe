@@ -28,8 +28,6 @@ export function ExpensesRowComponent({ expensesList, updateExpenses }: ExpensesR
         };
     }
 
-    function updateTotalSpent() {}
-
     return (
         <BudgetSectionComponent heading="Expenses">
             <BudgetRowComponent
