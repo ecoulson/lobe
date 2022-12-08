@@ -13,6 +13,7 @@ import { Income } from '../../models/incomes/income';
 import { inject } from '../../clients/dependency-injection/inject';
 import { Expenses } from '../../models/expenses/expenses';
 import { Savings } from '../../models/savings/savings';
+import { BudgetTableController } from '../../controllers/budget-table/budget-table-controller';
 
 export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTableController'>(
     {
@@ -26,16 +27,18 @@ export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTab
         );
 
         useEffect(() => {
-            budgetTableController.listenForBudgetParameterEvents(() => {
-                for (let i = 0; i < numberOfColumns; i++) {
-                    const column = budgetTableController.getBudgetColumn(currentBudgetTable, i);
-                    updateRole(column.role);
-                    updateIncome(column.income);
-                    updateExpenses(column.expenses);
-                    updateSavings(column.savings);
-                }
-            });
+            budgetTableController.listenForBudgetParameterEvents(updateAllColumns);
         }, [numberOfColumns, budgetTableController]);
+
+        function updateAllColumns() {
+            for (let i = 0; i < numberOfColumns; i++) {
+                const column = budgetTableController.getBudgetColumn(currentBudgetTable, i);
+                updateRole(column.role);
+                updateIncome(column.income);
+                updateExpenses(column.expenses);
+                updateSavings(column.savings);
+            }
+        }
 
         useEffect(() => {
             const budgetTable = new BudgetTable();

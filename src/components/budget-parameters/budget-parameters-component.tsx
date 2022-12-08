@@ -70,7 +70,7 @@ export const BudgetParametersComponent = inject<
                             percentage={budgetParameters.matching401kPercentage}
                             onChange={(matching401kPercentage) =>
                                 updateBudgetParameters(
-                                    'estimatedReturnRate',
+                                    'matching401kPercentage',
                                     matching401kPercentage
                                 )
                             }
