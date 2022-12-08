@@ -6,7 +6,7 @@ import { SavingStatisticsRowComponent } from '../savings/saving-statistics-row-c
 import { WealthProjectionRowComponent } from '../wealth-projections/wealth-projection-row-component';
 import { BudgetTableComponentProps } from './budget-table-component-props';
 import { ButtonComponent } from '../bases/button-component';
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BudgetTable } from '../../models/budgets/budget-table';
 import { Role } from '../../models/roles/role';
 import { Income } from '../../models/incomes/income';
@@ -23,10 +23,12 @@ export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTab
 
         useEffect(() => {
             budgetTableController.listenForBudgetParameterEvents(updateAllColumns);
+            // eslint-disable-next-line
         }, [budgetTableController]);
 
         useEffect(() => {
             updateAllColumns();
+            // eslint-disable-next-line
         }, []);
 
         function updateAllColumns() {
