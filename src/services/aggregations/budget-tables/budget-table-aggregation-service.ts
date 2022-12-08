@@ -181,6 +181,11 @@ export class BudgetTableAggregationService {
                 value: 30,
             }),
         });
+        const bonusTax = new Tax({
+            rate: new Percentage({
+                value: 40,
+            }),
+        });
         const budgetColumn = this.budgetTableOrchestrationService.getColumnOfIncome(
             budgetTable,
             updatedIncome
@@ -188,7 +193,8 @@ export class BudgetTableAggregationService {
         budgetColumn.income = this.incomeOrchestrationService.updateIncome(
             budgetColumn,
             updatedIncome,
-            incomeTax
+            incomeTax,
+            bonusTax
         );
         budgetColumn.savings = this.savingsOrchestrationService.updateSavings(
             budgetColumn,

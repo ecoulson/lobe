@@ -24,12 +24,7 @@ export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTab
         useEffect(() => {
             budgetTableController.listenForBudgetParameterEvents(updateAllColumns);
             // eslint-disable-next-line
-        }, [budgetTableController]);
-
-        useEffect(() => {
-            updateAllColumns();
-            // eslint-disable-next-line
-        }, []);
+        }, [currentBudgetTable, budgetTableController]);
 
         function updateAllColumns() {
             for (let i = 0; i < currentBudgetTable.numberOfColumns; i++) {
@@ -77,7 +72,7 @@ export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTab
             const buttons = [<div className="w-1/12"></div>];
             for (let i = 0; i < currentBudgetTable.numberOfColumns; i++) {
                 buttons.push(
-                    <div className="flex justify-center w-1/12">
+                    <div key={i} className="flex justify-center w-1/12">
                         <ButtonComponent key={i} onClick={removeColumn(i)}>
                             Remove Column
                         </ButtonComponent>

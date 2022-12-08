@@ -29,16 +29,17 @@ export class IncomeOrchestrationService {
         return this.incomeService.createIncome(this.calculateIncome());
     }
 
-    updateIncome(budgetColumn: BudgetColumn, updatedIncome: Income, incomeTax: Tax) {
+    updateIncome(budgetColumn: BudgetColumn, updatedIncome: Income, incomeTax: Tax, bonusTax: Tax) {
         return this.incomeService.updateIncome(
-            this.calculateIncome(budgetColumn.role, updatedIncome, incomeTax)
+            this.calculateIncome(budgetColumn.role, updatedIncome, incomeTax, bonusTax)
         );
     }
 
     private calculateIncome(
         role: Role = new Role(),
         income: Income = new Income(),
-        tax: Tax = new Tax()
+        incomeTax: Tax = new Tax(),
+        bonusTax: Tax = new Tax()
     ) {
         const budgetParameters = this.budgetParametersService.getParameters();
 
@@ -53,8 +54,9 @@ export class IncomeOrchestrationService {
             role.total401KContributions
         );
         const preTaxSalary = baseSalary - yearly401kContributions;
-        const postTaxSalary = preTaxSalary * (1 - tax.rate.value / 100);
-        const bonus = baseSalary * (budgetParameters.bonusGoal.value / 100);
+        const postTaxSalary = preTaxSalary * (1 - incomeTax.rate.value / 100);
+        const bonus =
+            baseSalary * (budgetParameters.bonusGoal.value / 100) * (1 - bonusTax.rate.value / 100);
         const totalIncome = bonus + postTaxSalary;
 
         income.salaryPreTax = this.moneyService.createMoney(preTaxSalary);
