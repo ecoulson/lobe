@@ -25,6 +25,7 @@ export class WealthProjectionOrchestrationService {
     createCalculatedWealthProjection(
         budgetColumn: BudgetColumn,
         capitalGainsTax: Tax,
+        bonusTax: Tax,
         previousColumn?: BudgetColumn
     ) {
         return this.wealthProjectionService.createWealthProjection(
@@ -32,6 +33,7 @@ export class WealthProjectionOrchestrationService {
                 budgetColumn.role,
                 budgetColumn.savings,
                 capitalGainsTax,
+                bonusTax,
                 previousColumn?.wealthProjection
             )
         );
@@ -41,6 +43,7 @@ export class WealthProjectionOrchestrationService {
         role: Role,
         savings: Savings,
         capitalGainsTax: Tax,
+        bonusTax: Tax,
         previousProjection?: WealthProjection,
         wealthProjection: WealthProjection = new WealthProjection()
     ) {
@@ -54,7 +57,9 @@ export class WealthProjectionOrchestrationService {
         if (previousProjection) {
             principal = this.moneyService.getCurrencyAmount(previousProjection.expectedNetWorth);
         }
-        principal += this.moneyService.getCurrencyAmount(budgetParameters.signOnBonus);
+        principal +=
+            this.moneyService.getCurrencyAmount(budgetParameters.signOnBonus) *
+            (1 - bonusTax.rate.value / 100);
         const returnRate = budgetParameters.estimatedReturnRate.value / 100;
         const totalSaved = this.moneyService.getCurrencyAmount(savings.totalSaved);
         const principalReturn =
@@ -77,6 +82,7 @@ export class WealthProjectionOrchestrationService {
     updateWealthProjection(
         budgetColumn: BudgetColumn,
         capitalGainsTax: Tax,
+        bonusTax: Tax,
         previousColumn?: BudgetColumn
     ) {
         return this.wealthProjectionService.updateWealthProjection(
@@ -84,6 +90,7 @@ export class WealthProjectionOrchestrationService {
                 budgetColumn.role,
                 budgetColumn.savings,
                 capitalGainsTax,
+                bonusTax,
                 previousColumn?.wealthProjection,
                 budgetColumn.wealthProjection
             )

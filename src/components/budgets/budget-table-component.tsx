@@ -6,7 +6,7 @@ import { SavingStatisticsRowComponent } from '../savings/saving-statistics-row-c
 import { WealthProjectionRowComponent } from '../wealth-projections/wealth-projection-row-component';
 import { BudgetTableComponentProps } from './budget-table-component-props';
 import { ButtonComponent } from '../bases/button-component';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BudgetTable } from '../../models/budgets/budget-table';
 import { Role } from '../../models/roles/role';
 import { Income } from '../../models/incomes/income';
@@ -20,6 +20,22 @@ export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTab
     },
     ({ budgetTableId, budgetTableController }: BudgetTableComponentProps) => {
         const [currentBudgetTable, setBudgetTable] = useState(new BudgetTable());
+        const numberOfColumns = useMemo(
+            () => currentBudgetTable.numberOfColumns,
+            [currentBudgetTable]
+        );
+
+        useEffect(() => {
+            budgetTableController.listenForBudgetParameterEvents(() => {
+                for (let i = 0; i < numberOfColumns; i++) {
+                    const column = budgetTableController.getBudgetColumn(currentBudgetTable, i);
+                    updateRole(column.role);
+                    updateIncome(column.income);
+                    updateExpenses(column.expenses);
+                    updateSavings(column.savings);
+                }
+            });
+        }, [numberOfColumns, budgetTableController]);
 
         useEffect(() => {
             const budgetTable = new BudgetTable();

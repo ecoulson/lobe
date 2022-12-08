@@ -1,18 +1,23 @@
 import { BudgetParameters } from '../../models/budgets/budget-parameters';
-import { BudgetParametersService } from '../../services/foundations/budgets/budget-parameters-service';
+import { EventHandler } from '../../models/events/event-handler';
+import { BudgetParametersOrchestrationService } from '../../services/orchestrations/budgets/budget-parameters-orchestration-service';
 
 export class BudgetParametersController {
-    private readonly budgetParametersService: BudgetParametersService;
+    private readonly budgetParametersOrchestrationService: BudgetParametersOrchestrationService;
 
-    constructor(budgetParametersService: BudgetParametersService) {
-        this.budgetParametersService = budgetParametersService;
+    constructor(budgetParametersService: BudgetParametersOrchestrationService) {
+        this.budgetParametersOrchestrationService = budgetParametersService;
     }
 
     getParameters(): BudgetParameters {
-        return this.budgetParametersService.getParameters();
+        return this.budgetParametersOrchestrationService.getBudgetParameters();
     }
 
     updateParameters(budgetParameters: BudgetParameters) {
-        return this.budgetParametersService.updateParameters(budgetParameters);
+        return this.budgetParametersOrchestrationService.updateBudgetParameters(budgetParameters);
+    }
+
+    listenForBudgetParameterEvents(eventHandler: EventHandler<BudgetParameters>) {
+        this.budgetParametersOrchestrationService.listenForBudgetParametersEvents(eventHandler);
     }
 }

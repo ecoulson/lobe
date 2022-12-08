@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BudgetParametersBroker } from './brokers/budget-parameters/budget-parameters-broker';
 import { BudgetTableBroker } from './brokers/budgets/budget-table-broker';
+import { EventBroker } from './brokers/events/event-broker';
 import { ExpenseBroker } from './brokers/expenses/expense-broker';
 import { IdBroker } from './brokers/ids/id-broker';
 import { IncomeBroker } from './brokers/incomes/income-broker';
@@ -15,12 +16,14 @@ import { BudgetTableComponent } from './components/budgets/budget-table-componen
 import { BudgetParametersController } from './controllers/budget-parameters/budget-parameters-controller';
 import { BudgetTableController } from './controllers/budget-table/budget-table-controller';
 import { MoneyController } from './controllers/funds/money-controller';
+import { EventEmitter } from './events/event-emitter';
 import './index.css';
 import { BudgetParameters } from './models/budgets/budget-parameters';
 import { Money } from './models/funds/money';
 import { Percentage } from './models/statistics/percentage';
 import reportWebVitals from './reportWebVitals';
 import { BudgetTableAggregationService } from './services/aggregations/budget-tables/budget-table-aggregation-service';
+import { BudgetParametersEventService } from './services/foundations/budgets/budget-parameters-event-service';
 import { BudgetParametersService } from './services/foundations/budgets/budget-parameters-service';
 import { BudgetTableService } from './services/foundations/budgets/budget-table-service';
 import { ExpensesService } from './services/foundations/expenses/expenses-service';
@@ -30,6 +33,7 @@ import { RoleService } from './services/foundations/roles/role-service';
 import { SavingStatisticsService } from './services/foundations/savings/saving-statistics-service';
 import { SavingsService } from './services/foundations/savings/savings-service';
 import { WealthProjectionService } from './services/foundations/wealth-projections/wealth-projection-service';
+import { BudgetParametersOrchestrationService } from './services/orchestrations/budgets/budget-parameters-orchestration-service';
 import { BudgetTableOrchestrationService } from './services/orchestrations/budgets/budget-table-orchestration-service';
 import { ExpenseOrchestrationService } from './services/orchestrations/expenses/expense-orchestration-service';
 import { IncomeOrchestrationService } from './services/orchestrations/incomes/income-orchestration-service';
@@ -40,6 +44,7 @@ import { WealthProjectionOrchestrationService } from './services/orchestrations/
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const container = new DependencyInjectionClient();
+const eventEmitter = new EventEmitter();
 const budgetParameters = new BudgetParameters({
     currentAge: 22,
     bonusGoal: new Percentage({
@@ -61,6 +66,7 @@ const budgetParameters = new BudgetParameters({
         value: 6,
     }),
 });
+const eventBroker = new EventBroker(eventEmitter);
 const budgetParametersBroker = new BudgetParametersBroker(budgetParameters);
 container.register(
     'BudgetTableController',
@@ -94,6 +100,10 @@ container.register(
                 new WealthProjectionService(new WealthProjectionBroker(), new IdBroker()),
                 new BudgetParametersService(budgetParametersBroker),
                 new MoneyService()
+            ),
+            new BudgetParametersOrchestrationService(
+                new BudgetParametersService(budgetParametersBroker),
+                new BudgetParametersEventService(eventBroker)
             )
         )
     )
@@ -101,7 +111,12 @@ container.register(
 container.register<MoneyController>('MoneyController', new MoneyController(new MoneyService()));
 container.register<BudgetParametersController>(
     'BudgetParametersController',
-    new BudgetParametersController(new BudgetParametersService(budgetParametersBroker))
+    new BudgetParametersController(
+        new BudgetParametersOrchestrationService(
+            new BudgetParametersService(budgetParametersBroker),
+            new BudgetParametersEventService(eventBroker)
+        )
+    )
 );
 
 root.render(

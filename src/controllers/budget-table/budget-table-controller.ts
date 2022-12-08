@@ -1,4 +1,7 @@
+import { BudgetColumn } from '../../models/budgets/budget-column';
+import { BudgetParameters } from '../../models/budgets/budget-parameters';
 import { BudgetTable } from '../../models/budgets/budget-table';
+import { EventHandler } from '../../models/events/event-handler';
 import { Expenses } from '../../models/expenses/expenses';
 import { Income } from '../../models/incomes/income';
 import { Role } from '../../models/roles/role';
@@ -20,6 +23,10 @@ export class BudgetTableController {
         return this.budgetTableAggregationService.getBudgetTable(id);
     }
 
+    getBudgetColumn(budgetTable: BudgetTable, index: number) {
+        return this.budgetTableAggregationService.getBudgetColumn(budgetTable, index);
+    }
+
     addColumn(budgetTable: BudgetTable): BudgetTable {
         return this.budgetTableAggregationService.addColumn(budgetTable);
     }
@@ -38,5 +45,9 @@ export class BudgetTableController {
 
     updateSavings(budgetTable: BudgetTable, savings: Savings) {
         return this.budgetTableAggregationService.updateSavings(budgetTable, savings);
+    }
+
+    listenForBudgetParameterEvents(eventHandler: EventHandler<BudgetParameters>) {
+        this.budgetTableAggregationService.listenForBudgetParameterEvents(eventHandler);
     }
 }

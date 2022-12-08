@@ -1,11 +1,14 @@
 import { BudgetColumn } from '../../../models/budgets/budget-column';
+import { BudgetParameters } from '../../../models/budgets/budget-parameters';
 import { BudgetTable } from '../../../models/budgets/budget-table';
+import { EventHandler } from '../../../models/events/event-handler';
 import { Expenses } from '../../../models/expenses/expenses';
 import { Income } from '../../../models/incomes/income';
 import { Role } from '../../../models/roles/role';
 import { Savings } from '../../../models/savings/savings';
 import { Percentage } from '../../../models/statistics/percentage';
 import { Tax } from '../../../models/taxes/tax';
+import { BudgetParametersOrchestrationService } from '../../orchestrations/budgets/budget-parameters-orchestration-service';
 import { BudgetTableOrchestrationService } from '../../orchestrations/budgets/budget-table-orchestration-service';
 import { ExpenseOrchestrationService } from '../../orchestrations/expenses/expense-orchestration-service';
 import { IncomeOrchestrationService } from '../../orchestrations/incomes/income-orchestration-service';
@@ -22,6 +25,7 @@ export class BudgetTableAggregationService {
     private readonly savingsOrchestrationService: SavingsOrchestrationService;
     private readonly savingStatisticsOrchestrationService: SavingStatisticsOrchestrationService;
     private readonly wealthProjectionOrchestrationService: WealthProjectionOrchestrationService;
+    private readonly budgetParametersOrchestrationService: BudgetParametersOrchestrationService;
 
     constructor(
         budgetTableOrchestrationService: BudgetTableOrchestrationService,
@@ -30,7 +34,8 @@ export class BudgetTableAggregationService {
         expensesOrchestrationService: ExpenseOrchestrationService,
         savingsOrchestrationService: SavingsOrchestrationService,
         savingStatisticsOrchestrationService: SavingStatisticsOrchestrationService,
-        wealthProjectionOrchestrationService: WealthProjectionOrchestrationService
+        wealthProjectionOrchestrationService: WealthProjectionOrchestrationService,
+        budgetParametersOrchestrationService: BudgetParametersOrchestrationService
     ) {
         this.budgetTableOrchestrationService = budgetTableOrchestrationService;
         this.roleOrchestrationService = roleOrchestrationService;
@@ -39,6 +44,11 @@ export class BudgetTableAggregationService {
         this.savingsOrchestrationService = savingsOrchestrationService;
         this.savingStatisticsOrchestrationService = savingStatisticsOrchestrationService;
         this.wealthProjectionOrchestrationService = wealthProjectionOrchestrationService;
+        this.budgetParametersOrchestrationService = budgetParametersOrchestrationService;
+    }
+
+    listenForBudgetParameterEvents(eventHandler: EventHandler<BudgetParameters>) {
+        this.budgetParametersOrchestrationService.listenForBudgetParametersEvents(eventHandler);
     }
 
     upsertBudgetTable(budgetTable: BudgetTable): BudgetTable {
@@ -49,10 +59,19 @@ export class BudgetTableAggregationService {
         return this.budgetTableOrchestrationService.getBudgetTable(id);
     }
 
+    getBudgetColumn(budgetTable: BudgetTable, index: number) {
+        return this.budgetTableOrchestrationService.getColumnByIndex(budgetTable, index);
+    }
+
     addColumn(budgetTable: BudgetTable): BudgetTable {
         const capitalGainsTax = new Tax({
             rate: new Percentage({
                 value: 15,
+            }),
+        });
+        const bonusTax = new Tax({
+            rate: new Percentage({
+                value: 40,
             }),
         });
         const budgetColumn = new BudgetColumn();
@@ -73,6 +92,7 @@ export class BudgetTableAggregationService {
             this.wealthProjectionOrchestrationService.createCalculatedWealthProjection(
                 budgetColumn,
                 capitalGainsTax,
+                bonusTax,
                 previousColumn
             );
         return this.budgetTableOrchestrationService.addColumn(budgetTable, budgetColumn);
@@ -120,12 +140,18 @@ export class BudgetTableAggregationService {
                 value: 15,
             }),
         });
+        const bonusTax = new Tax({
+            rate: new Percentage({
+                value: 40,
+            }),
+        });
         for (let i = budgetColumn.index; i < budgetTable.numberOfColumns; i++) {
             budgetColumn = this.budgetTableOrchestrationService.getColumnByIndex(budgetTable, i);
             budgetColumn.wealthProjection =
                 this.wealthProjectionOrchestrationService.updateWealthProjection(
                     budgetColumn,
                     capitalGainsTax,
+                    bonusTax,
                     previousColumn
                 );
             budgetTable = this.budgetTableOrchestrationService.updateColumn(
