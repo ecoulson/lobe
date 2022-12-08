@@ -12,6 +12,10 @@ export class ExpenseOrchestrationService {
         this.moneyService = moneyService;
     }
 
+    removeExpenses(expenses: Expenses) {
+        return this.expensesService.removeExpenses(expenses);
+    }
+
     createCalculatedExpenses(): Expenses {
         return this.expensesService.createExpenses(this.calculateExpenses());
     }

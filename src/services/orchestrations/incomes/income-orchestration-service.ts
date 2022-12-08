@@ -20,6 +20,10 @@ export class IncomeOrchestrationService {
         this.moneyService = moneyService;
     }
 
+    removeIncome(income: Income) {
+        return this.incomeService.removeIncome(income);
+    }
+
     createCalculatedIncome() {
         return this.incomeService.createIncome(this.calculateIncome());
     }

@@ -54,6 +54,17 @@ export class BudgetTableOrchestrationService {
         });
     }
 
+    removeColumnByIndex(budgetTable: BudgetTable, index: number) {
+        budgetTable.expensesList.splice(index, 1);
+        budgetTable.roleList.splice(index, 1);
+        budgetTable.incomeList.splice(index, 1);
+        budgetTable.savingsList.splice(index, 1);
+        budgetTable.savingsStatisticsList.splice(index, 1);
+        budgetTable.wealthProjectionList.splice(index, 1);
+        budgetTable.numberOfColumns--;
+        return this.budgetTableService.upsertBudgetTable(budgetTable);
+    }
+
     getColumnOfRole(budgetTable: BudgetTable, role: Role): BudgetColumn {
         return this.createColumnFromIndex(budgetTable, 'roleList', role.id);
     }

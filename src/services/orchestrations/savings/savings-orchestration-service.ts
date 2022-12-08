@@ -19,6 +19,10 @@ export class SavingsOrchestrationService {
         this.budgetParametersService = budgetParametersService;
     }
 
+    removeSavings(savings: Savings) {
+        return this.savingsService.removeSavings(savings);
+    }
+
     createCalculatedSavings(budgetColumn: BudgetColumn) {
         return this.savingsService.createSavings(this.calculateSavings(budgetColumn));
     }

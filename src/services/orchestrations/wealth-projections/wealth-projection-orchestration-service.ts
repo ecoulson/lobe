@@ -22,6 +22,10 @@ export class WealthProjectionOrchestrationService {
         this.moneyService = moneyService;
     }
 
+    removeWealthProjection(wealthProjection: WealthProjection) {
+        return this.wealthProjectionService.removeWealthProjection(wealthProjection);
+    }
+
     createCalculatedWealthProjection(
         budgetColumn: BudgetColumn,
         capitalGainsTax: Tax,

@@ -55,12 +55,23 @@ export class BudgetTableAggregationService {
         return this.budgetTableOrchestrationService.upsertBudgetTable(budgetTable);
     }
 
-    getBudgetTable(id: string) {
+    getTable(id: string) {
         return this.budgetTableOrchestrationService.getBudgetTable(id);
     }
 
-    getBudgetColumn(budgetTable: BudgetTable, index: number) {
+    getColumn(budgetTable: BudgetTable, index: number) {
         return this.budgetTableOrchestrationService.getColumnByIndex(budgetTable, index);
+    }
+
+    removeColumn(budgetTable: BudgetTable, index: number) {
+        const column = this.budgetTableOrchestrationService.getColumnByIndex(budgetTable, index);
+        this.roleOrchestrationService.removeRole(column.role);
+        this.incomeOrchestrationService.removeIncome(column.income);
+        this.expensesOrchestrationService.removeExpenses(column.expenses);
+        this.savingsOrchestrationService.removeSavings(column.savings);
+        this.savingStatisticsOrchestrationService.removeSavingStatistics(column.savingsStatistics);
+        this.wealthProjectionOrchestrationService.removeWealthProjection(column.wealthProjection);
+        return this.budgetTableOrchestrationService.removeColumnByIndex(budgetTable, index);
     }
 
     addColumn(budgetTable: BudgetTable): BudgetTable {

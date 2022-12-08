@@ -12,6 +12,10 @@ export class RoleOrchestrationService {
         this.roleService = roleService;
     }
 
+    removeRole(role: Role) {
+        return this.roleService.removeRole(role);
+    }
+
     createCalculatedRole(previousColumn?: BudgetColumn) {
         return this.roleService.createRole(this.calculateRoleAge(new Role(), previousColumn?.role));
     }

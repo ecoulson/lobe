@@ -6,14 +6,13 @@ import { SavingStatisticsRowComponent } from '../savings/saving-statistics-row-c
 import { WealthProjectionRowComponent } from '../wealth-projections/wealth-projection-row-component';
 import { BudgetTableComponentProps } from './budget-table-component-props';
 import { ButtonComponent } from '../bases/button-component';
-import { useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { BudgetTable } from '../../models/budgets/budget-table';
 import { Role } from '../../models/roles/role';
 import { Income } from '../../models/incomes/income';
 import { inject } from '../../clients/dependency-injection/inject';
 import { Expenses } from '../../models/expenses/expenses';
 import { Savings } from '../../models/savings/savings';
-import { BudgetTableController } from '../../controllers/budget-table/budget-table-controller';
 
 export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTableController'>(
     {
@@ -28,11 +27,15 @@ export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTab
 
         useEffect(() => {
             budgetTableController.listenForBudgetParameterEvents(updateAllColumns);
-        }, [numberOfColumns, budgetTableController]);
+        }, [budgetTableController]);
+
+        useEffect(() => {
+            updateAllColumns()
+        }, [numberOfColumns])
 
         function updateAllColumns() {
             for (let i = 0; i < numberOfColumns; i++) {
-                const column = budgetTableController.getBudgetColumn(currentBudgetTable, i);
+                const column = budgetTableController.getColumn(currentBudgetTable, i);
                 updateRole(column.role);
                 updateIncome(column.income);
                 updateExpenses(column.expenses);
@@ -66,9 +69,26 @@ export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTab
             setBudgetTable(budgetTableController.updateSavings(currentBudgetTable, savings));
         }
 
+        function removeColumn(index: number) {
+            return () => {
+                setBudgetTable(budgetTableController.removeColumn(currentBudgetTable, index));
+            };
+        }
+
+        function renderRemoveButtons() {
+            const buttons: ReactNode[] = [];
+            for (let i = 0; i < currentBudgetTable.numberOfColumns; i++) {
+                buttons.push(
+                    <ButtonComponent onClick={removeColumn(i)}>Remove Column</ButtonComponent>
+                );
+            }
+            return buttons;
+        }
+
         return (
             <div>
                 <ButtonComponent onClick={addColumn}>Add Position</ButtonComponent>
+                <div className="flex">{renderRemoveButtons()}</div>
                 <RoleRowComponent roleList={currentBudgetTable.roleList} updateRole={updateRole} />
                 <IncomeRowComponent
                     incomeList={currentBudgetTable.incomeList}

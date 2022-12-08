@@ -20,11 +20,19 @@ export class BudgetTableController {
     }
 
     getBudgetTable(id: string): BudgetTable {
-        return this.budgetTableAggregationService.getBudgetTable(id);
+        return this.budgetTableAggregationService.getTable(id);
     }
 
-    getBudgetColumn(budgetTable: BudgetTable, index: number) {
-        return this.budgetTableAggregationService.getBudgetColumn(budgetTable, index);
+    getColumn(budgetTable: BudgetTable, index: number) {
+        return this.budgetTableAggregationService.getColumn(budgetTable, index);
+    }
+
+    removeColumn(budgetTable: BudgetTable, index: number) {
+        return this.budgetTableAggregationService.removeColumn(budgetTable, index);
+    }
+
+    deleteColumn(budgetTable: BudgetTable, index: number) {
+        return this.budgetTableAggregationService.removeColumn(budgetTable, index);
     }
 
     addColumn(budgetTable: BudgetTable): BudgetTable {

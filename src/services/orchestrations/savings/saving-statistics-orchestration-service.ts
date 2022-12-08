@@ -23,6 +23,10 @@ export class SavingStatisticsOrchestrationService {
         this.moneyService = moneyService;
     }
 
+    removeSavingStatistics(savingStatistics: SavingStatistics) {
+        return this.savingStatisticsService.removeSavingStatistics(savingStatistics);
+    }
+
     createCalculatedSavingsStatistics(budgetColumn: BudgetColumn) {
         return this.savingStatisticsService.createSavingStatistics(
             this.calculateSavingsStatistics(budgetColumn.income, budgetColumn.savings)
