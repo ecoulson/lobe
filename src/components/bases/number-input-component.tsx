@@ -8,6 +8,7 @@ export function NumberInputComponent({
 }: NumberInputComponentProps) {
     return (
         <InputComponent
+            placeholder="0"
             value={isNaN(value) ? '' : value.toFixed(displayPrecision)}
             onChange={(value) => onChange(parseFloat(value))}
         />

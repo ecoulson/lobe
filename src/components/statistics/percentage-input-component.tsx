@@ -10,6 +10,7 @@ export function PercentageInputComponent({ percentage, onChange }: PercentageInp
         <div>
             <InputComponent
                 value={rawPercentage}
+                placeholder="0.00"
                 onChange={setRawPercentage}
                 onBlur={() =>
                     onChange(

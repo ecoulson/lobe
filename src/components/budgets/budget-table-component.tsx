@@ -72,40 +72,49 @@ export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTab
         }
 
         function renderRemoveButtons() {
-            const buttons: ReactNode[] = [];
+            const buttons = [<div className="w-1/12"></div>];
             for (let i = 0; i < currentBudgetTable.numberOfColumns; i++) {
                 buttons.push(
-                    <ButtonComponent key={i} onClick={removeColumn(i)}>
-                        Remove Column
-                    </ButtonComponent>
+                    <div className="flex justify-center w-1/12">
+                        <ButtonComponent key={i} onClick={removeColumn(i)}>
+                            Remove Column
+                        </ButtonComponent>
+                    </div>
                 );
             }
             return buttons;
         }
 
         return (
-            <div>
-                <ButtonComponent onClick={addColumn}>Add Position</ButtonComponent>
-                <div className="flex">{renderRemoveButtons()}</div>
-                <RoleRowComponent roleList={currentBudgetTable.roleList} updateRole={updateRole} />
-                <IncomeRowComponent
-                    incomeList={currentBudgetTable.incomeList}
-                    updateIncome={updateIncome}
-                />
-                <ExpensesRowComponent
-                    expensesList={currentBudgetTable.expensesList}
-                    updateExpenses={updateExpenses}
-                />
-                <SavingsRowComponent
-                    updateSavings={updateSavings}
-                    savingsList={currentBudgetTable.savingsList}
-                />
-                <SavingStatisticsRowComponent
-                    savingStatisticsList={currentBudgetTable.savingsStatisticsList}
-                />
-                <WealthProjectionRowComponent
-                    wealthProjectionList={currentBudgetTable.wealthProjectionList}
-                />
+            <div className="width-100% py-10 px-10">
+                <div className="py-5">
+                    <ButtonComponent onClick={addColumn}>Add Position</ButtonComponent>
+                </div>
+                <div className="py-5 flex gap-5">{renderRemoveButtons()}</div>
+                <div>
+                    <RoleRowComponent
+                        roleList={currentBudgetTable.roleList}
+                        updateRole={updateRole}
+                    />
+                    <IncomeRowComponent
+                        incomeList={currentBudgetTable.incomeList}
+                        updateIncome={updateIncome}
+                    />
+                    <ExpensesRowComponent
+                        expensesList={currentBudgetTable.expensesList}
+                        updateExpenses={updateExpenses}
+                    />
+                    <SavingsRowComponent
+                        updateSavings={updateSavings}
+                        savingsList={currentBudgetTable.savingsList}
+                    />
+                    <SavingStatisticsRowComponent
+                        savingStatisticsList={currentBudgetTable.savingsStatisticsList}
+                    />
+                    <WealthProjectionRowComponent
+                        wealthProjectionList={currentBudgetTable.wealthProjectionList}
+                    />
+                </div>
             </div>
         );
     }
