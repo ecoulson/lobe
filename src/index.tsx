@@ -10,7 +10,9 @@ import { SavingStatisticsBroker } from './brokers/savings/saving-statistics-brok
 import { SavingsBroker } from './brokers/savings/savings-broker';
 import { WealthProjectionBroker } from './brokers/wealth-projections/wealth-projection-broker';
 import { DependencyInjectionClient } from './clients/dependency-injection/dependency-injection-client';
+import { BudgetParametersComponent } from './components/budget-parameters/budget-parameters-component';
 import { BudgetTableComponent } from './components/budgets/budget-table-component';
+import { BudgetParametersController } from './controllers/budget-parameters/budget-parameters-controller';
 import { BudgetTableController } from './controllers/budget-table/budget-table-controller';
 import { MoneyController } from './controllers/funds/money-controller';
 import './index.css';
@@ -97,9 +99,14 @@ container.register(
     )
 );
 container.register<MoneyController>('MoneyController', new MoneyController(new MoneyService()));
+container.register<BudgetParametersController>(
+    'BudgetParametersController',
+    new BudgetParametersController(new BudgetParametersService(budgetParametersBroker))
+);
 
 root.render(
     <React.StrictMode>
+        <BudgetParametersComponent />
         <BudgetTableComponent budgetTableId="" />
     </React.StrictMode>
 );

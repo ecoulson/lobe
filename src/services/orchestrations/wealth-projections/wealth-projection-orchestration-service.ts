@@ -45,19 +45,20 @@ export class WealthProjectionOrchestrationService {
         wealthProjection: WealthProjection = new WealthProjection()
     ) {
         if (isNaN(role.estimatedYearsSpentInPosition)) {
-            return new WealthProjection();
+            return new WealthProjection({
+                id: wealthProjection.id,
+            });
         }
         const budgetParameters = this.budgetParametersService.getParameters();
-        let initialNetWorth = this.moneyService.getCurrencyAmount(budgetParameters.initialNetWorth);
+        let principal = this.moneyService.getCurrencyAmount(budgetParameters.initialNetWorth);
         if (previousProjection) {
-            initialNetWorth = this.moneyService.getCurrencyAmount(
-                previousProjection.expectedNetWorth
-            );
+            principal = this.moneyService.getCurrencyAmount(previousProjection.expectedNetWorth);
         }
+        principal += this.moneyService.getCurrencyAmount(budgetParameters.signOnBonus);
         const returnRate = budgetParameters.estimatedReturnRate.value / 100;
         const totalSaved = this.moneyService.getCurrencyAmount(savings.totalSaved);
         const principalReturn =
-            initialNetWorth * Math.pow(1 + returnRate, role.estimatedYearsSpentInPosition);
+            principal * Math.pow(1 + returnRate, role.estimatedYearsSpentInPosition);
         const savingsReturn =
             ((totalSaved * (Math.pow(1 + returnRate, role.estimatedYearsSpentInPosition) - 1)) /
                 returnRate) *

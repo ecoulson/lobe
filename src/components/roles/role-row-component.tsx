@@ -3,8 +3,16 @@ import { BudgetSectionComponent } from '../budgets/budget-section-component';
 import { InputComponent } from '../bases/input-component';
 import { RoleRowComponentProps } from './role-row-component-props';
 import { Role } from '../../models/roles/role';
+import { NumberInputComponent } from '../bases/number-input-component';
 
 export function RoleRowComponent({ roleList, updateRole }: RoleRowComponentProps) {
+    function handleRoleChange<K extends keyof Role>(role: Role, key: K) {
+        return (value: Role[K]) => {
+            role[key] = value;
+            updateRole(role);
+        };
+    }
+
     return (
         <BudgetSectionComponent heading="Role">
             <BudgetRowComponent
@@ -13,14 +21,7 @@ export function RoleRowComponent({ roleList, updateRole }: RoleRowComponentProps
                     <InputComponent
                         placeholder="Google"
                         value={role.company}
-                        onChange={(company) =>
-                            updateRole(
-                                new Role({
-                                    ...role,
-                                    company,
-                                })
-                            )
-                        }
+                        onChange={handleRoleChange(role, 'company')}
                     />
                 ))}
             />
@@ -30,14 +31,7 @@ export function RoleRowComponent({ roleList, updateRole }: RoleRowComponentProps
                     <InputComponent
                         placeholder="L3"
                         value={role.level}
-                        onChange={(level) =>
-                            updateRole(
-                                new Role({
-                                    ...role,
-                                    level,
-                                })
-                            )
-                        }
+                        onChange={handleRoleChange(role, 'level')}
                     />
                 ))}
             />
@@ -47,36 +41,21 @@ export function RoleRowComponent({ roleList, updateRole }: RoleRowComponentProps
                     <InputComponent
                         placeholder="WA"
                         value={role.state}
-                        onChange={(state) =>
-                            updateRole(
-                                new Role({
-                                    ...role,
-                                    state,
-                                })
-                            )
-                        }
+                        onChange={handleRoleChange(role, 'state')}
                     />
                 ))}
             />
             <BudgetRowComponent
                 field="Estimated Years at Level"
                 cells={roleList.map((role) => (
-                    <InputComponent
-                        placeholder="2"
-                        value={
-                            isNaN(role.estimatedYearsSpentInPosition)
-                                ? ''
-                                : role.estimatedYearsSpentInPosition.toFixed(0)
-                        }
+                    <NumberInputComponent
+                        value={role.estimatedYearsSpentInPosition}
+                        displayPrecision={0}
                         onChange={(estimatedYearsSpentInPosition) =>
-                            updateRole(
-                                new Role({
-                                    ...role,
-                                    estimatedYearsSpentInPosition: parseInt(
-                                        estimatedYearsSpentInPosition
-                                    ),
-                                })
-                            )
+                            handleRoleChange(
+                                role,
+                                'estimatedYearsSpentInPosition'
+                            )(estimatedYearsSpentInPosition)
                         }
                     />
                 ))}

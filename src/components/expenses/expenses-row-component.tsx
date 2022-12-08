@@ -1,11 +1,35 @@
 import { Expenses } from '../../models/expenses/expenses';
+import { Money } from '../../models/funds/money';
 import { BudgetRowComponent } from '../budgets/budget-row-component';
 import { BudgetSectionComponent } from '../budgets/budget-section-component';
 import { MoneyComponent } from '../funds/money-component';
 import { MoneyInputComponent } from '../funds/money-input-component';
 import { ExpensesRowComponentProps } from './expenses-row-component-props';
 
+type ExpenseCategoryKeys =
+    | 'debtPayments'
+    | 'entertainment'
+    | 'food'
+    | 'healthcare'
+    | 'housing'
+    | 'insurance'
+    | 'miscellaneous'
+    | 'personal'
+    | 'transportation'
+    | 'utilities';
+
 export function ExpensesRowComponent({ expensesList, updateExpenses }: ExpensesRowComponentProps) {
+    function updateExpenseCategoryTotalSpent<
+        K extends Extract<keyof Expenses, ExpenseCategoryKeys>
+    >(expenses: Expenses, key: K) {
+        return (totalSpent: Money) => {
+            expenses[key].totalSpent = totalSpent;
+            updateExpenses(expenses);
+        };
+    }
+
+    function updateTotalSpent() {}
+
     return (
         <BudgetSectionComponent heading="Expenses">
             <BudgetRowComponent
@@ -13,17 +37,7 @@ export function ExpensesRowComponent({ expensesList, updateExpenses }: ExpensesR
                 cells={expensesList.map((expenses) => (
                     <MoneyInputComponent
                         money={expenses.debtPayments.totalSpent}
-                        onChange={(totalSpent) =>
-                            updateExpenses(
-                                new Expenses({
-                                    ...expenses,
-                                    debtPayments: {
-                                        ...expenses.debtPayments,
-                                        totalSpent,
-                                    },
-                                })
-                            )
-                        }
+                        onChange={updateExpenseCategoryTotalSpent(expenses, 'debtPayments')}
                     />
                 ))}
             />
@@ -32,17 +46,7 @@ export function ExpensesRowComponent({ expensesList, updateExpenses }: ExpensesR
                 cells={expensesList.map((expenses) => (
                     <MoneyInputComponent
                         money={expenses.entertainment.totalSpent}
-                        onChange={(totalSpent) =>
-                            updateExpenses(
-                                new Expenses({
-                                    ...expenses,
-                                    entertainment: {
-                                        ...expenses.debtPayments,
-                                        totalSpent,
-                                    },
-                                })
-                            )
-                        }
+                        onChange={updateExpenseCategoryTotalSpent(expenses, 'entertainment')}
                     />
                 ))}
             />
@@ -51,17 +55,7 @@ export function ExpensesRowComponent({ expensesList, updateExpenses }: ExpensesR
                 cells={expensesList.map((expenses) => (
                     <MoneyInputComponent
                         money={expenses.food.totalSpent}
-                        onChange={(totalSpent) =>
-                            updateExpenses(
-                                new Expenses({
-                                    ...expenses,
-                                    food: {
-                                        ...expenses.debtPayments,
-                                        totalSpent,
-                                    },
-                                })
-                            )
-                        }
+                        onChange={updateExpenseCategoryTotalSpent(expenses, 'food')}
                     />
                 ))}
             />
@@ -70,17 +64,7 @@ export function ExpensesRowComponent({ expensesList, updateExpenses }: ExpensesR
                 cells={expensesList.map((expenses) => (
                     <MoneyInputComponent
                         money={expenses.healthcare.totalSpent}
-                        onChange={(totalSpent) =>
-                            updateExpenses(
-                                new Expenses({
-                                    ...expenses,
-                                    healthcare: {
-                                        ...expenses.debtPayments,
-                                        totalSpent,
-                                    },
-                                })
-                            )
-                        }
+                        onChange={updateExpenseCategoryTotalSpent(expenses, 'healthcare')}
                     />
                 ))}
             />
@@ -89,17 +73,7 @@ export function ExpensesRowComponent({ expensesList, updateExpenses }: ExpensesR
                 cells={expensesList.map((expenses) => (
                     <MoneyInputComponent
                         money={expenses.housing.totalSpent}
-                        onChange={(totalSpent) =>
-                            updateExpenses(
-                                new Expenses({
-                                    ...expenses,
-                                    housing: {
-                                        ...expenses.debtPayments,
-                                        totalSpent,
-                                    },
-                                })
-                            )
-                        }
+                        onChange={updateExpenseCategoryTotalSpent(expenses, 'housing')}
                     />
                 ))}
             />
@@ -108,17 +82,7 @@ export function ExpensesRowComponent({ expensesList, updateExpenses }: ExpensesR
                 cells={expensesList.map((expenses) => (
                     <MoneyInputComponent
                         money={expenses.insurance.totalSpent}
-                        onChange={(totalSpent) =>
-                            updateExpenses(
-                                new Expenses({
-                                    ...expenses,
-                                    insurance: {
-                                        ...expenses.debtPayments,
-                                        totalSpent,
-                                    },
-                                })
-                            )
-                        }
+                        onChange={updateExpenseCategoryTotalSpent(expenses, 'insurance')}
                     />
                 ))}
             />
@@ -127,17 +91,7 @@ export function ExpensesRowComponent({ expensesList, updateExpenses }: ExpensesR
                 cells={expensesList.map((expenses) => (
                     <MoneyInputComponent
                         money={expenses.miscellaneous.totalSpent}
-                        onChange={(totalSpent) =>
-                            updateExpenses(
-                                new Expenses({
-                                    ...expenses,
-                                    miscellaneous: {
-                                        ...expenses.debtPayments,
-                                        totalSpent,
-                                    },
-                                })
-                            )
-                        }
+                        onChange={updateExpenseCategoryTotalSpent(expenses, 'miscellaneous')}
                     />
                 ))}
             />
@@ -146,17 +100,7 @@ export function ExpensesRowComponent({ expensesList, updateExpenses }: ExpensesR
                 cells={expensesList.map((expenses) => (
                     <MoneyInputComponent
                         money={expenses.personal.totalSpent}
-                        onChange={(totalSpent) =>
-                            updateExpenses(
-                                new Expenses({
-                                    ...expenses,
-                                    personal: {
-                                        ...expenses.debtPayments,
-                                        totalSpent,
-                                    },
-                                })
-                            )
-                        }
+                        onChange={updateExpenseCategoryTotalSpent(expenses, 'personal')}
                     />
                 ))}
             />
@@ -165,17 +109,7 @@ export function ExpensesRowComponent({ expensesList, updateExpenses }: ExpensesR
                 cells={expensesList.map((expenses) => (
                     <MoneyInputComponent
                         money={expenses.transportation.totalSpent}
-                        onChange={(totalSpent) =>
-                            updateExpenses(
-                                new Expenses({
-                                    ...expenses,
-                                    transportation: {
-                                        ...expenses.debtPayments,
-                                        totalSpent,
-                                    },
-                                })
-                            )
-                        }
+                        onChange={updateExpenseCategoryTotalSpent(expenses, 'transportation')}
                     />
                 ))}
             />
@@ -184,17 +118,7 @@ export function ExpensesRowComponent({ expensesList, updateExpenses }: ExpensesR
                 cells={expensesList.map((expenses) => (
                     <MoneyInputComponent
                         money={expenses.utilities.totalSpent}
-                        onChange={(totalSpent) =>
-                            updateExpenses(
-                                new Expenses({
-                                    ...expenses,
-                                    utilities: {
-                                        ...expenses.debtPayments,
-                                        totalSpent,
-                                    },
-                                })
-                            )
-                        }
+                        onChange={updateExpenseCategoryTotalSpent(expenses, 'utilities')}
                     />
                 ))}
             />

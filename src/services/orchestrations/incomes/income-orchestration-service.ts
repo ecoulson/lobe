@@ -3,6 +3,7 @@ import { IncomeService } from '../../foundations/incomes/income-service';
 import { MoneyService } from '../../foundations/funds/money-service';
 import { Tax } from '../../../models/taxes/tax';
 import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
+import { Money } from '../../../models/funds/money';
 
 export class IncomeOrchestrationService {
     private readonly incomeService: IncomeService;
@@ -31,6 +32,12 @@ export class IncomeOrchestrationService {
         const budgetParameters = this.budgetParametersService.getParameters();
 
         const baseSalary = this.moneyService.getCurrencyAmount(income.baseSalary);
+        if (isNaN(baseSalary)) {
+            return new Income({
+                id: income.id,
+                baseSalary: income.baseSalary,
+            });
+        }
         const yearly401kContributions = this.moneyService.getCurrencyAmount(
             budgetParameters.yearly401kContributions
         );
