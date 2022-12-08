@@ -6,7 +6,7 @@ import { SavingStatisticsRowComponent } from '../savings/saving-statistics-row-c
 import { WealthProjectionRowComponent } from '../wealth-projections/wealth-projection-row-component';
 import { BudgetTableComponentProps } from './budget-table-component-props';
 import { ButtonComponent } from '../bases/button-component';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { BudgetTable } from '../../models/budgets/budget-table';
 import { Role } from '../../models/roles/role';
 import { Income } from '../../models/incomes/income';
@@ -20,21 +20,17 @@ export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTab
     },
     ({ budgetTableId, budgetTableController }: BudgetTableComponentProps) => {
         const [currentBudgetTable, setBudgetTable] = useState(new BudgetTable());
-        const numberOfColumns = useMemo(
-            () => currentBudgetTable.numberOfColumns,
-            [currentBudgetTable]
-        );
 
         useEffect(() => {
             budgetTableController.listenForBudgetParameterEvents(updateAllColumns);
         }, [budgetTableController]);
 
         useEffect(() => {
-            updateAllColumns()
-        }, [numberOfColumns])
+            updateAllColumns();
+        }, []);
 
         function updateAllColumns() {
-            for (let i = 0; i < numberOfColumns; i++) {
+            for (let i = 0; i < currentBudgetTable.numberOfColumns; i++) {
                 const column = budgetTableController.getColumn(currentBudgetTable, i);
                 updateRole(column.role);
                 updateIncome(column.income);
@@ -79,7 +75,9 @@ export const BudgetTableComponent = inject<BudgetTableComponentProps, 'budgetTab
             const buttons: ReactNode[] = [];
             for (let i = 0; i < currentBudgetTable.numberOfColumns; i++) {
                 buttons.push(
-                    <ButtonComponent onClick={removeColumn(i)}>Remove Column</ButtonComponent>
+                    <ButtonComponent key={i} onClick={removeColumn(i)}>
+                        Remove Column
+                    </ButtonComponent>
                 );
             }
             return buttons;

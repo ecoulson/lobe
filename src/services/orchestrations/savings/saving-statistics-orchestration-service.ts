@@ -29,13 +29,20 @@ export class SavingStatisticsOrchestrationService {
 
     createCalculatedSavingsStatistics(budgetColumn: BudgetColumn) {
         return this.savingStatisticsService.createSavingStatistics(
-            this.calculateSavingsStatistics(budgetColumn.income, budgetColumn.savings)
+            this.calculateSavingsStatistics(
+                budgetColumn.income,
+                new SavingStatistics(),
+                budgetColumn.savings
+            )
         );
     }
 
-    private calculateSavingsStatistics(currentIncome: Income, updatedSavings: Savings) {
+    private calculateSavingsStatistics(
+        currentIncome: Income,
+        updatedStatistics: SavingStatistics,
+        updatedSavings: Savings
+    ) {
         const budgetParameters = this.budgetParametersService.getParameters();
-        const updatedStatistics = new SavingStatistics();
         const totalSaved = this.moneyService.getCurrencyAmount(updatedSavings.totalSaved);
         const totalIncome = this.moneyService.getCurrencyAmount(currentIncome.totalIncome);
         const equity = this.moneyService.getCurrencyAmount(updatedSavings.equity);
@@ -47,7 +54,10 @@ export class SavingStatisticsOrchestrationService {
             (totalIncome + equity + contributionsTo401k) *
             (budgetParameters.targetPercentageOfIncomeToSave.value / 100);
         const distanceFromGoal = totalSaved - goalToSave;
-        const percentageSaved = (totalSaved / (totalIncome + equity + contributionsTo401k)) * 100;
+        let percentageSaved = (totalSaved / (totalIncome + equity + contributionsTo401k)) * 100;
+        if (isNaN(percentageSaved)) {
+            percentageSaved = 0;
+        }
 
         updatedStatistics.goalToSave = this.moneyService.createMoney(goalToSave);
         updatedStatistics.distanceFromSavingsGoal = new Balance({
@@ -63,7 +73,11 @@ export class SavingStatisticsOrchestrationService {
 
     updateSavingsStatistics(budgetColumn: BudgetColumn, updatedSavings: Savings) {
         return this.savingStatisticsService.updateSavingStatistics(
-            this.calculateSavingsStatistics(budgetColumn.income, updatedSavings)
+            this.calculateSavingsStatistics(
+                budgetColumn.income,
+                budgetColumn.savingsStatistics,
+                updatedSavings
+            )
         );
     }
 }

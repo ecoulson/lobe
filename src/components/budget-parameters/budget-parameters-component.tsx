@@ -28,7 +28,6 @@ export const BudgetParametersComponent = inject<
         }
 
         useEffect(() => {
-            console.log(budgetParameters);
             budgetParametersController.updateParameters(budgetParameters);
         }, [budgetParameters, budgetParametersController]);
 
@@ -65,25 +64,6 @@ export const BudgetParametersComponent = inject<
                             }
                         />
                     </BudgetParameterFieldComponent>
-                    <BudgetParameterFieldComponent label="Matching 401k Percentage">
-                        <PercentageInputComponent
-                            percentage={budgetParameters.matching401kPercentage}
-                            onChange={(matching401kPercentage) =>
-                                updateBudgetParameters(
-                                    'matching401kPercentage',
-                                    matching401kPercentage
-                                )
-                            }
-                        />
-                    </BudgetParameterFieldComponent>
-                    <BudgetParameterFieldComponent label="Sign On Bonus">
-                        <MoneyInputComponent
-                            money={budgetParameters.signOnBonus}
-                            onChange={(signOnBonus) =>
-                                updateBudgetParameters('signOnBonus', signOnBonus)
-                            }
-                        />
-                    </BudgetParameterFieldComponent>
                     <BudgetParameterFieldComponent label="Target Percentage Of Income To Save">
                         <PercentageInputComponent
                             percentage={budgetParameters.targetPercentageOfIncomeToSave}
@@ -91,17 +71,6 @@ export const BudgetParametersComponent = inject<
                                 updateBudgetParameters(
                                     'targetPercentageOfIncomeToSave',
                                     targetPercentageOfIncomeToSave
-                                )
-                            }
-                        />
-                    </BudgetParameterFieldComponent>
-                    <BudgetParameterFieldComponent label="Yearly 401k Contributions">
-                        <MoneyInputComponent
-                            money={budgetParameters.yearly401kContributions}
-                            onChange={(yearly401kContributions) =>
-                                updateBudgetParameters(
-                                    'yearly401kContributions',
-                                    yearly401kContributions
                                 )
                             }
                         />

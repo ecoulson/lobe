@@ -3,7 +3,8 @@ import { IncomeService } from '../../foundations/incomes/income-service';
 import { MoneyService } from '../../foundations/funds/money-service';
 import { Tax } from '../../../models/taxes/tax';
 import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
-import { Money } from '../../../models/funds/money';
+import { Role } from '../../../models/roles/role';
+import { BudgetColumn } from '../../../models/budgets/budget-column';
 
 export class IncomeOrchestrationService {
     private readonly incomeService: IncomeService;
@@ -28,11 +29,17 @@ export class IncomeOrchestrationService {
         return this.incomeService.createIncome(this.calculateIncome());
     }
 
-    updateIncome(updatedIncome: Income, incomeTax: Tax) {
-        return this.incomeService.updateIncome(this.calculateIncome(updatedIncome, incomeTax));
+    updateIncome(budgetColumn: BudgetColumn, updatedIncome: Income, incomeTax: Tax) {
+        return this.incomeService.updateIncome(
+            this.calculateIncome(budgetColumn.role, updatedIncome, incomeTax)
+        );
     }
 
-    private calculateIncome(income: Income = new Income(), tax: Tax = new Tax()) {
+    private calculateIncome(
+        role: Role = new Role(),
+        income: Income = new Income(),
+        tax: Tax = new Tax()
+    ) {
         const budgetParameters = this.budgetParametersService.getParameters();
 
         const baseSalary = this.moneyService.getCurrencyAmount(income.baseSalary);
@@ -43,7 +50,7 @@ export class IncomeOrchestrationService {
             });
         }
         const yearly401kContributions = this.moneyService.getCurrencyAmount(
-            budgetParameters.yearly401kContributions
+            role.total401KContributions
         );
         const preTaxSalary = baseSalary - yearly401kContributions;
         const postTaxSalary = preTaxSalary * (1 - tax.rate.value / 100);

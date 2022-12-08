@@ -19,7 +19,6 @@ import { MoneyController } from './controllers/funds/money-controller';
 import { EventEmitter } from './events/event-emitter';
 import './index.css';
 import { BudgetParameters } from './models/budgets/budget-parameters';
-import { Money } from './models/funds/money';
 import { Percentage } from './models/statistics/percentage';
 import reportWebVitals from './reportWebVitals';
 import { BudgetTableAggregationService } from './services/aggregations/budget-tables/budget-table-aggregation-service';
@@ -46,24 +45,15 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const container = new DependencyInjectionClient();
 const eventEmitter = new EventEmitter();
 const budgetParameters = new BudgetParameters({
-    currentAge: 22,
+    currentAge: 18,
     bonusGoal: new Percentage({
         value: 20,
-    }),
-    yearly401kContributions: new Money({
-        value: '19,500',
     }),
     targetPercentageOfIncomeToSave: new Percentage({
         value: 70,
     }),
-    matching401kPercentage: new Percentage({
-        value: 50,
-    }),
-    initialNetWorth: new Money({
-        value: '21,000',
-    }),
     estimatedReturnRate: new Percentage({
-        value: 6,
+        value: 4.5,
     }),
 });
 const eventBroker = new EventBroker(eventEmitter);

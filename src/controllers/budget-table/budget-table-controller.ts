@@ -1,4 +1,3 @@
-import { BudgetColumn } from '../../models/budgets/budget-column';
 import { BudgetParameters } from '../../models/budgets/budget-parameters';
 import { BudgetTable } from '../../models/budgets/budget-table';
 import { EventHandler } from '../../models/events/event-handler';

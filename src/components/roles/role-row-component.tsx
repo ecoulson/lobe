@@ -4,6 +4,8 @@ import { InputComponent } from '../bases/input-component';
 import { RoleRowComponentProps } from './role-row-component-props';
 import { Role } from '../../models/roles/role';
 import { NumberInputComponent } from '../bases/number-input-component';
+import { MoneyInputComponent } from '../funds/money-input-component';
+import { PercentageInputComponent } from '../statistics/percentage-input-component';
 
 export function RoleRowComponent({ roleList, updateRole }: RoleRowComponentProps) {
     function handleRoleChange<K extends keyof Role>(role: Role, key: K) {
@@ -70,6 +72,39 @@ export function RoleRowComponent({ roleList, updateRole }: RoleRowComponentProps
                 field="End Age"
                 cells={roleList.map((role) => (
                     <p key={role.endAge}>{role.endAge}</p>
+                ))}
+            />
+            <BudgetRowComponent
+                field="Total 401k Contributions"
+                cells={roleList.map((role) => (
+                    <MoneyInputComponent
+                        money={role.total401KContributions}
+                        onChange={(total401kContributions) =>
+                            handleRoleChange(role, 'total401KContributions')(total401kContributions)
+                        }
+                    />
+                ))}
+            />
+            <BudgetRowComponent
+                field="401k Matching Percentage"
+                cells={roleList.map((role) => (
+                    <PercentageInputComponent
+                        percentage={role.matching401kPercentage}
+                        onChange={(matching401kPercentage) =>
+                            handleRoleChange(role, 'matching401kPercentage')(matching401kPercentage)
+                        }
+                    />
+                ))}
+            />
+            <BudgetRowComponent
+                field="Sign On Bonus"
+                cells={roleList.map((role) => (
+                    <MoneyInputComponent
+                        money={role.signOnBonus}
+                        onChange={(signOnBonus) =>
+                            handleRoleChange(role, 'signOnBonus')(signOnBonus)
+                        }
+                    />
                 ))}
             />
         </BudgetSectionComponent>

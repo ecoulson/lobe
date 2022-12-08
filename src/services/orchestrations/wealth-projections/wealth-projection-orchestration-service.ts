@@ -62,8 +62,7 @@ export class WealthProjectionOrchestrationService {
             principal = this.moneyService.getCurrencyAmount(previousProjection.expectedNetWorth);
         }
         principal +=
-            this.moneyService.getCurrencyAmount(budgetParameters.signOnBonus) *
-            (1 - bonusTax.rate.value / 100);
+            this.moneyService.getCurrencyAmount(role.signOnBonus) * (1 - bonusTax.rate.value / 100);
         const returnRate = budgetParameters.estimatedReturnRate.value / 100;
         const totalSaved = this.moneyService.getCurrencyAmount(savings.totalSaved);
         const principalReturn =

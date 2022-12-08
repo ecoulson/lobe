@@ -7,7 +7,6 @@ import { SavingsService } from '../../foundations/savings/savings-service';
 export class SavingsOrchestrationService {
     private readonly savingsService: SavingsService;
     private readonly moneyService: MoneyService;
-    private readonly budgetParametersService: BudgetParametersService;
 
     constructor(
         savingsService: SavingsService,
@@ -16,7 +15,6 @@ export class SavingsOrchestrationService {
     ) {
         this.savingsService = savingsService;
         this.moneyService = moneyService;
-        this.budgetParametersService = budgetParametersService;
     }
 
     removeSavings(savings: Savings) {
@@ -28,10 +26,13 @@ export class SavingsOrchestrationService {
     }
 
     private calculateSavings(budgetColumn: BudgetColumn, savings: Savings = new Savings()) {
-        const budgetParameters = this.budgetParametersService.getParameters();
-        const contributionsTo401kWithMatching =
-            this.moneyService.getCurrencyAmount(budgetParameters.yearly401kContributions) *
-            (1 + budgetParameters.matching401kPercentage.value / 100);
+        const role = budgetColumn.role;
+        let contributionsTo401kWithMatching =
+            this.moneyService.getCurrencyAmount(role.total401KContributions) *
+            (1 + role.matching401kPercentage.value / 100);
+        if (isNaN(contributionsTo401kWithMatching)) {
+            contributionsTo401kWithMatching = 0;
+        }
         const cashOnHand =
             this.moneyService.getCurrencyAmount(budgetColumn.income.totalIncome) -
             this.moneyService.getCurrencyAmount(budgetColumn.expenses.totalExpenses);

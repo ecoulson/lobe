@@ -121,6 +121,7 @@ export class BudgetTableAggregationService {
         budgetColumn.role = this.roleOrchestrationService.updateRole(updatedRole, previousColumn);
         budgetTable = this.budgetTableOrchestrationService.updateColumn(budgetTable, budgetColumn);
         budgetTable = this.updateDependantRoles(budgetTable, budgetColumn);
+        budgetTable = this.updateSavings(budgetTable, budgetColumn.savings);
         return this.updateDependantWealthProjections(budgetTable, budgetColumn, previousColumn);
     }
 
@@ -185,6 +186,7 @@ export class BudgetTableAggregationService {
             updatedIncome
         );
         budgetColumn.income = this.incomeOrchestrationService.updateIncome(
+            budgetColumn,
             updatedIncome,
             incomeTax
         );
