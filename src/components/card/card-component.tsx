@@ -1,7 +1,7 @@
 import { CardComponentHeaderType } from './card-component-header-type';
 import { CardComponentProps } from './card-component-props';
 
-export function CardComponent({ title, icon, children, headerType }: CardComponentProps) {
+export function CardComponent({ title, icon, children, headerType = CardComponentHeaderType.None }: CardComponentProps) {
     function getHeaderColor() {
         switch (headerType) {
             case CardComponentHeaderType.Expenses:

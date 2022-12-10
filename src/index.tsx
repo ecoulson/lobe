@@ -11,10 +11,7 @@ import { SavingStatisticsBroker } from './brokers/savings/saving-statistics-brok
 import { SavingsBroker } from './brokers/savings/savings-broker';
 import { WealthProjectionBroker } from './brokers/wealth-projections/wealth-projection-broker';
 import { DependencyInjectionClient } from './clients/dependency-injection/dependency-injection-client';
-import { BudgetParametersComponent } from './components/budget-parameters/budget-parameters-component';
-import { BudgetTableComponent } from './components/budgets/budget-table-component';
-import { CardComponent } from './components/card/card-component';
-import { CardComponentHeaderType } from './components/card/card-component-header-type';
+import { BudgetDashboardComponent } from './components/budget-dashboard/budget-dashboard-component';
 import { BudgetParametersController } from './controllers/budget-parameters/budget-parameters-controller';
 import { BudgetTableController } from './controllers/budget-table/budget-table-controller';
 import { MoneyController } from './controllers/funds/money-controller';
@@ -113,13 +110,7 @@ container.register<BudgetParametersController>(
 
 root.render(
     <React.StrictMode>
-        <CardComponent
-            headerType={CardComponentHeaderType.None}
-            title="Wealth Projection"
-            icon={<p>Icon</p>}
-        >
-            <p>Some text</p>
-        </CardComponent>
+        <BudgetDashboardComponent />
     </React.StrictMode>
 );
 

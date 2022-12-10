@@ -4,6 +4,6 @@ import { CardComponentHeaderType } from './card-component-header-type';
 export interface CardComponentProps {
     title: string;
     icon: ReactNode;
-    headerType: CardComponentHeaderType;
+    headerType?: CardComponentHeaderType;
     children: ReactNode;
 }
