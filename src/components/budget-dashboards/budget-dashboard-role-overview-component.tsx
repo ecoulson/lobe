@@ -8,7 +8,7 @@ import { ReactComponent as StatisticsIcon } from '../../assets/statistics.svg';
 export function BudgetDashboardRoleOverviewComponent() {
     return (
         <>
-            <CardComponent title="Overview" icon={<img src="company.png" />}>
+            <CardComponent title="Overview" icon={<img alt="google logo" src="company.png" />}>
                 <p>Some text</p>
             </CardComponent>
             <CardComponent
