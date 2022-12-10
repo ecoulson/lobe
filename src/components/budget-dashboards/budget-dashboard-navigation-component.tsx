@@ -9,7 +9,7 @@ export function BudgetDashboardNavigationComponent({
 
     useEffect(() => {
         onNavigation(activeLink);
-    }, [activeLink]);
+    }, [activeLink, onNavigation]);
 
     function renderLinks() {
         return links.map((link) => {
@@ -35,5 +35,5 @@ export function BudgetDashboardNavigationComponent({
         });
     }
 
-    return <div className="flex py-6 gap-4 justify-start">{renderLinks()}</div>;
+    return <div className="flex py-6 gap-4 justify-start col-span-3">{renderLinks()}</div>;
 }

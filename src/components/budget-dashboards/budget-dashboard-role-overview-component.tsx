@@ -1,10 +1,9 @@
 import { CardComponent } from '../card/card-component';
 import { CardComponentHeaderType } from '../card/card-component-header-type';
-import { GridComponent } from '../grid/grid-component';
 
-export function RoleOverviewComponent() {
+export function BudgetDashboardRoleOverviewComponent() {
     return (
-        <GridComponent columns={3}>
+        <>
             <CardComponent title="Overview" icon={<p>Icon</p>}>
                 <p>Some text</p>
             </CardComponent>
@@ -30,6 +29,6 @@ export function RoleOverviewComponent() {
             <CardComponent title="Statistics" icon={<p>Icon</p>}>
                 <p>Some text</p>
             </CardComponent>
-        </GridComponent>
+        </>
     );
 }
