@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { BudgetDashboardRoleSelectorComponentProps } from './budget-dashboard-role-selector-component-props';
 import { ReactComponent as ChevronLeft } from '../../assets/chevron-left.svg';
 import { ReactComponent as ChevronRight } from '../../assets/chevron-right.svg';
+import { DataComponent } from '../data/data-component';
+import { MoneyComponent } from '../funds/money-component';
+import { Money } from '../../models/funds/money';
 
 export function BudgetDashboardRoleSelectorComponent({
     onRoleSelection,
@@ -32,16 +35,21 @@ export function BudgetDashboardRoleSelectorComponent({
                     <ChevronLeft />
                 </div>
                 <div className="px-2 py-2 border-2 border-gray bg-beige rounded-xl flex gap-x-6 items-center">
-                    <div>Icon</div>
-                    <div>Company</div>
-                    <div>TC</div>
-                    <div>Years Worked</div>
+                    <div>
+                        <img alt="Google Logo" src="company.png" />
+                    </div>
+                    <DataComponent label="Google" data={<p>L3</p>} />
+                    <DataComponent
+                        label="Total Comp"
+                        data={<MoneyComponent money={new Money()} />}
+                    />
+                    <p className="text-sm">2022 - 2023</p>
                 </div>
                 <div onClick={handleNext} className="hover:cursor-pointer">
                     <ChevronRight />
                 </div>
             </div>
-            <p>
+            <p className="text-sm">
                 Role {selectedRoleIndex + 1} of {roles.length}
             </p>
         </div>
