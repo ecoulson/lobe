@@ -5,6 +5,7 @@ import { ReactComponent as ChevronRight } from '../../assets/chevron-right.svg';
 import { DataComponent } from '../data/data-component';
 import { MoneyComponent } from '../funds/money-component';
 import { Money } from '../../models/funds/money';
+import { DataComponentSize } from '../data/data-component-size';
 
 export function BudgetDashboardRoleSelectorComponent({
     onRoleSelection,
@@ -38,8 +39,9 @@ export function BudgetDashboardRoleSelectorComponent({
                     <div>
                         <img alt="Google Logo" src="company.png" />
                     </div>
-                    <DataComponent label="Google" data={<p>L3</p>} />
+                    <DataComponent size={DataComponentSize.SMALL} label="Google" data={<p>L3</p>} />
                     <DataComponent
+                        size={DataComponentSize.SMALL}
                         label="Total Comp"
                         data={<MoneyComponent money={new Money()} />}
                     />
