@@ -3,7 +3,7 @@ import { ButtonComponentProps } from './button-component-props';
 export function ButtonComponent({ onClick, children }: ButtonComponentProps) {
     return (
         <button
-            className="px-2 bg-gray-300 border-solid border-gray-400 border-2 box-border"
+            className="px-5 bg-transparent border-solid border-accent border-2 box-border hover:text-beige hover:bg-accent rounded-lg text-md py-2"
             onClick={onClick}
         >
             {children}

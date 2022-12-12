@@ -1,6 +1,6 @@
 import { CardComponent } from '../card/card-component';
 import { ReactComponent as WealthProjectionIcon } from '../../assets/wealth-projection.svg';
-import { WealthProjectionChartComponent } from '../wealth-projections/wealth-projection-chart-component';
+import { WealthProjectionChartComponent } from './wealth-projection-chart-component';
 import { YearlyWealthProjection } from '../../models/wealth-projections/yearly-wealth-projection';
 
 export function BudgetDashboardWealthOverviewComponent() {

@@ -7,6 +7,10 @@ export class IncomeBroker {
         this.incomeTable = new Map();
     }
 
+    listIncomes(): Income[] {
+        return Array.from(this.incomeTable.values());
+    }
+
     saveIncome(income: Income): Income {
         this.incomeTable.set(income.id, income);
         return new Income(income);

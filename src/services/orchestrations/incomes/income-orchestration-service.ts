@@ -4,7 +4,6 @@ import { MoneyService } from '../../foundations/funds/money-service';
 import { Tax } from '../../../models/taxes/tax';
 import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
 import { Role } from '../../../models/roles/role';
-import { BudgetColumn } from '../../../models/budgets/budget-column';
 
 export class IncomeOrchestrationService {
     private readonly incomeService: IncomeService;
@@ -25,21 +24,31 @@ export class IncomeOrchestrationService {
         return this.incomeService.removeIncome(income);
     }
 
-    createCalculatedIncome() {
-        return this.incomeService.createIncome(this.calculateIncome());
+    getIncomeByRole(role: Role) {
+        return this.incomeService
+            .listIncomes()
+            .find((income) => income.roleId === role.id) as Income;
     }
 
-    updateIncome(budgetColumn: BudgetColumn, updatedIncome: Income, incomeTax: Tax, bonusTax: Tax) {
+    createIncome(role: Role, incomeTax: Tax, bonusTax: Tax) {
+        const income = this.incomeService.createIncome(
+            this.calculateIncome(role, incomeTax, bonusTax)
+        );
+        income.roleId = role.id;
+        return this.incomeService.updateIncome(income);
+    }
+
+    updateIncome(role: Role, updatedIncome: Income, incomeTax: Tax, bonusTax: Tax) {
         return this.incomeService.updateIncome(
-            this.calculateIncome(budgetColumn.role, updatedIncome, incomeTax, bonusTax)
+            this.calculateIncome(role, incomeTax, bonusTax, updatedIncome)
         );
     }
 
     private calculateIncome(
-        role: Role = new Role(),
-        income: Income = new Income(),
-        incomeTax: Tax = new Tax(),
-        bonusTax: Tax = new Tax()
+        role: Role,
+        incomeTax: Tax,
+        bonusTax: Tax,
+        income: Income = new Income()
     ) {
         const budgetParameters = this.budgetParametersService.getParameters();
 

@@ -1,6 +1,6 @@
 import { Role } from '../../models/roles/role';
 
-export interface BudgetDashboardRoleSelectorComponentProps {
+export interface RoleSelectorComponentProps {
     roles: Role[];
     onRoleSelection: (role: Role) => void;
 }

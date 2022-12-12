@@ -3,6 +3,7 @@ import { Percentage } from '../statistics/percentage';
 
 export class Role {
     public id: string;
+    public budgetId: string;
     public level: string;
     public estimatedYearsSpentInPosition: number;
     public startAge: number;
@@ -15,10 +16,15 @@ export class Role {
     public equity: Money;
     public vestingSchedule: Percentage[];
     public baseSalary: Money;
+    public totalCompensation: Money;
+    public startYear: number;
+    public endYear: number;
 
     constructor(props?: Partial<Role>) {
         const {
+            totalCompensation,
             equity,
+            budgetId,
             baseSalary,
             vestingSchedule,
             signOnBonus,
@@ -31,13 +37,19 @@ export class Role {
             state,
             maxMatched401KContributions,
             matching401kPercentage,
+            startYear,
+            endYear,
         } = {
+            budgetId: '',
+            totalCompensation: new Money(),
             signOnBonus: new Money(),
             id: '',
             level: '',
             estimatedYearsSpentInPosition: 1,
             startAge: 0,
+            startYear: 0,
             endAge: 0,
+            endYear: 0,
             company: '',
             state: '',
             maxMatched401KContributions: new Money(),
@@ -47,7 +59,11 @@ export class Role {
             baseSalary: new Money(),
             ...props,
         };
+        this.endYear = endYear;
+        this.startYear = startYear;
+        this.totalCompensation = totalCompensation;
         this.id = id;
+        this.budgetId = budgetId;
         this.baseSalary = baseSalary;
         this.equity = equity;
         this.vestingSchedule = vestingSchedule;

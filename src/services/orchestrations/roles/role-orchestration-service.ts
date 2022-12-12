@@ -16,8 +16,14 @@ export class RoleOrchestrationService {
         return this.roleService.removeRole(role);
     }
 
-    createCalculatedRole(previousColumn?: BudgetColumn) {
-        return this.roleService.createRole(this.calculateRoleAge(new Role(), previousColumn?.role));
+    getAllRolesForBudget(budgetId: string) {
+        return this.roleService.listRoles().filter((role) => role.budgetId === budgetId);
+    }
+
+    createRole(budgetId: string, previousRole?: Role) {
+        const role = this.roleService.createRole(this.calculateRoleAge(new Role(), previousRole));
+        role.budgetId = budgetId;
+        return this.roleService.updateRole(role);
     }
 
     private calculateRoleAge(role: Role, previousRole?: Role) {

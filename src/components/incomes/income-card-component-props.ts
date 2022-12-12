@@ -1,5 +1,7 @@
-import { Income } from '../../models/incomes/income';
+import { IncomeController } from '../../controllers/incomes/income-controller';
+import { Role } from '../../models/roles/role';
 
 export interface IncomeCardComponentProps {
-    income: Income;
+    role: Role;
+    incomeController: IncomeController;
 }

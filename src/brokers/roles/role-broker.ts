@@ -7,6 +7,10 @@ export class RoleBroker {
         this.roleTable = new Map();
     }
 
+    listRoles() {
+        return Array.from(this.roleTable.values());
+    }
+
     saveRole(role: Role): Role {
         this.roleTable.set(role.id, role);
         return new Role(role);

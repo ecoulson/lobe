@@ -11,6 +11,10 @@ export class IncomeService {
         this.idBroker = idBroker;
     }
 
+    listIncomes(): Income[] {
+        return this.incomeBroker.listIncomes();
+    }
+
     createIncome(income: Income): Income {
         income.id = this.idBroker.generateId();
         return this.incomeBroker.saveIncome(income);

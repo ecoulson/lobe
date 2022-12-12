@@ -2,6 +2,7 @@ import { Money } from '../funds/money';
 
 export class Income {
     public id: string;
+    public roleId: string;
     public baseSalary: Money;
     public salaryPreTax: Money;
     public salaryPostTax: Money;
@@ -9,8 +10,9 @@ export class Income {
     public totalIncome: Money;
 
     constructor(props?: Partial<Income>) {
-        const { id, bonus, baseSalary, salaryPostTax, salaryPreTax, totalIncome } = {
+        const { id, bonus, baseSalary, salaryPostTax, salaryPreTax, totalIncome, roleId } = {
             id: '',
+            roleId: '',
             bonus: new Money(),
             baseSalary: new Money(),
             salaryPostTax: new Money(),
@@ -19,6 +21,7 @@ export class Income {
             ...props,
         };
         this.id = id;
+        this.roleId = roleId;
         this.bonus = bonus;
         this.baseSalary = baseSalary;
         this.salaryPostTax = salaryPostTax;

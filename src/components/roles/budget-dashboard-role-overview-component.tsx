@@ -1,6 +1,5 @@
 import { RoleOverviewCardComponent } from '../roles/role-overview-card-component';
 import { IncomeCardComponent } from '../incomes/income-card-component';
-import { Income } from '../../models/incomes/income';
 import { SavingsCardComponent } from '../savings/savings-card-component';
 import { Savings } from '../../models/savings/savings';
 import { Balance } from '../../models/funds/balance';
@@ -13,10 +12,13 @@ import { BudgetDashboardRoleOverviewComponentProps } from './budget-dashboard-ro
 export function BudgetDashboardRoleOverviewComponent({
     role,
 }: BudgetDashboardRoleOverviewComponentProps) {
+    if (role === null) {
+        return <>Add a role</>;
+    }
     return (
         <>
             <RoleOverviewCardComponent role={role} />
-            <IncomeCardComponent income={new Income()} />
+            <IncomeCardComponent role={role} />
             <SavingsCardComponent
                 savings={
                     new Savings({

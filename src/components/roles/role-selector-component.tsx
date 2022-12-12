@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
-import { BudgetDashboardRoleSelectorComponentProps } from './budget-dashboard-role-selector-component-props';
+import { RoleSelectorComponentProps } from './role-selector-component-props';
 import { ReactComponent as ChevronLeft } from '../../assets/chevron-left.svg';
 import { ReactComponent as ChevronRight } from '../../assets/chevron-right.svg';
 import { DataComponent } from '../data/data-component';
 import { MoneyComponent } from '../funds/money-component';
-import { Money } from '../../models/funds/money';
 import { DataComponentSize } from '../data/data-component-size';
 
-export function BudgetDashboardRoleSelectorComponent({
-    onRoleSelection,
-    roles,
-}: BudgetDashboardRoleSelectorComponentProps) {
+export function RoleSelectorComponent({ onRoleSelection, roles }: RoleSelectorComponentProps) {
     const [selectedRoleIndex, setSelectedRoleIndex] = useState(0);
 
     useEffect(() => {
@@ -29,6 +25,10 @@ export function BudgetDashboardRoleSelectorComponent({
         }
     }
 
+    if (roles.length === 0) {
+        return null;
+    }
+
     return (
         <div className="col-span-3 py-6 flex flex-col gap-y-2 justify-center items-center">
             <div className="flex justify-center gap-x-4 items-center">
@@ -39,13 +39,19 @@ export function BudgetDashboardRoleSelectorComponent({
                     <div>
                         <img alt="Google Logo" src="company.png" />
                     </div>
-                    <DataComponent size={DataComponentSize.SMALL} label="Google" data={<p>L3</p>} />
+                    <DataComponent
+                        size={DataComponentSize.SMALL}
+                        label={roles[selectedRoleIndex].company}
+                        data={<p>L3</p>}
+                    />
                     <DataComponent
                         size={DataComponentSize.SMALL}
                         label="Total Comp"
-                        data={<MoneyComponent money={new Money()} />}
+                        data={<MoneyComponent money={roles[selectedRoleIndex].totalCompensation} />}
                     />
-                    <p className="text-sm">2022 - 2023</p>
+                    <p className="text-sm">
+                        {roles[selectedRoleIndex].startYear} - {roles[selectedRoleIndex].endYear}
+                    </p>
                 </div>
                 <div onClick={handleNext} className="hover:cursor-pointer">
                     <ChevronRight />

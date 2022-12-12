@@ -11,6 +11,10 @@ export class RoleService {
         this.idBroker = idBroker;
     }
 
+    listRoles(): Role[] {
+        return this.roleBroker.listRoles();
+    }
+
     createRole(role: Role): Role {
         role.id = this.idBroker.generateId();
         return this.roleBroker.saveRole(role);
