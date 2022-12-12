@@ -48,7 +48,10 @@ export const BudgetDashboardComponent = inject<
                                     }
                                 }}
                             />
-                            <BudgetDashboardRoleOverviewComponent role={activeRole} />
+                            <BudgetDashboardRoleOverviewComponent
+                                onAddRole={() => setPage('Roles')}
+                                role={activeRole}
+                            />
                         </GridComponent>
                     );
                 case 'Roles':

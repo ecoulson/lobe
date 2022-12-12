@@ -4,12 +4,18 @@ import { SavingsCardComponent } from '../savings/savings-card-component';
 import { ExpensesCardComponent } from '../expenses/expenses-card-component';
 import { StatisticsCardComponent } from '../statistics/statistics-card-component';
 import { BudgetDashboardRoleOverviewComponentProps } from './budget-dashboard-role-overview-component-props';
+import { ButtonComponent } from '../bases/button-component';
 
 export function BudgetDashboardRoleOverviewComponent({
     role,
+    onAddRole,
 }: BudgetDashboardRoleOverviewComponentProps) {
     if (role === null) {
-        return <>Add a role</>;
+        return (
+            <div className="flex w-full justify-center col-span-3">
+                <ButtonComponent onClick={onAddRole}>Add Role</ButtonComponent>
+            </div>
+        );
     }
     return (
         <>
