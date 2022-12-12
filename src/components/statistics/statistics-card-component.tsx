@@ -24,7 +24,14 @@ export function StatisticsCardComponent({ statistics }: StatisticsCardComponentP
                         label="Estimated Return Rate"
                         data={<PercentageComponent percentage={statistics.estimatedReturnRate} />}
                     />
-                    <DataComponent label="Ages Worked" data={<p>22 - 23</p>} />
+                    <DataComponent
+                        label="Ages Worked"
+                        data={
+                            <p>
+                                {statistics.agesWorked[0]} - {statistics.agesWorked[1]}
+                            </p>
+                        }
+                    />
                 </div>
                 <div className="flex flex-col gap-y-8">
                     <DataComponent
