@@ -6,21 +6,43 @@ export function DataComponent({
     data,
     size = DataComponentSize.DEFAULT,
 }: DataComponentProps) {
-    function getTextSize() {
+    function getLabelSize() {
         switch (size) {
             case DataComponentSize.SMALL:
                 return 'text-sm';
             case DataComponentSize.LARGE:
-                return 'text-md';
+                return 'text-2xl';
             case DataComponentSize.DEFAULT:
             default:
                 return 'text-lg';
         }
     }
+
+    function getDataSize() {
+        switch (size) {
+            case DataComponentSize.SMALL:
+                return 'text-sm';
+            case DataComponentSize.LARGE:
+                return 'text-3xl';
+            case DataComponentSize.DEFAULT:
+            default:
+                return 'text-lg';
+        }
+    }
+
+    function getTextStyle() {
+        switch (size) {
+            case DataComponentSize.LARGE:
+                return 'font-bold';
+            default:
+                return 'italic';
+        }
+    }
+
     return (
         <div>
-            <p className={getTextSize()}>{label}</p>
-            <div className={`italic ${getTextSize()}`}>{data}</div>
+            <p className={getLabelSize()}>{label}</p>
+            <div className={`${getTextStyle()} ${getDataSize()}`}>{data}</div>
         </div>
     );
 }
