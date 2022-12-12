@@ -1,6 +1,4 @@
 import { CardComponent } from '../card/card-component';
-import { CardComponentHeaderType } from '../card/card-component-header-type';
-import { ReactComponent as ExpensesIcon } from '../../assets/expenses.svg';
 import { ReactComponent as StatisticsIcon } from '../../assets/statistics.svg';
 import { RoleOverviewCardComponent } from '../roles/role-overview-card-component';
 import { Role } from '../../models/roles/role';
@@ -10,6 +8,8 @@ import { Income } from '../../models/incomes/income';
 import { SavingsCardComponent } from '../savings/savings-card-component';
 import { Savings } from '../../models/savings/savings';
 import { Balance } from '../../models/funds/balance';
+import { ExpensesCardComponent } from '../expenses/expenses-card-component';
+import { Expenses } from '../../models/expenses/expenses';
 
 export function BudgetDashboardRoleOverviewComponent() {
     return (
@@ -47,13 +47,7 @@ export function BudgetDashboardRoleOverviewComponent() {
                 }
             />
             <div className="col-span-2">
-                <CardComponent
-                    headerType={CardComponentHeaderType.Expenses}
-                    title="Expenses"
-                    icon={<ExpensesIcon width={32} height={32} fill="white" />}
-                >
-                    <p>Some text</p>
-                </CardComponent>
+                <ExpensesCardComponent expenses={new Expenses()} />
             </div>
             <CardComponent title="Statistics" icon={<StatisticsIcon width={32} height={32} />}>
                 <p>Some text</p>

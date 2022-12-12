@@ -14,9 +14,13 @@ export class Expenses {
     public entertainment: ExpenseCategory;
     public miscellaneous: ExpenseCategory;
     public totalExpenses: Money;
+    public topCategory: string;
+    public bottomCategory: string;
 
     constructor(props?: Partial<Expenses>) {
         const {
+            topCategory,
+            bottomCategory,
             id,
             healthcare,
             transportation,
@@ -31,6 +35,8 @@ export class Expenses {
             totalExpenses,
         } = {
             id: '',
+            bottomCategory: 'Entertainment',
+            topCategory: 'Entertainment',
             healthcare: new ExpenseCategory(),
             transportation: new ExpenseCategory(),
             food: new ExpenseCategory(),
@@ -45,6 +51,8 @@ export class Expenses {
             ...props,
         };
         this.id = id;
+        this.topCategory = topCategory;
+        this.bottomCategory = bottomCategory;
         this.healthcare = healthcare;
         this.transportation = transportation;
         this.food = food;
