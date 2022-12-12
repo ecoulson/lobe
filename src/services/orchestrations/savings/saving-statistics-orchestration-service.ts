@@ -1,6 +1,6 @@
-import { BudgetColumn } from '../../../models/budgets/budget-column';
 import { Balance } from '../../../models/funds/balance';
 import { Income } from '../../../models/incomes/income';
+import { Role } from '../../../models/roles/role';
 import { SavingStatistics } from '../../../models/savings/saving-statistics';
 import { Savings } from '../../../models/savings/savings';
 import { Percentage } from '../../../models/statistics/percentage';
@@ -23,24 +23,27 @@ export class SavingStatisticsOrchestrationService {
         this.moneyService = moneyService;
     }
 
+    getSavingStatisticsByRole(role: Role) {
+        return this.savingStatisticsService
+            .listSavingStatistics()
+            .find((statistics) => statistics.roleId === role.id) as SavingStatistics;
+    }
+
     removeSavingStatistics(savingStatistics: SavingStatistics) {
         return this.savingStatisticsService.removeSavingStatistics(savingStatistics);
     }
 
-    createCalculatedSavingsStatistics(budgetColumn: BudgetColumn) {
-        return this.savingStatisticsService.createSavingStatistics(
-            this.calculateSavingsStatistics(
-                budgetColumn.income,
-                new SavingStatistics(),
-                budgetColumn.savings
-            )
-        );
+    createSavingsStatistics(role: Role, income: Income, savings: Savings) {
+        const statistics = this.calculateSavingsStatistics(role, income, savings);
+        statistics.roleId = role.id;
+        return this.savingStatisticsService.createSavingStatistics(statistics);
     }
 
     private calculateSavingsStatistics(
+        role: Role,
         currentIncome: Income,
-        updatedStatistics: SavingStatistics,
-        updatedSavings: Savings
+        updatedSavings: Savings,
+        updatedStatistics: SavingStatistics = new SavingStatistics()
     ) {
         const budgetParameters = this.budgetParametersService.getParameters();
         const totalSaved = this.moneyService.getCurrencyAmount(updatedSavings.totalSaved);
@@ -59,6 +62,7 @@ export class SavingStatisticsOrchestrationService {
             percentageSaved = 0;
         }
 
+        updatedStatistics.agesWorked = [role.startAge, role.endAge];
         updatedStatistics.goalToSave = this.moneyService.createMoney(goalToSave);
         updatedStatistics.distanceFromSavingsGoal = new Balance({
             sign: distanceFromGoal < 0 ? '-' : '+',
@@ -71,13 +75,14 @@ export class SavingStatisticsOrchestrationService {
         return updatedStatistics;
     }
 
-    updateSavingsStatistics(budgetColumn: BudgetColumn, updatedSavings: Savings) {
+    updateSavingsStatistics(
+        role: Role,
+        income: Income,
+        savingStatistics: SavingStatistics,
+        updatedSavings: Savings
+    ) {
         return this.savingStatisticsService.updateSavingStatistics(
-            this.calculateSavingsStatistics(
-                budgetColumn.income,
-                budgetColumn.savingsStatistics,
-                updatedSavings
-            )
+            this.calculateSavingsStatistics(role, income, updatedSavings, savingStatistics)
         );
     }
 }

@@ -3,7 +3,6 @@ import { IncomeCardComponent } from '../incomes/income-card-component';
 import { SavingsCardComponent } from '../savings/savings-card-component';
 import { ExpensesCardComponent } from '../expenses/expenses-card-component';
 import { StatisticsCardComponent } from '../statistics/statistics-card-component';
-import { SavingStatistics } from '../../models/savings/saving-statistics';
 import { BudgetDashboardRoleOverviewComponentProps } from './budget-dashboard-role-overview-component-props';
 
 export function BudgetDashboardRoleOverviewComponent({
@@ -20,7 +19,7 @@ export function BudgetDashboardRoleOverviewComponent({
             <div className="col-span-2">
                 <ExpensesCardComponent role={role} />
             </div>
-            <StatisticsCardComponent statistics={new SavingStatistics()} />
+            <StatisticsCardComponent role={role} />
         </>
     );
 }

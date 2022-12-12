@@ -1,5 +1,7 @@
-import { SavingStatistics } from '../../models/savings/saving-statistics';
+import { SavingStatisticsController } from '../../controllers/savings/saving-statistics-controller';
+import { Role } from '../../models/roles/role';
 
 export interface StatisticsCardComponentProps {
-    statistics: SavingStatistics;
+    role: Role;
+    savingStatisticsController: SavingStatisticsController;
 }

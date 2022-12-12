@@ -4,6 +4,7 @@ import { Percentage } from '../statistics/percentage';
 
 export class SavingStatistics {
     public id: string;
+    public roleId: string;
     public goalToSave: Money;
     public distanceFromSavingsGoal: Balance;
     public percentageSaved: Percentage;
@@ -15,6 +16,7 @@ export class SavingStatistics {
     constructor(props?: Partial<SavingStatistics>) {
         const {
             id,
+            roleId,
             goalToSave,
             distanceFromSavingsGoal,
             percentageSaved,
@@ -24,6 +26,7 @@ export class SavingStatistics {
             agesWorked,
         } = {
             id: '',
+            roleId: '',
             initialNetWorth: new Money(),
             finalNetWorth: new Money(),
             estimatedReturnRate: new Percentage(),
@@ -34,6 +37,7 @@ export class SavingStatistics {
             ...props,
         };
         this.id = id;
+        this.roleId = roleId;
         this.initialNetWorth = initialNetWorth;
         this.finalNetWorth = finalNetWorth;
         this.estimatedReturnRate = estimatedReturnRate;

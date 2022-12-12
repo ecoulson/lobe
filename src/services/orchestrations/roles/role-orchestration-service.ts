@@ -1,4 +1,3 @@
-import { BudgetColumn } from '../../../models/budgets/budget-column';
 import { Role } from '../../../models/roles/role';
 import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
 import { RoleService } from '../../foundations/roles/role-service';
@@ -43,9 +42,7 @@ export class RoleOrchestrationService {
         return role;
     }
 
-    updateRole(updatedRole: Role, previousColumn?: BudgetColumn) {
-        return this.roleService.updateRole(
-            this.calculateRoleAge(updatedRole, previousColumn?.role)
-        );
+    updateRole(updatedRole: Role, previousRole?: Role) {
+        return this.roleService.updateRole(this.calculateRoleAge(updatedRole, previousRole));
     }
 }

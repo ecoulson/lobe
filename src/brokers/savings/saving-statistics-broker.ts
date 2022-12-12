@@ -7,6 +7,10 @@ export class SavingStatisticsBroker {
         this.savingStatisticsTable = new Map();
     }
 
+    listSavingStatistics(): SavingStatistics[] {
+        return Array.from(this.savingStatisticsTable.values());
+    }
+
     saveSavingStatistics(savings: SavingStatistics): SavingStatistics {
         this.savingStatisticsTable.set(savings.id, savings);
         return new SavingStatistics(savings);

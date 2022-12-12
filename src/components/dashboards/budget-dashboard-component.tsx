@@ -41,7 +41,11 @@ export const BudgetDashboardComponent = inject<
                             <BudgetDashboardWealthOverviewComponent />
                             <RoleSelectorComponent
                                 roles={reversedRoles}
-                                onRoleSelection={() => {}}
+                                onRoleSelection={(role) => {
+                                    if (role) {
+                                        setActiveRole(role);
+                                    }
+                                }}
                             />
                             <BudgetDashboardRoleOverviewComponent role={activeRole} />
                         </>

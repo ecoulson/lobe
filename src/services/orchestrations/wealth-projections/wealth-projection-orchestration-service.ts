@@ -1,4 +1,3 @@
-import { BudgetColumn } from '../../../models/budgets/budget-column';
 import { Role } from '../../../models/roles/role';
 import { Savings } from '../../../models/savings/savings';
 import { Tax } from '../../../models/taxes/tax';
@@ -27,18 +26,19 @@ export class WealthProjectionOrchestrationService {
     }
 
     createCalculatedWealthProjection(
-        budgetColumn: BudgetColumn,
+        role: Role,
+        savings: Savings,
         capitalGainsTax: Tax,
         bonusTax: Tax,
-        previousColumn?: BudgetColumn
+        previousWealthProjection?: WealthProjection
     ) {
         return this.wealthProjectionService.createWealthProjection(
             this.calculateWealthProjection(
-                budgetColumn.role,
-                budgetColumn.savings,
+                role,
+                savings,
                 capitalGainsTax,
                 bonusTax,
-                previousColumn?.wealthProjection
+                previousWealthProjection
             )
         );
     }
@@ -83,19 +83,21 @@ export class WealthProjectionOrchestrationService {
     }
 
     updateWealthProjection(
-        budgetColumn: BudgetColumn,
+        role: Role,
+        savings: Savings,
         capitalGainsTax: Tax,
         bonusTax: Tax,
-        previousColumn?: BudgetColumn
+        wealthProjection: WealthProjection,
+        previousWealthProjection?: WealthProjection
     ) {
         return this.wealthProjectionService.updateWealthProjection(
             this.calculateWealthProjection(
-                budgetColumn.role,
-                budgetColumn.savings,
+                role,
+                savings,
                 capitalGainsTax,
                 bonusTax,
-                previousColumn?.wealthProjection,
-                budgetColumn.wealthProjection
+                previousWealthProjection,
+                wealthProjection
             )
         );
     }
