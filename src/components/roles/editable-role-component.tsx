@@ -4,7 +4,6 @@ import { NumberInputComponent } from '../bases/number-input-component';
 import { CardComponent } from '../card/card-component';
 import { DataComponent } from '../data/data-component';
 import { MoneyInputComponent } from '../funds/money-input-component';
-import { GridComponent } from '../grid/grid-component';
 import { PercentageInputComponent } from '../percentages/percentage-input-component';
 import { EditableRoleComponentProps } from './editable-role-component-props';
 
@@ -31,7 +30,7 @@ export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentPro
         <CardComponent title={renderHeader()}>
             <div className="flex w-full">
                 <img className="w-16 h-16" alt="Google logo" src="company.png" />
-                <GridComponent columns={4}>
+                <div className={`grid grid-cols-4 gap-x-4 gap-y-4`}>
                     <DataComponent
                         label="Company"
                         data={
@@ -144,7 +143,7 @@ export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentPro
                             />
                         }
                     />
-                </GridComponent>
+                </div>
             </div>
         </CardComponent>
     );

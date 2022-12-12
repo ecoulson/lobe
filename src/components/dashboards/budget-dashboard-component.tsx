@@ -1,6 +1,5 @@
 import { BudgetDashboardNavigationComponent } from './budget-dashboard-navigation-component';
 import { BudgetDashboardWealthOverviewComponent } from '../wealth-projections/budget-dashboard-wealth-overview-component';
-import { GridComponent } from '../grid/grid-component';
 import { useEffect, useMemo, useState } from 'react';
 import { Role } from '../../models/roles/role';
 import { BudgetDashboardComponentProps } from './budget-dashboard-component-props';
@@ -33,7 +32,7 @@ export const BudgetDashboardComponent = inject<
             switch (page) {
                 case 'Overview':
                     return (
-                        <GridComponent columns={3}>
+                        <div className="grid grid-cols-3 gap-x-4 gap-y-4">
                             <BudgetDashboardNavigationComponent
                                 activeLink={page}
                                 links={links}
@@ -52,7 +51,7 @@ export const BudgetDashboardComponent = inject<
                                 onAddRole={() => setPage('Roles')}
                                 role={activeRole}
                             />
-                        </GridComponent>
+                        </div>
                     );
                 case 'Roles':
                     return (
