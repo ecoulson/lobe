@@ -1,4 +1,3 @@
-import { CardComponent } from '../card/card-component';
 import { RoleOverviewCardComponent } from '../roles/role-overview-card-component';
 import { Role } from '../../models/roles/role';
 import { Percentage } from '../../models/statistics/percentage';
