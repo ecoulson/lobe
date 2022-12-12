@@ -6,7 +6,7 @@ module.exports = {
         extend: {
             fontFamily: ['Inter', ...defaultTheme.fontFamily.sans],
             maxWidth: {
-                container: '1440px',
+                container: '1500px',
             },
             colors: {
                 gray: '#DBDBDB',

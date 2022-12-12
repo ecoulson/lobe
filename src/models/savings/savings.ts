@@ -1,3 +1,4 @@
+import { Balance } from '../funds/balance';
 import { Money } from '../funds/money';
 
 export class Savings {
@@ -5,7 +6,7 @@ export class Savings {
     public cashOnHand: Money;
     public equity: Money;
     public contributionsTo401k: Money;
-    public totalSaved: Money;
+    public totalSaved: Balance;
 
     constructor(props?: Partial<Savings>) {
         const { id, cashOnHand, equity, contributionsTo401k, totalSaved } = {
@@ -13,7 +14,7 @@ export class Savings {
             cashOnHand: new Money(),
             equity: new Money(),
             contributionsTo401k: new Money(),
-            totalSaved: new Money(),
+            totalSaved: new Balance(),
             ...props,
         };
         this.id = id;

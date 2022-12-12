@@ -1,4 +1,5 @@
 import { BudgetColumn } from '../../../models/budgets/budget-column';
+import { Balance } from '../../../models/funds/balance';
 import { Savings } from '../../../models/savings/savings';
 import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
 import { MoneyService } from '../../foundations/funds/money-service';
@@ -45,7 +46,12 @@ export class SavingsOrchestrationService {
         savings.contributionsTo401k = this.moneyService.createMoney(
             contributionsTo401kWithMatching
         );
-        savings.totalSaved = this.moneyService.createMoney(totalSaved);
+        const totalSavedMoney = this.moneyService.createMoney(totalSaved);
+        savings.totalSaved = new Balance({
+            sign: totalSaved < 0 ? '-' : '+',
+            currency: totalSavedMoney.currency,
+            value: totalSavedMoney.value,
+        });
 
         return savings;
     }
