@@ -2,13 +2,13 @@ import { CardComponent } from '../card/card-component';
 import { DataComponent } from '../data/data-component';
 import { VestingScheduleComponent } from '../equities/vesting-schedule-component';
 import { MoneyComponent } from '../funds/money-component';
-import { PercentageComponent } from '../statistics/percentage-component';
+import { PercentageComponent } from '../percentages/percentage-component';
 import { RoleOverviewCardComponentProps } from './role-overview-card-component-props';
 
 export function RoleOverviewCardComponent({ role }: RoleOverviewCardComponentProps) {
     return (
         <CardComponent title="Overview" icon={<img alt="google logo" src="company.png" />}>
-            <div className="flex gap-16">
+            <div className="flex gap-8 justify-between items-center">
                 <div className="flex flex-col gap-y-4">
                     <DataComponent label="Equity" data={<MoneyComponent money={role.equity} />} />
                     <DataComponent

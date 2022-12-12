@@ -3,7 +3,7 @@ import { inject } from '../../clients/dependency-injection/inject';
 import { BudgetParameters } from '../../models/budgets/budget-parameters';
 import { NumberInputComponent } from '../bases/number-input-component';
 import { MoneyInputComponent } from '../funds/money-input-component';
-import { PercentageInputComponent } from '../statistics/percentage-input-component';
+import { PercentageInputComponent } from '../percentages/percentage-input-component';
 import { BudgetParametersComponentProps } from './budget-parameters-component-props';
 import { BudgetParameterFieldComponent } from './budget-parameters-field-component';
 

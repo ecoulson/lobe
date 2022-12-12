@@ -14,7 +14,7 @@ export function ExpensesCardComponent({ expenses }: ExpensesCardComponentProps) 
             icon={<ExpensesIcon width={32} height={32} fill="white" />}
         >
             <div className="flex gap-16 items-center justify-between">
-                <div className="flex gap-16">
+                <div className="flex gap-16 justify-between">
                     <div className="flex flex-col gap-y-4">
                         <DataComponent
                             label="Debt Payments"

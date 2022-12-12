@@ -13,7 +13,7 @@ export function IncomeCardComponent({ income }: IncomeCardComponentProps) {
             title="Income"
             icon={<IncomeIcon width={32} height={32} fill="white" />}
         >
-            <div className="flex gap-16 items-center">
+            <div className="flex gap-8 items-center justify-between">
                 <div className="flex flex-col gap-y-4">
                     <DataComponent
                         label="Total Income"

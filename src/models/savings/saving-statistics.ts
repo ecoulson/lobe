@@ -7,16 +7,37 @@ export class SavingStatistics {
     public goalToSave: Money;
     public distanceFromSavingsGoal: Balance;
     public percentageSaved: Percentage;
+    public initialNetWorth: Money;
+    public finalNetWorth: Money;
+    public estimatedReturnRate: Percentage;
+    public agesWorked: [number, number];
 
     constructor(props?: Partial<SavingStatistics>) {
-        const { id, goalToSave, distanceFromSavingsGoal, percentageSaved } = {
+        const {
+            id,
+            goalToSave,
+            distanceFromSavingsGoal,
+            percentageSaved,
+            initialNetWorth,
+            finalNetWorth,
+            estimatedReturnRate,
+            agesWorked,
+        } = {
             id: '',
+            initialNetWorth: new Money(),
+            finalNetWorth: new Money(),
+            estimatedReturnRate: new Percentage(),
+            agesWorked: [0, 0] as [number, number],
             goalToSave: new Money(),
             distanceFromSavingsGoal: new Balance(),
             percentageSaved: new Percentage(),
             ...props,
         };
         this.id = id;
+        this.initialNetWorth = initialNetWorth;
+        this.finalNetWorth = finalNetWorth;
+        this.estimatedReturnRate = estimatedReturnRate;
+        this.agesWorked = agesWorked;
         this.goalToSave = goalToSave;
         this.distanceFromSavingsGoal = distanceFromSavingsGoal;
         this.percentageSaved = percentageSaved;

@@ -1,5 +1,4 @@
 import { CardComponent } from '../card/card-component';
-import { ReactComponent as StatisticsIcon } from '../../assets/statistics.svg';
 import { RoleOverviewCardComponent } from '../roles/role-overview-card-component';
 import { Role } from '../../models/roles/role';
 import { Percentage } from '../../models/statistics/percentage';
@@ -10,6 +9,8 @@ import { Savings } from '../../models/savings/savings';
 import { Balance } from '../../models/funds/balance';
 import { ExpensesCardComponent } from '../expenses/expenses-card-component';
 import { Expenses } from '../../models/expenses/expenses';
+import { StatisticsCardComponent } from '../statistics/statistics-card-component';
+import { SavingStatistics } from '../../models/savings/saving-statistics';
 
 export function BudgetDashboardRoleOverviewComponent() {
     return (
@@ -49,9 +50,7 @@ export function BudgetDashboardRoleOverviewComponent() {
             <div className="col-span-2">
                 <ExpensesCardComponent expenses={new Expenses()} />
             </div>
-            <CardComponent title="Statistics" icon={<StatisticsIcon width={32} height={32} />}>
-                <p>Some text</p>
-            </CardComponent>
+            <StatisticsCardComponent statistics={new SavingStatistics()} />
         </>
     );
 }
