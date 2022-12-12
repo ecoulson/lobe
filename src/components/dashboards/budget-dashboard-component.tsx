@@ -18,8 +18,8 @@ export const BudgetDashboardComponent = inject<
     ({ budgetId, roleOverviewController }: BudgetDashboardComponentProps) => {
         const links = useMemo(() => ['Overview', 'Roles', 'Parameters'], []);
         const [page, setPage] = useState(links[0]);
-        const [roles, setRoles] = useState(roleOverviewController.getAllRolesForBudget(budgetId));
-        const [activeRole, setActiveRole] = useState<Role>(new Role());
+        const [roles] = useState(roleOverviewController.getAllRolesForBudget(budgetId));
+        const [activeRole] = useState<Role>(new Role());
 
         function renderPage() {
             switch (page) {
