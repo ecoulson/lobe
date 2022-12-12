@@ -1,16 +1,20 @@
 import { DataComponentProps } from './data-component-props';
 import { DataComponentSize } from './data-component-size';
 
-export function DataComponent({ label, data, size }: DataComponentProps) {
+export function DataComponent({
+    label,
+    data,
+    size = DataComponentSize.DEFAULT,
+}: DataComponentProps) {
     function getTextSize() {
         switch (size) {
             case DataComponentSize.SMALL:
                 return 'text-sm';
             case DataComponentSize.LARGE:
-                return 'text-lg';
+                return 'text-md';
             case DataComponentSize.DEFAULT:
             default:
-                return 'text-md';
+                return 'text-lg';
         }
     }
     return (

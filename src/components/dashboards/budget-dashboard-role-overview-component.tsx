@@ -4,13 +4,33 @@ import { ReactComponent as IncomeIcon } from '../../assets/income.svg';
 import { ReactComponent as SavingsIcon } from '../../assets/savings.svg';
 import { ReactComponent as ExpensesIcon } from '../../assets/expenses.svg';
 import { ReactComponent as StatisticsIcon } from '../../assets/statistics.svg';
+import { RoleOverviewCardComponent } from '../roles/role-overview-card-component';
+import { Role } from '../../models/roles/role';
+import { Percentage } from '../../models/statistics/percentage';
 
 export function BudgetDashboardRoleOverviewComponent() {
     return (
         <>
-            <CardComponent title="Overview" icon={<img alt="google logo" src="company.png" />}>
-                <p>Some text</p>
-            </CardComponent>
+            <RoleOverviewCardComponent
+                role={
+                    new Role({
+                        vestingSchedule: [
+                            new Percentage({
+                                value: 30,
+                            }),
+                            new Percentage({
+                                value: 25,
+                            }),
+                            new Percentage({
+                                value: 25,
+                            }),
+                            new Percentage({
+                                value: 20,
+                            }),
+                        ],
+                    })
+                }
+            />
             <CardComponent
                 headerType={CardComponentHeaderType.Income}
                 title="Income"

@@ -8,7 +8,8 @@ export function WealthProjectionChartComponent({
 }: WealthProjectionChartComponentProps) {
     const ref = useRef<SVGSVGElement>(null);
 
-    function createGraph() {
+    useEffect(() => {
+        function createGraph() {
         const width = 640;
         const height = 400;
         const marginTop = 20;
@@ -100,7 +101,6 @@ export function WealthProjectionChartComponent({
 
         return svg.node();
     }
-    useEffect(() => {
         if (ref.current) {
             createGraph();
         }

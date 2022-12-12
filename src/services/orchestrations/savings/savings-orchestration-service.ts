@@ -28,7 +28,7 @@ export class SavingsOrchestrationService {
     private calculateSavings(budgetColumn: BudgetColumn, savings: Savings = new Savings()) {
         const role = budgetColumn.role;
         let contributionsTo401kWithMatching =
-            this.moneyService.getCurrencyAmount(role.total401KContributions) *
+            this.moneyService.getCurrencyAmount(role.maxMatched401KContributions) *
             (1 + role.matching401kPercentage.value / 100);
         if (isNaN(contributionsTo401kWithMatching)) {
             contributionsTo401kWithMatching = 0;

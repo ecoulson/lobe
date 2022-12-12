@@ -4,5 +4,5 @@ import { DataComponentSize } from './data-component-size';
 export interface DataComponentProps {
     label: string;
     data: ReactNode;
-    size: DataComponentSize;
+    size?: DataComponentSize;
 }

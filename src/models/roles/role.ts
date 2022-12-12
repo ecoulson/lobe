@@ -9,12 +9,18 @@ export class Role {
     public endAge: number;
     public company: string;
     public state: string;
-    public total401KContributions: Money;
+    public maxMatched401KContributions: Money;
     public matching401kPercentage: Percentage;
     public signOnBonus: Money;
+    public equity: Money;
+    public vestingSchedule: Percentage[];
+    public baseSalary: Money;
 
     constructor(props?: Partial<Role>) {
         const {
+            equity,
+            baseSalary,
+            vestingSchedule,
             signOnBonus,
             id,
             level,
@@ -23,7 +29,7 @@ export class Role {
             endAge,
             company,
             state,
-            total401KContributions,
+            maxMatched401KContributions,
             matching401kPercentage,
         } = {
             signOnBonus: new Money(),
@@ -34,13 +40,19 @@ export class Role {
             endAge: 0,
             company: '',
             state: '',
-            total401KContributions: new Money(),
+            maxMatched401KContributions: new Money(),
             matching401kPercentage: new Percentage(),
+            equity: new Money(),
+            vestingSchedule: [],
+            baseSalary: new Money(),
             ...props,
         };
         this.id = id;
+        this.baseSalary = baseSalary;
+        this.equity = equity;
+        this.vestingSchedule = vestingSchedule;
         this.signOnBonus = signOnBonus;
-        this.total401KContributions = total401KContributions;
+        this.maxMatched401KContributions = maxMatched401KContributions;
         this.matching401kPercentage = matching401kPercentage;
         this.level = level;
         this.estimatedYearsSpentInPosition = estimatedYearsSpentInPosition;

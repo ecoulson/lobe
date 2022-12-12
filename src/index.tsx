@@ -11,7 +11,7 @@ import { SavingStatisticsBroker } from './brokers/savings/saving-statistics-brok
 import { SavingsBroker } from './brokers/savings/savings-broker';
 import { WealthProjectionBroker } from './brokers/wealth-projections/wealth-projection-broker';
 import { DependencyInjectionClient } from './clients/dependency-injection/dependency-injection-client';
-import { BudgetDashboardComponent } from './components/budget-dashboards/budget-dashboard-component';
+import { BudgetDashboardComponent } from './components/dashboards/budget-dashboard-component';
 import { BudgetParametersController } from './controllers/budget-parameters/budget-parameters-controller';
 import { BudgetTableController } from './controllers/budget-table/budget-table-controller';
 import { MoneyController } from './controllers/funds/money-controller';

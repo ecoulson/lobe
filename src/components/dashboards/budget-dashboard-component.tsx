@@ -6,7 +6,7 @@ import { BudgetDashboardRoleSelectorComponent } from './budget-dashboard-role-se
 
 export function BudgetDashboardComponent() {
     return (
-        <div className="px-6">
+        <div className="px-6 max-w-container mx-auto">
             <GridComponent columns={3}>
                 <BudgetDashboardNavigationComponent onNavigation={() => {}} />
                 <BudgetDashboardWealthOverviewComponent />

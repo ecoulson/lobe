@@ -51,7 +51,7 @@ export class IncomeOrchestrationService {
             });
         }
         const yearly401kContributions = this.moneyService.getCurrencyAmount(
-            role.total401KContributions
+            role.maxMatched401KContributions
         );
         const preTaxSalary = baseSalary - yearly401kContributions;
         const postTaxSalary = preTaxSalary * (1 - incomeTax.rate.value / 100);
