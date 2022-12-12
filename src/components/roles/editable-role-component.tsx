@@ -118,6 +118,17 @@ export const EditableRoleComponent = inject<EditableRoleComponentProps, 'roleCon
                             }
                         />
                         <DataComponent
+                            label="Bonus Target"
+                            data={
+                                <PercentageInputComponent
+                                    percentage={role.bonusTarget}
+                                    onChange={(bonusTarget) =>
+                                        updateRole('bonusTarget', bonusTarget)
+                                    }
+                                />
+                            }
+                        />
+                        <DataComponent
                             label="Max 401K Contributions"
                             data={
                                 <MoneyInputComponent

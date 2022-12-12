@@ -47,7 +47,8 @@ export class RoleOrchestrationService {
         const totalCompensation =
             this.moneyService.getCurrencyAmount(role.baseSalary) +
             this.moneyService.getCurrencyAmount(role.equity) / 4 +
-            this.moneyService.getCurrencyAmount(role.signOnBonus);
+            this.moneyService.getCurrencyAmount(role.signOnBonus) +
+            (this.moneyService.getCurrencyAmount(role.baseSalary) * role.bonusTarget.value) / 100;
         role.totalCompensation = this.moneyService.createMoney(totalCompensation);
         role.endYear = role.startYear + role.estimatedYearsSpentInPosition;
         return role;

@@ -19,9 +19,11 @@ export class Role {
     public totalCompensation: Money;
     public startYear: number;
     public endYear: number;
+    public bonusTarget: Percentage;
 
     constructor(props?: Partial<Role>) {
         const {
+            bonusTarget,
             totalCompensation,
             equity,
             budgetId,
@@ -41,6 +43,7 @@ export class Role {
             endYear,
         } = {
             budgetId: '',
+            bonusTarget: new Percentage(),
             totalCompensation: new Money(),
             signOnBonus: new Money(),
             id: '',
@@ -76,5 +79,6 @@ export class Role {
         this.endAge = endAge;
         this.company = company;
         this.state = state;
+        this.bonusTarget = bonusTarget;
     }
 }
