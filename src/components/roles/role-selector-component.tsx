@@ -30,7 +30,7 @@ export function RoleSelectorComponent({ onRoleSelection, roles }: RoleSelectorCo
     }
 
     return (
-        <div className="col-span-3 py-6 flex flex-col gap-y-2 justify-center items-center">
+        <div className="col-span-full py-6 flex flex-col gap-y-2 justify-center items-center">
             <div className="flex justify-center gap-x-4 items-center">
                 <div onClick={handlePrevious} className="hover:cursor-pointer">
                     <ChevronLeft />

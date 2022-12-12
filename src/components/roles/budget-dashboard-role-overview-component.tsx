@@ -12,18 +12,17 @@ export function BudgetDashboardRoleOverviewComponent({
 }: BudgetDashboardRoleOverviewComponentProps) {
     if (role === null) {
         return (
-            <div className="flex w-full justify-center col-span-3">
+            <div className="flex w-full justify-center col-span-full">
                 <ButtonComponent onClick={onAddRole}>Add Role</ButtonComponent>
             </div>
         );
     }
-    console.log(role);
     return (
         <>
             <RoleOverviewCardComponent role={role} />
             <IncomeCardComponent role={role} />
             <SavingsCardComponent role={role} />
-            <div className="col-span-2">
+            <div className="col-span-1 md:col-span-2">
                 <ExpensesCardComponent role={role} />
             </div>
             <StatisticsCardComponent role={role} />

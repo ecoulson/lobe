@@ -30,7 +30,9 @@ export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentPro
         <CardComponent title={renderHeader()}>
             <div className="flex w-full">
                 <img className="w-16 h-16" alt="Google logo" src="company.png" />
-                <div className={`grid grid-cols-4 gap-x-4 gap-y-4`}>
+                <div
+                    className={`grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 sm:grid-cols-1`}
+                >
                     <DataComponent
                         label="Company"
                         data={

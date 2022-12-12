@@ -5,7 +5,7 @@ import { YearlyWealthProjection } from '../../models/wealth-projections/yearly-w
 
 export function BudgetDashboardWealthOverviewComponent() {
     return (
-        <div className="col-span-3">
+        <div className="col-span-full">
             <CardComponent
                 title="Wealth Projection"
                 icon={<WealthProjectionIcon width={50} height={50} />}

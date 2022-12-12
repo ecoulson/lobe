@@ -17,5 +17,5 @@ export function BudgetDashboardNavigationComponent({
         ));
     }
 
-    return <div className="flex py-6 gap-4 justify-start col-span-3">{renderLinks()}</div>;
+    return <div className="flex py-6 gap-4 justify-start col-span-full">{renderLinks()}</div>;
 }
