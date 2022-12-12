@@ -33,9 +33,9 @@ export function SavingsCardComponent({ savings }: SavingsCardComponentProps) {
                         label="Total Saved"
                         size={DataComponentSize.LARGE}
                         data={
-                            <p className={getBalanceTextColor()}>
+                            <div className={getBalanceTextColor()}>
                                 <BalanceComponent balance={savings.totalSaved} />
-                            </p>
+                            </div>
                         }
                     />
                 </div>

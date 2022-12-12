@@ -19,9 +19,9 @@ export function IncomeCardComponent({ income }: IncomeCardComponentProps) {
                         label="Total Income"
                         size={DataComponentSize.LARGE}
                         data={
-                            <p className="text-card-income">
+                            <div className="text-card-income">
                                 <MoneyComponent money={income.totalIncome} />
-                            </p>
+                            </div>
                         }
                     />
                 </div>

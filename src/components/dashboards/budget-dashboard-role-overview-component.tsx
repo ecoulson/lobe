@@ -10,30 +10,14 @@ import { ExpensesCardComponent } from '../expenses/expenses-card-component';
 import { Expenses } from '../../models/expenses/expenses';
 import { StatisticsCardComponent } from '../statistics/statistics-card-component';
 import { SavingStatistics } from '../../models/savings/saving-statistics';
+import { BudgetDashboardRoleOverviewComponentProps } from './budget-dashboard-role-overview-component-props';
 
-export function BudgetDashboardRoleOverviewComponent() {
+export function BudgetDashboardRoleOverviewComponent({
+    role,
+}: BudgetDashboardRoleOverviewComponentProps) {
     return (
         <>
-            <RoleOverviewCardComponent
-                role={
-                    new Role({
-                        vestingSchedule: [
-                            new Percentage({
-                                value: 30,
-                            }),
-                            new Percentage({
-                                value: 25,
-                            }),
-                            new Percentage({
-                                value: 25,
-                            }),
-                            new Percentage({
-                                value: 20,
-                            }),
-                        ],
-                    })
-                }
-            />
+            <RoleOverviewCardComponent role={role} />
             <IncomeCardComponent income={new Income()} />
             <SavingsCardComponent
                 savings={

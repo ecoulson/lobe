@@ -15,6 +15,7 @@ import { BudgetDashboardComponent } from './components/dashboards/budget-dashboa
 import { BudgetParametersController } from './controllers/budget-parameters/budget-parameters-controller';
 import { BudgetTableController } from './controllers/budget-table/budget-table-controller';
 import { MoneyController } from './controllers/funds/money-controller';
+import { RoleOverviewController } from './controllers/overviews/role-overview-controller';
 import { EventEmitter } from './events/event-emitter';
 import './index.css';
 import { BudgetParameters } from './models/budgets/budget-parameters';
@@ -57,6 +58,7 @@ const budgetParameters = new BudgetParameters({
 });
 const eventBroker = new EventBroker(eventEmitter);
 const budgetParametersBroker = new BudgetParametersBroker(budgetParameters);
+container.register('RoleOverviewController', new RoleOverviewController());
 container.register(
     'BudgetTableController',
     new BudgetTableController(
@@ -110,7 +112,7 @@ container.register<BudgetParametersController>(
 
 root.render(
     <React.StrictMode>
-        <BudgetDashboardComponent />
+        <BudgetDashboardComponent budgetId="" />
     </React.StrictMode>
 );
 

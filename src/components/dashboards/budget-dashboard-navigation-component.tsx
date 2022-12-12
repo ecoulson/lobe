@@ -15,6 +15,7 @@ export function BudgetDashboardNavigationComponent({
     function renderLinks() {
         return links.map((link) => (
             <BudgetDashboardNavigationLinkComponent
+                key={link}
                 text={link}
                 active={link === activeLink}
                 setActive={setActiveLink}

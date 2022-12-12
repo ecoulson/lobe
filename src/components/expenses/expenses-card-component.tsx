@@ -67,20 +67,20 @@ export function ExpensesCardComponent({ expenses }: ExpensesCardComponentProps) 
                         label="Total Expenses"
                         size={DataComponentSize.LARGE}
                         data={
-                            <p className="text-card-expenses">
+                            <div className="text-card-expenses">
                                 <MoneyComponent money={expenses.totalExpenses} />
-                            </p>
+                            </div>
                         }
                     />
                     <DataComponent
                         label="Top Category"
                         size={DataComponentSize.LARGE}
-                        data={<p className="text-card-expenses">{expenses.topCategory}</p>}
+                        data={<div className="text-card-expenses">{expenses.topCategory}</div>}
                     />
                     <DataComponent
                         label="Lowest Category"
                         size={DataComponentSize.LARGE}
-                        data={<p className="text-card-income">{expenses.bottomCategory}</p>}
+                        data={<div className="text-card-income">{expenses.bottomCategory}</div>}
                     />
                 </div>
             </div>

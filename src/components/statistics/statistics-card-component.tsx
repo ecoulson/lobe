@@ -38,27 +38,27 @@ export function StatisticsCardComponent({ statistics }: StatisticsCardComponentP
                         label="Left To Save"
                         size={DataComponentSize.LARGE}
                         data={
-                            <p className="text-card-expenses">
+                            <div className="text-card-expenses">
                                 <BalanceComponent balance={statistics.distanceFromSavingsGoal} />
-                            </p>
+                            </div>
                         }
                     />
                     <DataComponent
                         label="Goal To Save"
                         size={DataComponentSize.LARGE}
                         data={
-                            <p className="text-card-income">
+                            <div className="text-card-income">
                                 <MoneyComponent money={statistics.goalToSave} />
-                            </p>
+                            </div>
                         }
                     />
                     <DataComponent
                         label="Final Net Worth"
                         size={DataComponentSize.LARGE}
                         data={
-                            <p className="text-card-income">
+                            <div className="text-card-income">
                                 <MoneyComponent money={statistics.finalNetWorth} />
-                            </p>
+                            </div>
                         }
                     />
                 </div>
