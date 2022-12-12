@@ -16,7 +16,7 @@ export class RoleOverviewController {
         return this.roleAggregationService.createRole(budgetId, previousRole);
     }
 
-    updateRole(role: Role, previousRole?: Role) {
-        return this.roleAggregationService.updateRole(role, previousRole)
+    updateRole(role: Role) {
+        return this.roleAggregationService.updateRole(role);
     }
 }

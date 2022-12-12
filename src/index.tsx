@@ -61,8 +61,7 @@ const idBroker = new IdBroker();
 const moneyService = new MoneyService();
 const incomeOrchestrationService = new IncomeOrchestrationService(
     new IncomeService(new IncomeBroker(), idBroker),
-    moneyService,
-    budgetParametersService
+    moneyService
 );
 const expensesOrchestrationService = new ExpenseOrchestrationService(
     new ExpensesService(new ExpenseBroker(), idBroker),

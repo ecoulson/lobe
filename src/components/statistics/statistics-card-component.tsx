@@ -25,6 +25,13 @@ export const StatisticsCardComponent = inject<
             setStatistics(savingStatisticsController.getSavingStatisticsByRole(role));
         }, [role, setStatistics, savingStatisticsController]);
 
+        function getBalanceTextColor() {
+            if (statistics.distanceFromSavingsGoal.sign === '-') {
+                return 'text-card-expenses';
+            }
+            return 'text-card-income';
+        }
+
         return (
             <CardComponent title="Statistics" icon={<StatisticsIcon width={32} height={32} />}>
                 <div className="flex gap-8 items-center justify-between">
@@ -57,7 +64,7 @@ export const StatisticsCardComponent = inject<
                             label="Left To Save"
                             size={DataComponentSize.LARGE}
                             data={
-                                <div className="text-card-expenses">
+                                <div className={getBalanceTextColor()}>
                                     <BalanceComponent
                                         balance={statistics.distanceFromSavingsGoal}
                                     />

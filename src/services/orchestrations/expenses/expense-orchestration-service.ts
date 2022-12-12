@@ -29,8 +29,10 @@ export class ExpenseOrchestrationService {
         return this.expensesService.createExpenses(expenses);
     }
 
-    updateExpenses(updatedExpenses: Expenses): Expenses {
-        return this.expensesService.updateExpenses(this.calculateExpenses(updatedExpenses));
+    updateExpenses(role: Role): Expenses {
+        return this.expensesService.updateExpenses(
+            this.calculateExpenses(this.getExpensesByRole(role))
+        );
     }
 
     private calculateExpenses(expenses: Expenses = new Expenses()) {

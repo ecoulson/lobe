@@ -2,21 +2,14 @@ import { Income } from '../../../models/incomes/income';
 import { IncomeService } from '../../foundations/incomes/income-service';
 import { MoneyService } from '../../foundations/funds/money-service';
 import { Tax } from '../../../models/taxes/tax';
-import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
 import { Role } from '../../../models/roles/role';
 
 export class IncomeOrchestrationService {
     private readonly incomeService: IncomeService;
     private readonly moneyService: MoneyService;
-    private readonly budgetParametersService: BudgetParametersService;
 
-    constructor(
-        incomeService: IncomeService,
-        moneyService: MoneyService,
-        budgetParametersService: BudgetParametersService
-    ) {
+    constructor(incomeService: IncomeService, moneyService: MoneyService) {
         this.incomeService = incomeService;
-        this.budgetParametersService = budgetParametersService;
         this.moneyService = moneyService;
     }
 
@@ -36,9 +29,9 @@ export class IncomeOrchestrationService {
         return this.incomeService.createIncome(income);
     }
 
-    updateIncome(role: Role, updatedIncome: Income, incomeTax: Tax, bonusTax: Tax) {
+    updateIncome(role: Role, incomeTax: Tax, bonusTax: Tax) {
         return this.incomeService.updateIncome(
-            this.calculateIncome(role, incomeTax, bonusTax, updatedIncome)
+            this.calculateIncome(role, incomeTax, bonusTax, this.getIncomeByRole(role))
         );
     }
 
@@ -48,13 +41,11 @@ export class IncomeOrchestrationService {
         bonusTax: Tax,
         income: Income = new Income()
     ) {
-        const budgetParameters = this.budgetParametersService.getParameters();
-
-        const baseSalary = this.moneyService.getCurrencyAmount(income.baseSalary);
+        const baseSalary = this.moneyService.getCurrencyAmount(role.baseSalary);
         if (isNaN(baseSalary)) {
             return new Income({
                 id: income.id,
-                baseSalary: income.baseSalary,
+                baseSalary: role.baseSalary,
             });
         }
         const yearly401kContributions = this.moneyService.getCurrencyAmount(
@@ -62,10 +53,10 @@ export class IncomeOrchestrationService {
         );
         const preTaxSalary = baseSalary - yearly401kContributions;
         const postTaxSalary = preTaxSalary * (1 - incomeTax.rate.value / 100);
-        const bonus =
-            baseSalary * (budgetParameters.bonusGoal.value / 100) * (1 - bonusTax.rate.value / 100);
+        const bonus = baseSalary * (role.bonusTarget.value / 100) * (1 - bonusTax.rate.value / 100);
         const totalIncome = bonus + postTaxSalary;
 
+        income.baseSalary = this.moneyService.createMoney(baseSalary);
         income.salaryPreTax = this.moneyService.createMoney(preTaxSalary);
         income.salaryPostTax = this.moneyService.createMoney(postTaxSalary);
         income.bonus = this.moneyService.createMoney(bonus);

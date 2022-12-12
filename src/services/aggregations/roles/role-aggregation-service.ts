@@ -51,7 +51,53 @@ export class RoleAggregationService {
         return role;
     }
 
-    updateRole(role: Role, previousRole?: Role) {
-        return this.roleOrchestrationService.updateRole(role, previousRole);
+    updateRole(role: Role) {
+        const chronologicalRoles = this.roleOrchestrationService
+            .getAllRolesForBudget(role.budgetId)
+            .sort((a: Role, b: Role) => {
+                if (a.startYear < b.startYear) {
+                    return -1;
+                } else if (a.startYear === b.startYear) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            });
+        const roleIndex = chronologicalRoles.findIndex((storedRole) => role.id === storedRole.id);
+        const incomeTax = new Tax({
+            rate: new Percentage({
+                value: 33,
+            }),
+        });
+        const bonusTax = new Tax({
+            rate: new Percentage({
+                value: 40,
+            }),
+        });
+        const updatedRoles = [];
+        for (let i = roleIndex; i < chronologicalRoles.length; i++) {
+            const updatedDependantRole = this.roleOrchestrationService.updateRole(
+                chronologicalRoles[i],
+                chronologicalRoles[i - 1]
+            );
+            const updatedIncome = this.incomeOrchestrationService.updateIncome(
+                updatedDependantRole,
+                incomeTax,
+                bonusTax
+            );
+            const updatedExpenses = this.expensesOrchestrationService.updateExpenses(role);
+            const updatedSavings = this.savingsOrchestrationService.updateSavings(
+                updatedDependantRole,
+                updatedIncome,
+                updatedExpenses
+            );
+            this.savingStatisticsOrchestrationService.updateSavingsStatistics(
+                updatedDependantRole,
+                updatedIncome,
+                updatedSavings
+            );
+            updatedRoles.push(updatedDependantRole);
+        }
+        return updatedRoles[0];
     }
 }

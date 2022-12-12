@@ -13,10 +13,10 @@ export const EditableRoleComponent = inject<EditableRoleComponentProps, 'roleCon
     {
         roleController: 'RoleOverviewController',
     },
-    ({ role, onEdit, roleController, previousRole }: EditableRoleComponentProps) => {
+    ({ role, onEdit, roleController}: EditableRoleComponentProps) => {
         function updateRole<K extends keyof Role>(key: K, value: Role[K]) {
             role[key] = value;
-            onEdit(roleController.updateRole(role, previousRole));
+            onEdit(roleController.updateRole(role));
         }
 
         function renderHeader() {

@@ -51,6 +51,9 @@ export class SavingsOrchestrationService {
             contributionsTo401kWithMatching +
             this.moneyService.getCurrencyAmount(savings.equity);
 
+        savings.equity = this.moneyService.createMoney(
+            this.moneyService.getCurrencyAmount(role.equity) / 4 // TODO: Calculate using vesting schedule
+        );
         savings.cashOnHand = this.moneyService.createMoney(cashOnHand);
         savings.contributionsTo401k = this.moneyService.createMoney(
             contributionsTo401kWithMatching
@@ -65,9 +68,9 @@ export class SavingsOrchestrationService {
         return savings;
     }
 
-    updateSavings(role: Role, income: Income, expenses: Expenses, updatedSavings: Savings) {
+    updateSavings(role: Role, income: Income, expenses: Expenses) {
         return this.savingsService.updateSavings(
-            this.calculateSavings(role, income, expenses, updatedSavings)
+            this.calculateSavings(role, income, expenses, this.getSavingsByRole(role))
         );
     }
 }

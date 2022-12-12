@@ -62,10 +62,11 @@ export class SavingStatisticsOrchestrationService {
             percentageSaved = 0;
         }
 
+        updatedStatistics.estimatedReturnRate = budgetParameters.estimatedReturnRate;
         updatedStatistics.agesWorked = [role.startAge, role.endAge];
         updatedStatistics.goalToSave = this.moneyService.createMoney(goalToSave);
         updatedStatistics.distanceFromSavingsGoal = new Balance({
-            sign: distanceFromGoal < 0 ? '-' : '+',
+            sign: distanceFromGoal > 0 ? '+' : '-',
             ...this.moneyService.createMoney(Math.abs(distanceFromGoal)),
         });
         updatedStatistics.percentageSaved = new Percentage({
@@ -75,14 +76,14 @@ export class SavingStatisticsOrchestrationService {
         return updatedStatistics;
     }
 
-    updateSavingsStatistics(
-        role: Role,
-        income: Income,
-        savingStatistics: SavingStatistics,
-        updatedSavings: Savings
-    ) {
+    updateSavingsStatistics(role: Role, income: Income, updatedSavings: Savings) {
         return this.savingStatisticsService.updateSavingStatistics(
-            this.calculateSavingsStatistics(role, income, updatedSavings, savingStatistics)
+            this.calculateSavingsStatistics(
+                role,
+                income,
+                updatedSavings,
+                this.getSavingStatisticsByRole(role)
+            )
         );
     }
 }
