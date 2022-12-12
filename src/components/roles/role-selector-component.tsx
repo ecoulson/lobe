@@ -42,7 +42,7 @@ export function RoleSelectorComponent({ onRoleSelection, roles }: RoleSelectorCo
                     <DataComponent
                         size={DataComponentSize.SMALL}
                         label={roles[selectedRoleIndex].company}
-                        data={<p>L3</p>}
+                        data={<p>{roles[selectedRoleIndex].level}</p>}
                     />
                     <DataComponent
                         size={DataComponentSize.SMALL}

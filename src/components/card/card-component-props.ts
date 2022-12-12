@@ -2,8 +2,8 @@ import { ReactNode } from 'react';
 import { CardComponentHeaderType } from './card-component-header-type';
 
 export interface CardComponentProps {
-    title: string;
-    icon: ReactNode;
-    headerType?: CardComponentHeaderType;
+    title: ReactNode;
     children: ReactNode;
+    icon?: ReactNode;
+    headerType?: CardComponentHeaderType;
 }

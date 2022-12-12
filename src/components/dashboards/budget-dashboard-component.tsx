@@ -33,8 +33,9 @@ export const BudgetDashboardComponent = inject<
             switch (page) {
                 case 'Overview':
                     return (
-                        <>
+                        <GridComponent columns={3}>
                             <BudgetDashboardNavigationComponent
+                                activeLink={page}
                                 links={links}
                                 onNavigation={setPage}
                             />
@@ -48,12 +49,13 @@ export const BudgetDashboardComponent = inject<
                                 }}
                             />
                             <BudgetDashboardRoleOverviewComponent role={activeRole} />
-                        </>
+                        </GridComponent>
                     );
                 case 'Roles':
                     return (
                         <>
                             <BudgetDashboardNavigationComponent
+                                activeLink={page}
                                 links={links}
                                 onNavigation={setPage}
                             />
@@ -66,15 +68,15 @@ export const BudgetDashboardComponent = inject<
                     );
                 default:
                     return (
-                        <BudgetDashboardNavigationComponent links={links} onNavigation={setPage} />
+                        <BudgetDashboardNavigationComponent
+                            activeLink={page}
+                            links={links}
+                            onNavigation={setPage}
+                        />
                     );
             }
         }
 
-        return (
-            <div className="px-6 max-w-container mx-auto">
-                <GridComponent columns={3}>{renderPage()}</GridComponent>
-            </div>
-        );
+        return <div className="px-6 max-w-container mx-auto">{renderPage()}</div>;
     }
 );

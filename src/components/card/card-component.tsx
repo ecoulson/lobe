@@ -1,7 +1,12 @@
 import { CardComponentHeaderType } from './card-component-header-type';
 import { CardComponentProps } from './card-component-props';
 
-export function CardComponent({ title, icon, children, headerType = CardComponentHeaderType.None }: CardComponentProps) {
+export function CardComponent({
+    title,
+    icon = null,
+    children,
+    headerType = CardComponentHeaderType.None,
+}: CardComponentProps) {
     function getHeaderColor() {
         switch (headerType) {
             case CardComponentHeaderType.Expenses:
@@ -42,7 +47,7 @@ export function CardComponent({ title, icon, children, headerType = CardComponen
             <div
                 className={`${getHeaderBorder()} py-2 px-4 rounded-t-2xl flex justify-between ${getHeaderColor()}`}
             >
-                <h2 className={`font-bold text-2xl ${getHeaderTextColor()}`}>{title}</h2>
+                <div className={`font-bold text-2xl ${getHeaderTextColor()}`}>{title}</div>
                 <div>{icon}</div>
             </div>
             <div className="bg-beige rounded-b-2xl p-4 border-x-2 border-b-2 border-x-gray border-b-gray">

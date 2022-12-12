@@ -1,13 +1,20 @@
 import { Role } from '../../../models/roles/role';
 import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
+import { MoneyService } from '../../foundations/funds/money-service';
 import { RoleService } from '../../foundations/roles/role-service';
 
 export class RoleOrchestrationService {
     private readonly roleService: RoleService;
+    private readonly moneyService: MoneyService;
     private readonly budgetParametersService: BudgetParametersService;
 
-    constructor(roleService: RoleService, budgetParametersService: BudgetParametersService) {
+    constructor(
+        roleService: RoleService,
+        moneyService: MoneyService,
+        budgetParametersService: BudgetParametersService
+    ) {
         this.budgetParametersService = budgetParametersService;
+        this.moneyService = moneyService;
         this.roleService = roleService;
     }
 
@@ -37,7 +44,11 @@ export class RoleOrchestrationService {
             role.endAge = role.startAge;
             return role;
         }
-        role.endAge = role.startAge + role.estimatedYearsSpentInPosition;
+        const totalCompensation =
+            this.moneyService.getCurrencyAmount(role.baseSalary) +
+            this.moneyService.getCurrencyAmount(role.equity) / 4 +
+            this.moneyService.getCurrencyAmount(role.signOnBonus);
+        role.totalCompensation = this.moneyService.createMoney(totalCompensation);
         role.endYear = role.startYear + role.estimatedYearsSpentInPosition;
         return role;
     }

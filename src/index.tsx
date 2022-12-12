@@ -83,6 +83,7 @@ container.register(
         new RoleAggregationService(
             new RoleOrchestrationService(
                 new RoleService(new RoleBroker(), idBroker),
+                moneyService,
                 budgetParametersService
             ),
             incomeOrchestrationService,

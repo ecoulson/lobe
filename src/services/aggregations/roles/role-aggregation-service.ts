@@ -50,4 +50,8 @@ export class RoleAggregationService {
         this.savingStatisticsOrchestrationService.createSavingsStatistics(role, income, savings);
         return role;
     }
+
+    updateRole(role: Role, previousRole?: Role) {
+        return this.roleOrchestrationService.updateRole(role, previousRole);
+    }
 }
