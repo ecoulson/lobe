@@ -31,7 +31,7 @@ export function BudgetDashboardRoleOverviewComponent({
                 }
             />
             <div className="col-span-2">
-                <ExpensesCardComponent expenses={new Expenses()} />
+                <ExpensesCardComponent role={role} />
             </div>
             <StatisticsCardComponent statistics={new SavingStatistics()} />
         </>

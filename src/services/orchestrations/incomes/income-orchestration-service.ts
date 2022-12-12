@@ -31,11 +31,9 @@ export class IncomeOrchestrationService {
     }
 
     createIncome(role: Role, incomeTax: Tax, bonusTax: Tax) {
-        const income = this.incomeService.createIncome(
-            this.calculateIncome(role, incomeTax, bonusTax)
-        );
+        const income = this.calculateIncome(role, incomeTax, bonusTax);
         income.roleId = role.id;
-        return this.incomeService.updateIncome(income);
+        return this.incomeService.createIncome(income);
     }
 
     updateIncome(role: Role, updatedIncome: Income, incomeTax: Tax, bonusTax: Tax) {

@@ -21,9 +21,9 @@ export class RoleOrchestrationService {
     }
 
     createRole(budgetId: string, previousRole?: Role) {
-        const role = this.roleService.createRole(this.calculateRoleAge(new Role(), previousRole));
+        const role = this.calculateRoleAge(new Role(), previousRole);
         role.budgetId = budgetId;
-        return this.roleService.updateRole(role);
+        return this.roleService.createRole(role);
     }
 
     private calculateRoleAge(role: Role, previousRole?: Role) {

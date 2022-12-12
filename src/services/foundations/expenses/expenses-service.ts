@@ -11,6 +11,10 @@ export class ExpensesService {
         this.idBroker = idBroker;
     }
 
+    listExpenses() {
+        return this.expenseBroker.listExpenses()
+    }
+
     createExpenses(expenses: Expenses): Expenses {
         expenses.id = this.idBroker.generateId();
         return this.expenseBroker.saveExpenses(expenses);

@@ -1,5 +1,7 @@
-import { Expenses } from "../../models/expenses/expenses";
+import { ExpensesController } from '../../controllers/expenses/expenses-controller';
+import { Role } from '../../models/roles/role';
 
 export interface ExpensesCardComponentProps {
-    expenses: Expenses;
+    role: Role;
+    expensesController: ExpensesController;
 }

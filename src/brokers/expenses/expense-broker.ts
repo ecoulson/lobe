@@ -1,10 +1,14 @@
-import { Expenses } from "../../models/expenses/expenses";
+import { Expenses } from '../../models/expenses/expenses';
 
 export class ExpenseBroker {
     private expensesTable: Map<string, Expenses>;
 
     constructor() {
         this.expensesTable = new Map();
+    }
+
+    listExpenses() {
+        return Array.from(this.expensesTable.values());
     }
 
     saveExpenses(expenses: Expenses): Expenses {

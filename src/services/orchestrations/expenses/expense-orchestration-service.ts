@@ -1,5 +1,6 @@
 import { ExpenseCategory } from '../../../models/expenses/expense-category';
 import { Expenses } from '../../../models/expenses/expenses';
+import { Role } from '../../../models/roles/role';
 import { ExpensesService } from '../../foundations/expenses/expenses-service';
 import { MoneyService } from '../../foundations/funds/money-service';
 
@@ -12,12 +13,20 @@ export class ExpenseOrchestrationService {
         this.moneyService = moneyService;
     }
 
+    getExpensesByRole(role: Role) {
+        return this.expensesService
+            .listExpenses()
+            .find((expenses) => role.id === expenses.roleId) as Expenses;
+    }
+
     removeExpenses(expenses: Expenses) {
         return this.expensesService.removeExpenses(expenses);
     }
 
-    createCalculatedExpenses(): Expenses {
-        return this.expensesService.createExpenses(this.calculateExpenses());
+    createExpenses(role: Role): Expenses {
+        const expenses = this.calculateExpenses();
+        expenses.roleId = role.id;
+        return this.expensesService.createExpenses(expenses);
     }
 
     updateExpenses(updatedExpenses: Expenses): Expenses {

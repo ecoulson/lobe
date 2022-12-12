@@ -2,12 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BudgetParametersBroker } from './brokers/budget-parameters/budget-parameters-broker';
 import { EventBroker } from './brokers/events/event-broker';
+import { ExpenseBroker } from './brokers/expenses/expense-broker';
 import { IdBroker } from './brokers/ids/id-broker';
 import { IncomeBroker } from './brokers/incomes/income-broker';
 import { RoleBroker } from './brokers/roles/role-broker';
 import { DependencyInjectionClient } from './clients/dependency-injection/dependency-injection-client';
 import { BudgetDashboardComponent } from './components/dashboards/budget-dashboard-component';
 import { BudgetParametersController } from './controllers/budget-parameters/budget-parameters-controller';
+import { ExpensesController } from './controllers/expenses/expenses-controller';
 import { MoneyController } from './controllers/funds/money-controller';
 import { IncomeController } from './controllers/incomes/income-controller';
 import { RoleOverviewController } from './controllers/overviews/role-overview-controller';
@@ -19,10 +21,12 @@ import reportWebVitals from './reportWebVitals';
 import { RoleAggregationService } from './services/aggregations/roles/role-aggregation-service';
 import { BudgetParametersEventService } from './services/foundations/budgets/budget-parameters-event-service';
 import { BudgetParametersService } from './services/foundations/budgets/budget-parameters-service';
+import { ExpensesService } from './services/foundations/expenses/expenses-service';
 import { MoneyService } from './services/foundations/funds/money-service';
 import { IncomeService } from './services/foundations/incomes/income-service';
 import { RoleService } from './services/foundations/roles/role-service';
 import { BudgetParametersOrchestrationService } from './services/orchestrations/budgets/budget-parameters-orchestration-service';
+import { ExpenseOrchestrationService } from './services/orchestrations/expenses/expense-orchestration-service';
 import { IncomeOrchestrationService } from './services/orchestrations/incomes/income-orchestration-service';
 import { RoleOrchestrationService } from './services/orchestrations/roles/role-orchestration-service';
 
@@ -52,6 +56,10 @@ const incomeOrchestrationService = new IncomeOrchestrationService(
     moneyService,
     budgetParametersService
 );
+const expensesOrchestrationService = new ExpenseOrchestrationService(
+    new ExpensesService(new ExpenseBroker(), idBroker),
+    moneyService
+);
 container.register(
     'RoleOverviewController',
     new RoleOverviewController(
@@ -60,11 +68,13 @@ container.register(
                 new RoleService(new RoleBroker(), idBroker),
                 budgetParametersService
             ),
-            incomeOrchestrationService
+            incomeOrchestrationService,
+            expensesOrchestrationService
         )
     )
 );
 container.register('IncomeController', new IncomeController(incomeOrchestrationService));
+container.register('ExpensesController', new ExpensesController(expensesOrchestrationService));
 container.register<MoneyController>('MoneyController', new MoneyController(new MoneyService()));
 container.register<BudgetParametersController>(
     'BudgetParametersController',
