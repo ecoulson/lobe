@@ -17,6 +17,6 @@ export class RoleOverviewController {
     }
 
     updateRole(role: Role) {
-        return this.roleAggregationService.updateRole(role);
+        return this.roleAggregationService.updateRoles(role);
     }
 }

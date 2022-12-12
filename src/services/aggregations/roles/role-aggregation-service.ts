@@ -51,7 +51,7 @@ export class RoleAggregationService {
         return role;
     }
 
-    updateRole(role: Role) {
+    updateRoles(role: Role) {
         const chronologicalRoles = this.roleOrchestrationService
             .getAllRolesForBudget(role.budgetId)
             .sort((a: Role, b: Role) => {
@@ -74,7 +74,8 @@ export class RoleAggregationService {
                 value: 40,
             }),
         });
-        const updatedRoles = [];
+        const roles = chronologicalRoles.slice(0, roleIndex);
+        chronologicalRoles[roleIndex] = role;
         for (let i = roleIndex; i < chronologicalRoles.length; i++) {
             const updatedDependantRole = this.roleOrchestrationService.updateRole(
                 chronologicalRoles[i],
@@ -96,8 +97,8 @@ export class RoleAggregationService {
                 updatedIncome,
                 updatedSavings
             );
-            updatedRoles.push(updatedDependantRole);
+            roles.push(updatedDependantRole);
         }
-        return updatedRoles[0];
+        return roles;
     }
 }

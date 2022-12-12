@@ -17,6 +17,7 @@ export function BudgetDashboardRoleOverviewComponent({
             </div>
         );
     }
+    console.log(role);
     return (
         <>
             <RoleOverviewCardComponent role={role} />
