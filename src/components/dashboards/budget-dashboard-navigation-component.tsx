@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BudgetDashboardNavigationComponentProps } from './budget-dashboard-navigation-component-props';
 import { BudgetDashboardNavigationLinkComponent } from './budget-dashboard-navigation-link-component';
 
 export function BudgetDashboardNavigationComponent({
+    links,
     onNavigation,
 }: BudgetDashboardNavigationComponentProps) {
-    const links = useMemo(() => ['Overview', 'Roles', 'Parameters'], []);
     const [activeLink, setActiveLink] = useState(links[0]);
 
     useEffect(() => {
