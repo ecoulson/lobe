@@ -4,7 +4,6 @@ import { SavingsCardComponent } from '../savings/savings-card-component';
 import { Savings } from '../../models/savings/savings';
 import { Balance } from '../../models/funds/balance';
 import { ExpensesCardComponent } from '../expenses/expenses-card-component';
-import { Expenses } from '../../models/expenses/expenses';
 import { StatisticsCardComponent } from '../statistics/statistics-card-component';
 import { SavingStatistics } from '../../models/savings/saving-statistics';
 import { BudgetDashboardRoleOverviewComponentProps } from './budget-dashboard-role-overview-component-props';

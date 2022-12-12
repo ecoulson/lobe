@@ -29,14 +29,17 @@ export class RoleOrchestrationService {
     private calculateRoleAge(role: Role, previousRole?: Role) {
         const budgetParameters = this.budgetParametersService.getParameters();
         role.startAge = budgetParameters.currentAge;
+        role.startYear = new Date().getUTCFullYear();
         if (previousRole) {
             role.startAge = previousRole.endAge;
+            role.startYear = previousRole.endYear;
         }
         if (isNaN(role.estimatedYearsSpentInPosition)) {
             role.endAge = role.startAge;
             return role;
         }
         role.endAge = role.startAge + role.estimatedYearsSpentInPosition;
+        role.endYear = role.startYear + role.estimatedYearsSpentInPosition;
         return role;
     }
 
