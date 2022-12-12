@@ -11,6 +11,10 @@ export class SavingsService {
         this.idBroker = idBroker;
     }
 
+    listSavings() {
+        return this.savingsBroker.listSavings();
+    }
+
     createSavings(savings: Savings): Savings {
         savings.id = this.idBroker.generateId();
         return this.savingsBroker.saveSavings(savings);

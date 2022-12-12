@@ -1,7 +1,8 @@
-import { BudgetColumn } from '../../../models/budgets/budget-column';
+import { Expenses } from '../../../models/expenses/expenses';
 import { Balance } from '../../../models/funds/balance';
+import { Income } from '../../../models/incomes/income';
+import { Role } from '../../../models/roles/role';
 import { Savings } from '../../../models/savings/savings';
-import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
 import { MoneyService } from '../../foundations/funds/money-service';
 import { SavingsService } from '../../foundations/savings/savings-service';
 
@@ -9,25 +10,33 @@ export class SavingsOrchestrationService {
     private readonly savingsService: SavingsService;
     private readonly moneyService: MoneyService;
 
-    constructor(
-        savingsService: SavingsService,
-        moneyService: MoneyService,
-        budgetParametersService: BudgetParametersService
-    ) {
+    constructor(savingsService: SavingsService, moneyService: MoneyService) {
         this.savingsService = savingsService;
         this.moneyService = moneyService;
+    }
+
+    getSavingsByRole(role: Role) {
+        return this.savingsService
+            .listSavings()
+            .find((saving) => saving.roleId === role.id) as Savings;
     }
 
     removeSavings(savings: Savings) {
         return this.savingsService.removeSavings(savings);
     }
 
-    createCalculatedSavings(budgetColumn: BudgetColumn) {
-        return this.savingsService.createSavings(this.calculateSavings(budgetColumn));
+    createSavings(role: Role, income: Income, expenses: Expenses) {
+        const savings = this.calculateSavings(role, income, expenses);
+        savings.roleId = role.id;
+        return this.savingsService.createSavings(savings);
     }
 
-    private calculateSavings(budgetColumn: BudgetColumn, savings: Savings = new Savings()) {
-        const role = budgetColumn.role;
+    private calculateSavings(
+        role: Role,
+        income: Income,
+        expenses: Expenses,
+        savings: Savings = new Savings()
+    ) {
         let contributionsTo401kWithMatching =
             this.moneyService.getCurrencyAmount(role.maxMatched401KContributions) *
             (1 + role.matching401kPercentage.value / 100);
@@ -35,8 +44,8 @@ export class SavingsOrchestrationService {
             contributionsTo401kWithMatching = 0;
         }
         const cashOnHand =
-            this.moneyService.getCurrencyAmount(budgetColumn.income.totalIncome) -
-            this.moneyService.getCurrencyAmount(budgetColumn.expenses.totalExpenses);
+            this.moneyService.getCurrencyAmount(income.totalIncome) -
+            this.moneyService.getCurrencyAmount(expenses.totalExpenses);
         const totalSaved =
             cashOnHand +
             contributionsTo401kWithMatching +
@@ -48,7 +57,7 @@ export class SavingsOrchestrationService {
         );
         const totalSavedMoney = this.moneyService.createMoney(totalSaved);
         savings.totalSaved = new Balance({
-            sign: totalSaved < 0 ? '-' : '+',
+            sign: totalSaved < 0 ? '-' : '',
             currency: totalSavedMoney.currency,
             value: totalSavedMoney.value,
         });
@@ -56,9 +65,9 @@ export class SavingsOrchestrationService {
         return savings;
     }
 
-    updateSavings(budgetColumn: BudgetColumn, updatedSavings: Savings) {
+    updateSavings(role: Role, income: Income, expenses: Expenses, updatedSavings: Savings) {
         return this.savingsService.updateSavings(
-            this.calculateSavings(budgetColumn, updatedSavings)
+            this.calculateSavings(role, income, expenses, updatedSavings)
         );
     }
 }

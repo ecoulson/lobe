@@ -7,6 +7,10 @@ export class SavingsBroker {
         this.savingsTable = new Map();
     }
 
+    listSavings() {
+        return Array.from(this.savingsTable.values());
+    }
+
     saveSavings(savings: Savings): Savings {
         this.savingsTable.set(savings.id, savings);
         return new Savings(savings);
