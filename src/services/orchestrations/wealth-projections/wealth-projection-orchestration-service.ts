@@ -1,7 +1,6 @@
 import { Role } from '../../../models/roles/role';
 import { Savings } from '../../../models/savings/savings';
 import { Tax } from '../../../models/taxes/tax';
-import { WealthProjection } from '../../../models/wealth-projections/wealth-projection';
 import { TemporalWealthProjection } from '../../../models/wealth-projections/yearly-wealth-projection';
 import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
 import { MoneyService } from '../../foundations/funds/money-service';
