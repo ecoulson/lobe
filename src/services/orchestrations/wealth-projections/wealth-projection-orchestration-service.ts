@@ -2,64 +2,74 @@ import { Role } from '../../../models/roles/role';
 import { Savings } from '../../../models/savings/savings';
 import { Tax } from '../../../models/taxes/tax';
 import { WealthProjection } from '../../../models/wealth-projections/wealth-projection';
+import { TemporalWealthProjection } from '../../../models/wealth-projections/yearly-wealth-projection';
 import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
 import { MoneyService } from '../../foundations/funds/money-service';
-import { WealthProjectionService } from '../../foundations/wealth-projections/wealth-projection-service';
+import { SavingsService } from '../../foundations/savings/savings-service';
 
 export class WealthProjectionOrchestrationService {
-    private readonly wealthProjectionService: WealthProjectionService;
+    private readonly savingsService: SavingsService;
     private readonly budgetParametersService: BudgetParametersService;
     private readonly moneyService: MoneyService;
 
     constructor(
-        wealthProjectionService: WealthProjectionService,
+        savingsService: SavingsService,
         budgetParametersService: BudgetParametersService,
         moneyService: MoneyService
     ) {
-        this.wealthProjectionService = wealthProjectionService;
+        this.savingsService = savingsService;
         this.budgetParametersService = budgetParametersService;
         this.moneyService = moneyService;
     }
 
-    removeWealthProjection(wealthProjection: WealthProjection) {
-        return this.wealthProjectionService.removeWealthProjection(wealthProjection);
-    }
-
-    createCalculatedWealthProjection(
-        role: Role,
-        savings: Savings,
-        capitalGainsTax: Tax,
-        bonusTax: Tax,
-        previousWealthProjection?: WealthProjection
-    ) {
-        return this.wealthProjectionService.createWealthProjection(
-            this.calculateWealthProjection(
-                role,
-                savings,
-                capitalGainsTax,
-                bonusTax,
-                previousWealthProjection
+    calculateWealthProjections(roles: Role[]) {
+        if (roles.length === 0) {
+            return [];
+        }
+        roles = [...roles].reverse();
+        const projections: TemporalWealthProjection[] = [];
+        roles.forEach((role, i) =>
+            projections.push(
+                this.calculateWealthProjectionForRole(
+                    role,
+                    new Tax(),
+                    new Tax(),
+                    projections[i - 1]
+                )
             )
         );
+        projections.unshift(
+            new TemporalWealthProjection({
+                estimatedNetWorth: this.moneyService.getCurrencyAmount(
+                    this.budgetParametersService.getParameters().initialNetWorth
+                ),
+                date: new Date(`1/1/${roles[0].startYear}`),
+            })
+        );
+        return projections;
     }
 
-    private calculateWealthProjection(
+    getSavingsByRole(role: Role) {
+        return this.savingsService
+            .listSavings()
+            .find((saving) => saving.roleId === role.id) as Savings;
+    }
+
+    private calculateWealthProjectionForRole(
         role: Role,
-        savings: Savings,
         capitalGainsTax: Tax,
         bonusTax: Tax,
-        previousProjection?: WealthProjection,
-        wealthProjection: WealthProjection = new WealthProjection()
+        previousProjection?: TemporalWealthProjection
     ) {
+        const wealthProjection = new TemporalWealthProjection();
+        const savings = this.getSavingsByRole(role);
         if (isNaN(role.estimatedYearsSpentInPosition)) {
-            return new WealthProjection({
-                id: wealthProjection.id,
-            });
+            return wealthProjection;
         }
         const budgetParameters = this.budgetParametersService.getParameters();
         let principal = this.moneyService.getCurrencyAmount(budgetParameters.initialNetWorth);
         if (previousProjection) {
-            principal = this.moneyService.getCurrencyAmount(previousProjection.expectedNetWorth);
+            principal = previousProjection.estimatedNetWorth;
         }
         principal +=
             this.moneyService.getCurrencyAmount(role.signOnBonus) * (1 - bonusTax.rate.value / 100);
@@ -75,30 +85,9 @@ export class WealthProjectionOrchestrationService {
         const expectedNetWorthAfterCapitalGains =
             expetedNetWorth * (1 - capitalGainsTax.rate.value / 100);
 
-        wealthProjection.expectedNetWorth = this.moneyService.createMoney(expetedNetWorth);
-        wealthProjection.expectedNetWorthAfterCapitalGains = this.moneyService.createMoney(
-            expectedNetWorthAfterCapitalGains
-        );
+        wealthProjection.date = new Date(`1/1/${role.endYear}`);
+        wealthProjection.estimatedNetWorth = expetedNetWorth;
+        wealthProjection.estimatedNetWorthAfterTaxes = expectedNetWorthAfterCapitalGains;
         return wealthProjection;
-    }
-
-    updateWealthProjection(
-        role: Role,
-        savings: Savings,
-        capitalGainsTax: Tax,
-        bonusTax: Tax,
-        wealthProjection: WealthProjection,
-        previousWealthProjection?: WealthProjection
-    ) {
-        return this.wealthProjectionService.updateWealthProjection(
-            this.calculateWealthProjection(
-                role,
-                savings,
-                capitalGainsTax,
-                bonusTax,
-                previousWealthProjection,
-                wealthProjection
-            )
-        );
     }
 }

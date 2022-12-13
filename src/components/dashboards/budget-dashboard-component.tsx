@@ -38,7 +38,7 @@ export const BudgetDashboardComponent = inject<
                                 links={links}
                                 onNavigation={setPage}
                             />
-                            <BudgetDashboardWealthOverviewComponent />
+                            <BudgetDashboardWealthOverviewComponent roles={roles} />
                             <RoleSelectorComponent
                                 roles={reversedRoles}
                                 onRoleSelection={(role) => {

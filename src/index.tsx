@@ -17,6 +17,7 @@ import { IncomeController } from './controllers/incomes/income-controller';
 import { RoleOverviewController } from './controllers/overviews/role-overview-controller';
 import { SavingStatisticsController } from './controllers/savings/saving-statistics-controller';
 import { SavingsController } from './controllers/savings/savings-controller';
+import { WealthProjectionController } from './controllers/wealth-projections/wealth-projection-controller';
 import { EventEmitter } from './events/event-emitter';
 import './index.css';
 import { BudgetParameters } from './models/budgets/budget-parameters';
@@ -37,6 +38,7 @@ import { IncomeOrchestrationService } from './services/orchestrations/incomes/in
 import { RoleOrchestrationService } from './services/orchestrations/roles/role-orchestration-service';
 import { SavingStatisticsOrchestrationService } from './services/orchestrations/savings/saving-statistics-orchestration-service';
 import { SavingsOrchestrationService } from './services/orchestrations/savings/savings-orchestration-service';
+import { WealthProjectionOrchestrationService } from './services/orchestrations/wealth-projections/wealth-projection-orchestration-service';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const container = new DependencyInjectionClient();
@@ -67,10 +69,8 @@ const expensesOrchestrationService = new ExpenseOrchestrationService(
     new ExpensesService(new ExpenseBroker(), idBroker),
     moneyService
 );
-const savingsOrchestrationService = new SavingsOrchestrationService(
-    new SavingsService(new SavingsBroker(), idBroker),
-    moneyService
-);
+const savingsService = new SavingsService(new SavingsBroker(), idBroker);
+const savingsOrchestrationService = new SavingsOrchestrationService(savingsService, moneyService);
 const savingStatisticsOrchestrationService = new SavingStatisticsOrchestrationService(
     budgetParametersService,
     new SavingStatisticsService(new SavingStatisticsBroker(), idBroker),
@@ -95,6 +95,16 @@ container.register(
 container.register('IncomeController', new IncomeController(incomeOrchestrationService));
 container.register('ExpensesController', new ExpensesController(expensesOrchestrationService));
 container.register('SavingsController', new SavingsController(savingsOrchestrationService));
+container.register(
+    'WealthProjectionController',
+    new WealthProjectionController(
+        new WealthProjectionOrchestrationService(
+            savingsService,
+            budgetParametersService,
+            moneyService
+        )
+    )
+);
 container.register(
     'SavingStatisticsController',
     new SavingStatisticsController(savingStatisticsOrchestrationService)
