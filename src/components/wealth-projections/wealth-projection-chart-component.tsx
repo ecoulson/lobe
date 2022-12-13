@@ -19,7 +19,7 @@ export function WealthProjectionChartComponent({
             const marginTop = 25;
             const marginRight = 30;
             const marginBottom = 30;
-            const marginLeft = 50;
+            const marginLeft = 100;
             const color = 'currentColor';
             const strokeWidth = 2;
             const strokeLinecap = 'rounded';

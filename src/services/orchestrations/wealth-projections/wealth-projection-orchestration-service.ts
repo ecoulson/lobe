@@ -27,16 +27,21 @@ export class WealthProjectionOrchestrationService {
         }
         roles = [...roles].reverse();
         const projections: TemporalWealthProjection[] = [];
-        roles.forEach((role, i) =>
-            projections.push(
-                this.calculateWealthProjectionForRole(
-                    role,
-                    new Tax(),
-                    new Tax(),
-                    projections[i - 1]
-                )
-            )
-        );
+        let i = 0;
+        roles.forEach((role) => {
+            for (let year = 1; year <= role.estimatedYearsSpentInPosition; year++) {
+                projections.push(
+                    this.calculateWealthProjectionForRole(
+                        role,
+                        year,
+                        new Tax(),
+                        new Tax(),
+                        projections[i - 1]
+                    )
+                );
+                i++;
+            }
+        });
         projections.unshift(
             new TemporalWealthProjection({
                 estimatedNetWorth: this.moneyService.getCurrencyAmount(
@@ -56,13 +61,14 @@ export class WealthProjectionOrchestrationService {
 
     private calculateWealthProjectionForRole(
         role: Role,
+        year: number,
         capitalGainsTax: Tax,
         bonusTax: Tax,
         previousProjection?: TemporalWealthProjection
     ) {
         const wealthProjection = new TemporalWealthProjection();
         const savings = this.getSavingsByRole(role);
-        if (isNaN(role.estimatedYearsSpentInPosition)) {
+        if (isNaN(year)) {
             return wealthProjection;
         }
         const budgetParameters = this.budgetParametersService.getParameters();
@@ -74,17 +80,14 @@ export class WealthProjectionOrchestrationService {
             this.moneyService.getCurrencyAmount(role.signOnBonus) * (1 - bonusTax.rate.value / 100);
         const returnRate = budgetParameters.estimatedReturnRate.value / 100;
         const totalSaved = this.moneyService.getCurrencyAmount(savings.totalSaved);
-        const principalReturn =
-            principal * Math.pow(1 + returnRate, role.estimatedYearsSpentInPosition);
+        const principalReturn = principal * Math.pow(1 + returnRate, year);
         const savingsReturn =
-            ((totalSaved * (Math.pow(1 + returnRate, role.estimatedYearsSpentInPosition) - 1)) /
-                returnRate) *
-            (1 + returnRate);
+            ((totalSaved * (Math.pow(1 + returnRate, year) - 1)) / returnRate) * (1 + returnRate);
         const expetedNetWorth = principalReturn + savingsReturn;
         const expectedNetWorthAfterCapitalGains =
             expetedNetWorth * (1 - capitalGainsTax.rate.value / 100);
 
-        wealthProjection.date = new Date(`1/1/${role.endYear}`);
+        wealthProjection.date = new Date(`1/1/${role.startYear + year}`);
         wealthProjection.estimatedNetWorth = expetedNetWorth;
         wealthProjection.estimatedNetWorthAfterTaxes = expectedNetWorthAfterCapitalGains;
         return wealthProjection;
