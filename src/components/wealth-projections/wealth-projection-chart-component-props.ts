@@ -1,5 +1,5 @@
-import { YearlyWealthProjection } from '../../models/wealth-projections/yearly-wealth-projection';
+import { TemporalWealthProjection } from '../../models/wealth-projections/yearly-wealth-projection';
 
 export interface WealthProjectionChartComponentProps {
-    yearlyWealthProjectionList: YearlyWealthProjection[];
+    yearlyWealthProjectionList: TemporalWealthProjection[];
 }

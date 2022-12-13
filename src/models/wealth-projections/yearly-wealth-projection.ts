@@ -1,17 +1,17 @@
-export class YearlyWealthProjection {
+export class TemporalWealthProjection {
     public estimatedNetWorth: number;
     public estimatedNetWorthAfterTaxes: number;
-    public year: number;
+    public date: Date;
 
-    constructor(props?: Partial<YearlyWealthProjection>) {
-        const { estimatedNetWorth, estimatedNetWorthAfterTaxes, year } = {
+    constructor(props?: Partial<TemporalWealthProjection>) {
+        const { estimatedNetWorth, estimatedNetWorthAfterTaxes, date } = {
             estimatedNetWorth: 0,
             estimatedNetWorthAfterTaxes: 0,
-            year: 0,
+            date: new Date(),
             ...props,
         };
         this.estimatedNetWorth = estimatedNetWorth;
         this.estimatedNetWorthAfterTaxes = estimatedNetWorthAfterTaxes;
-        this.year = year;
+        this.date = date;
     }
 }
