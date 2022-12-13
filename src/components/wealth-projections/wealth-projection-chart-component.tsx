@@ -16,10 +16,10 @@ export function WealthProjectionChartComponent({
                 width = containerRef.current.parentElement.clientWidth;
             }
             const height = 400;
-            const marginTop = 20;
+            const marginTop = 25;
             const marginRight = 30;
             const marginBottom = 30;
-            const marginLeft = 40;
+            const marginLeft = 50;
             const color = 'currentColor';
             const strokeWidth = 2;
             const strokeLinecap = 'rounded';
@@ -66,10 +66,12 @@ export function WealthProjectionChartComponent({
 
             svg.append('g')
                 .attr('transform', `translate(0,${height - marginBottom})`)
+                .style('font', '14px Inter')
                 .call(xAxis);
 
             svg.append('g')
                 .attr('transform', `translate(${marginLeft},0)`)
+                .style('font', '14px Inter')
                 .call(yAxis)
                 .call((g) => g.select('.domain').remove())
                 .call((g) =>
