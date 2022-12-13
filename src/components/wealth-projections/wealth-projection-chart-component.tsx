@@ -11,7 +11,7 @@ export function WealthProjectionChartComponent({
 
     useEffect(() => {
         function createGraph() {
-            let width = 640;
+            let width = 300;
             if (containerRef.current?.parentElement?.clientWidth) {
                 width = containerRef.current.parentElement.clientWidth;
             }

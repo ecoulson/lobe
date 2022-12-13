@@ -33,14 +33,8 @@ export const BudgetParametersComponent = inject<
 
         return (
             <div>
-                <h2>Budget Parameters</h2>
-                <div className="flex flex-col">
-                    <BudgetParameterFieldComponent label="Bonus Goal">
-                        <PercentageInputComponent
-                            percentage={budgetParameters.bonusGoal}
-                            onChange={(bonusGoal) => updateBudgetParameters('bonusGoal', bonusGoal)}
-                        />
-                    </BudgetParameterFieldComponent>
+                <h2 className="py-4 font-bold text-xl text-accent">Budget Parameters</h2>
+                <div className="flex flex-col gap-y-4">
                     <BudgetParameterFieldComponent label="Current Age">
                         <NumberInputComponent
                             value={budgetParameters.currentAge}

@@ -24,8 +24,8 @@ export const ExpensesCardComponent = inject<ExpensesCardComponentProps, 'expense
                 title="Expenses"
                 icon={<ExpensesIcon width={32} height={32} fill="white" />}
             >
-                <div className="flex items-center justify-between">
-                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 justify-between">
+                <div className="flex justify-between">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
                         <DataComponent
                             label="Debt Payments"
                             data={<MoneyComponent money={expenses.debtPayments.totalSpent} />}

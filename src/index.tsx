@@ -45,9 +45,6 @@ const container = new DependencyInjectionClient();
 const eventEmitter = new EventEmitter();
 const budgetParameters = new BudgetParameters({
     currentAge: 18,
-    bonusGoal: new Percentage({
-        value: 20,
-    }),
     targetPercentageOfIncomeToSave: new Percentage({
         value: 70,
     }),

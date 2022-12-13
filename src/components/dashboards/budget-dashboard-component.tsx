@@ -7,6 +7,7 @@ import { inject } from '../../clients/dependency-injection/inject';
 import { RoleSelectorComponent } from '../roles/role-selector-component';
 import { BudgetDashboardRoleOverviewComponent } from '../roles/budget-dashboard-role-overview-component';
 import { BudgetDashboardRoleEditorComponent } from '../roles/budget-dashboard-role-editor-component';
+import { BudgetParametersComponent } from '../budget-parameters/budget-parameters-component';
 
 export const BudgetDashboardComponent = inject<
     BudgetDashboardComponentProps,
@@ -66,6 +67,17 @@ export const BudgetDashboardComponent = inject<
                                 budgetId={budgetId}
                                 onRoleChange={setRoles}
                             />
+                        </>
+                    );
+                case 'Parameters':
+                    return (
+                        <>
+                            <BudgetDashboardNavigationComponent
+                                activeLink={page}
+                                links={links}
+                                onNavigation={setPage}
+                            />
+                            <BudgetParametersComponent />
                         </>
                     );
                 default:
