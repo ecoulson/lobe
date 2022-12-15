@@ -9,7 +9,7 @@ export function InputComponent({
 }: InputComponentProps) {
     return (
         <input
-            className="bg-transparent border-b-accent border-b-2"
+            className="bg-transparent border-b-accent border-b-2 rounded-none w-full"
             value={value}
             onBlur={onBlur}
             onFocus={onFocus}

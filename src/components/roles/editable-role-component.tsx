@@ -5,6 +5,7 @@ import { CardComponent } from '../card/card-component';
 import { DataComponent } from '../data/data-component';
 import { MoneyInputComponent } from '../funds/money-input-component';
 import { PercentageInputComponent } from '../percentages/percentage-input-component';
+import { VestingScheduleInputComponent } from '../vesting-schedule/vesting-schedule-input-component';
 import { EditableRoleComponentProps } from './editable-role-component-props';
 
 export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentProps) {
@@ -65,7 +66,7 @@ export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentPro
                         data={
                             <NumberInputComponent
                                 value={role.estimatedYearsSpentInPosition}
-                                displayPrecision={0}
+                                displayPercision={0}
                                 onChange={(estimatedYearsSpentInPosition) =>
                                     updateRole(
                                         'estimatedYearsSpentInPosition',
@@ -105,9 +106,11 @@ export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentPro
                     <DataComponent
                         label="Vesting Schedule"
                         data={
-                            <InputComponent
-                                value={''}
-                                onChange={() => updateRole('vestingSchedule', [])}
+                            <VestingScheduleInputComponent
+                                vestingSchedule={role.vestingSchedule}
+                                onChange={(vestingSchedule) =>
+                                    updateRole('vestingSchedule', vestingSchedule)
+                                }
                             />
                         }
                     />

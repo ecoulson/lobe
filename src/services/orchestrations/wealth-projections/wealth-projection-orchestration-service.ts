@@ -1,5 +1,6 @@
 import { Role } from '../../../models/roles/role';
 import { Savings } from '../../../models/savings/savings';
+import { Percentage } from '../../../models/statistics/percentage';
 import { Tax } from '../../../models/taxes/tax';
 import { TemporalWealthProjection } from '../../../models/wealth-projections/yearly-wealth-projection';
 import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
@@ -22,6 +23,16 @@ export class WealthProjectionOrchestrationService {
     }
 
     calculateWealthProjections(roles: Role[]) {
+        const capitalGainsTax = new Tax({
+            rate: new Percentage({
+                value: 15,
+            }),
+        });
+        const bonusTax = new Tax({
+            rate: new Percentage({
+                value: 40,
+            }),
+        });
         if (roles.length === 0) {
             return [];
         }
@@ -34,8 +45,8 @@ export class WealthProjectionOrchestrationService {
                     this.calculateWealthProjectionForRole(
                         role,
                         year,
-                        new Tax(),
-                        new Tax(),
+                        capitalGainsTax,
+                        bonusTax,
                         projections[i - 1]
                     )
                 );

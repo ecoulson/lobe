@@ -12,7 +12,7 @@ export function VestingScheduleComponent({
                 <div className="flex">
                     {yearlyVestingPercentage.map((percentage, i) => (
                         <>
-                            <PercentageComponent precision={0} percentage={percentage} />
+                            <PercentageComponent percision={0} percentage={percentage} />
                             {i === yearlyVestingPercentage.length - 1 ? null : (
                                 <span className="px-2">/</span>
                             )}

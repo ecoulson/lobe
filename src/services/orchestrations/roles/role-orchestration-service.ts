@@ -47,7 +47,7 @@ export class RoleOrchestrationService {
         }
         const totalCompensation =
             this.moneyService.getCurrencyAmount(role.baseSalary) +
-            this.moneyService.getCurrencyAmount(role.equity) / 4 + //TODO: Calculate using vesting schedule
+            this.moneyService.getCurrencyAmount(role.equity) / role.vestingSchedule.length +
             this.moneyService.getCurrencyAmount(role.signOnBonus) +
             (this.moneyService.getCurrencyAmount(role.baseSalary) * role.bonusTarget.value) / 100;
         role.totalCompensation = this.moneyService.createMoney(totalCompensation);

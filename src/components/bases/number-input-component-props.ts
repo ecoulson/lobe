@@ -1,5 +1,5 @@
 export interface NumberInputComponentProps {
     value: number;
-    displayPrecision: number;
+    displayPercision: number;
     onChange: (n: number) => void;
 }

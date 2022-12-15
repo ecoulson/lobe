@@ -9,7 +9,7 @@ export const MoneyInputComponent = inject<MoneyInputComponentProps, 'moneyContro
     },
     ({ onChange, money, moneyController }: MoneyInputComponentProps) => {
         return (
-            <>
+            <div className="flex gap-x-2">
                 <span>{money.currency}</span>
                 <InputComponent
                     placeholder="0.00"
@@ -25,7 +25,7 @@ export const MoneyInputComponent = inject<MoneyInputComponentProps, 'moneyContro
                         );
                     }}
                 />
-            </>
+            </div>
         );
     }
 );

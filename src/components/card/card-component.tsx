@@ -43,14 +43,14 @@ export function CardComponent({
     }
 
     return (
-        <div>
+        <div className="h-full box-content bg-beige rounded-2xl flex flex-col">
             <div
                 className={`${getHeaderBorder()} py-2 px-4 rounded-t-2xl flex justify-between ${getHeaderColor()}`}
             >
                 <div className={`font-bold text-2xl ${getHeaderTextColor()}`}>{title}</div>
                 <div>{icon}</div>
             </div>
-            <div className="bg-beige rounded-b-2xl p-4 border-x-2 border-b-2 border-x-gray border-b-gray">
+            <div className="p-4 flex-1 rounded-b-2xl border-x-2 border-b-2 border-x-gray border-b-gray">
                 {children}
             </div>
         </div>

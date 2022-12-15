@@ -58,7 +58,12 @@ export class Role {
             maxMatched401KContributions: new Money(),
             matching401kPercentage: new Percentage(),
             equity: new Money(),
-            vestingSchedule: [],
+            vestingSchedule: [
+                new Percentage({ value: 25 }),
+                new Percentage({ value: 25 }),
+                new Percentage({ value: 25 }),
+                new Percentage({ value: 25 }),
+            ],
             baseSalary: new Money(),
             ...props,
         };

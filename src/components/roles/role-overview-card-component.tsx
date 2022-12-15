@@ -30,7 +30,7 @@ export function RoleOverviewCardComponent({ role }: RoleOverviewCardComponentPro
                         label="401k Matching Percentage"
                         data={
                             <PercentageComponent
-                                precision={0}
+                                percision={0}
                                 percentage={role.matching401kPercentage}
                             />
                         }

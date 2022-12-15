@@ -38,7 +38,7 @@ export const BudgetParametersComponent = inject<
                     <BudgetParameterFieldComponent label="Current Age">
                         <NumberInputComponent
                             value={budgetParameters.currentAge}
-                            displayPrecision={0}
+                            displayPercision={0}
                             onChange={(value) => updateBudgetParameters('currentAge', value)}
                         />
                     </BudgetParameterFieldComponent>

@@ -3,13 +3,13 @@ import { NumberInputComponentProps } from './number-input-component-props';
 
 export function NumberInputComponent({
     value,
-    displayPrecision,
+    displayPercision,
     onChange,
 }: NumberInputComponentProps) {
     return (
         <InputComponent
             placeholder="0"
-            value={isNaN(value) ? '' : value.toFixed(displayPrecision)}
+            value={isNaN(value) ? '' : value.toFixed(displayPercision)}
             onChange={(value) => onChange(parseFloat(value))}
         />
     );

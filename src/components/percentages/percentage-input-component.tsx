@@ -1,24 +1,38 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Percentage } from '../../models/statistics/percentage';
 import { InputComponent } from '../bases/input-component';
 import { PercentageInputComponentProps } from './percentage-input-component-props';
 
-export function PercentageInputComponent({ percentage, onChange }: PercentageInputComponentProps) {
-    const [rawPercentage, setRawPercentage] = useState(percentage.value.toFixed(2));
+export function PercentageInputComponent({
+    percentage,
+    onChange,
+    percision = 2,
+}: PercentageInputComponentProps) {
+    const [rawInput, setRawInput] = useState(percentage.value.toFixed(percision));
+
+    useEffect(() => {
+        if (isNaN(percentage.value)) {
+            return setRawInput('');
+        }
+        setRawInput(percentage.value.toFixed(percision));
+    }, [percentage, percision, setRawInput]);
 
     return (
-        <div>
+        <div className="flex">
             <InputComponent
-                value={rawPercentage}
+                value={rawInput}
                 placeholder="0.00"
-                onChange={setRawPercentage}
-                onBlur={() =>
+                onChange={(rawPercentage) => {
+                    setRawInput(rawPercentage);
+                }}
+                onBlur={() => {
+                    setRawInput(parseFloat(rawInput).toFixed(percision));
                     onChange(
                         new Percentage({
-                            value: parseFloat(rawPercentage),
+                            value: parseFloat(rawInput),
                         })
-                    )
-                }
+                    );
+                }}
             />
             <span>%</span>
         </div>

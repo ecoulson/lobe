@@ -52,7 +52,7 @@ export class SavingsOrchestrationService {
             this.moneyService.getCurrencyAmount(savings.equity);
 
         savings.equity = this.moneyService.createMoney(
-            this.moneyService.getCurrencyAmount(role.equity) / 4 // TODO: Calculate using vesting schedule
+            this.moneyService.getCurrencyAmount(role.equity) / role.vestingSchedule.length
         );
         savings.cashOnHand = this.moneyService.createMoney(cashOnHand);
         savings.contributionsTo401k = this.moneyService.createMoney(
