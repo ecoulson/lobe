@@ -38,20 +38,21 @@ export class WealthProjectionOrchestrationService {
         }
         roles = [...roles].reverse();
         const projections: TemporalWealthProjection[] = [];
-        let i = 0;
+        let lastRoleEndYear = 0;
         roles.forEach((role) => {
             for (let year = 1; year <= role.estimatedYearsSpentInPosition; year++) {
+                console.log(projections[lastRoleEndYear - 1]);
                 projections.push(
                     this.calculateWealthProjectionForRole(
                         role,
                         year,
                         capitalGainsTax,
                         bonusTax,
-                        projections[i - 1]
+                        projections[lastRoleEndYear - 1]
                     )
                 );
-                i++;
             }
+            lastRoleEndYear += role.estimatedYearsSpentInPosition;
         });
         projections.unshift(
             new TemporalWealthProjection({
@@ -91,6 +92,7 @@ export class WealthProjectionOrchestrationService {
             this.moneyService.getCurrencyAmount(role.signOnBonus) * (1 - bonusTax.rate.value / 100);
         const returnRate = budgetParameters.estimatedReturnRate.value / 100;
         const totalSaved = this.moneyService.getCurrencyAmount(savings.totalSaved);
+        console.log(principal, totalSaved);
         const principalReturn = principal * Math.pow(1 + returnRate, year);
         const savingsReturn =
             ((totalSaved * (Math.pow(1 + returnRate, year) - 1)) / returnRate) * (1 + returnRate);
