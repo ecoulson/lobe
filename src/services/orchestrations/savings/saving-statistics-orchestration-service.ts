@@ -4,6 +4,7 @@ import { Role } from '../../../models/roles/role';
 import { SavingStatistics } from '../../../models/savings/saving-statistics';
 import { Savings } from '../../../models/savings/savings';
 import { Percentage } from '../../../models/statistics/percentage';
+import { TemporalWealthProjection } from '../../../models/wealth-projections/yearly-wealth-projection';
 import { BudgetParametersService } from '../../foundations/budgets/budget-parameters-service';
 import { MoneyService } from '../../foundations/funds/money-service';
 import { SavingStatisticsService } from '../../foundations/savings/saving-statistics-service';
@@ -33,8 +34,18 @@ export class SavingStatisticsOrchestrationService {
         return this.savingStatisticsService.removeSavingStatistics(savingStatistics);
     }
 
-    createSavingsStatistics(role: Role, income: Income, savings: Savings) {
-        const statistics = this.calculateSavingsStatistics(role, income, savings);
+    createSavingsStatistics(
+        role: Role,
+        income: Income,
+        savings: Savings,
+        wealthProjections: TemporalWealthProjection[]
+    ) {
+        const statistics = this.calculateSavingsStatistics(
+            role,
+            income,
+            savings,
+            wealthProjections
+        );
         statistics.roleId = role.id;
         return this.savingStatisticsService.createSavingStatistics(statistics);
     }
@@ -43,6 +54,7 @@ export class SavingStatisticsOrchestrationService {
         role: Role,
         currentIncome: Income,
         updatedSavings: Savings,
+        wealthProjections: TemporalWealthProjection[],
         updatedStatistics: SavingStatistics = new SavingStatistics()
     ) {
         const budgetParameters = this.budgetParametersService.getParameters();
@@ -62,6 +74,12 @@ export class SavingStatisticsOrchestrationService {
             percentageSaved = 0;
         }
 
+        updatedStatistics.initialNetWorth = this.moneyService.createMoney(
+            wealthProjections[role.startAge - budgetParameters.currentAge].estimatedNetWorth
+        );
+        updatedStatistics.finalNetWorth = this.moneyService.createMoney(
+            wealthProjections[role.endAge - budgetParameters.currentAge].estimatedNetWorth
+        );
         updatedStatistics.estimatedReturnRate = budgetParameters.estimatedReturnRate;
         updatedStatistics.agesWorked = [role.startAge, role.endAge];
         updatedStatistics.goalToSave = this.moneyService.createMoney(goalToSave);
@@ -76,12 +94,18 @@ export class SavingStatisticsOrchestrationService {
         return updatedStatistics;
     }
 
-    updateSavingsStatisticsByRole(role: Role, income: Income, updatedSavings: Savings) {
+    updateSavingsStatisticsByRole(
+        role: Role,
+        income: Income,
+        updatedSavings: Savings,
+        wealthProjections: TemporalWealthProjection[]
+    ) {
         return this.savingStatisticsService.updateSavingStatistics(
             this.calculateSavingsStatistics(
                 role,
                 income,
                 updatedSavings,
+                wealthProjections,
                 this.getSavingStatisticsByRole(role)
             )
         );

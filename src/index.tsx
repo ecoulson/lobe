@@ -73,6 +73,11 @@ const savingStatisticsOrchestrationService = new SavingStatisticsOrchestrationSe
     new SavingStatisticsService(new SavingStatisticsBroker(), idBroker),
     moneyService
 );
+const wealthProjectionOrchestrationService = new WealthProjectionOrchestrationService(
+    savingsService,
+    budgetParametersService,
+    moneyService
+);
 container.register(
     'RoleOverviewController',
     new RoleOverviewController(
@@ -85,7 +90,8 @@ container.register(
             incomeOrchestrationService,
             expensesOrchestrationService,
             savingsOrchestrationService,
-            savingStatisticsOrchestrationService
+            savingStatisticsOrchestrationService,
+            wealthProjectionOrchestrationService
         )
     )
 );
@@ -94,13 +100,7 @@ container.register('ExpensesController', new ExpensesController(expensesOrchestr
 container.register('SavingsController', new SavingsController(savingsOrchestrationService));
 container.register(
     'WealthProjectionController',
-    new WealthProjectionController(
-        new WealthProjectionOrchestrationService(
-            savingsService,
-            budgetParametersService,
-            moneyService
-        )
-    )
+    new WealthProjectionController(wealthProjectionOrchestrationService)
 );
 container.register(
     'SavingStatisticsController',

@@ -6,6 +6,7 @@ import { IncomeOrchestrationService } from '../../orchestrations/incomes/income-
 import { RoleOrchestrationService } from '../../orchestrations/roles/role-orchestration-service';
 import { SavingStatisticsOrchestrationService } from '../../orchestrations/savings/saving-statistics-orchestration-service';
 import { SavingsOrchestrationService } from '../../orchestrations/savings/savings-orchestration-service';
+import { WealthProjectionOrchestrationService } from '../../orchestrations/wealth-projections/wealth-projection-orchestration-service';
 
 export class RoleAggregationService {
     private readonly roleOrchestrationService: RoleOrchestrationService;
@@ -13,19 +14,22 @@ export class RoleAggregationService {
     private readonly expensesOrchestrationService: ExpenseOrchestrationService;
     private readonly savingsOrchestrationService: SavingsOrchestrationService;
     private readonly savingStatisticsOrchestrationService: SavingStatisticsOrchestrationService;
+    private readonly wealthProjectionOrchestrationService: WealthProjectionOrchestrationService;
 
     constructor(
         roleOrchestrationService: RoleOrchestrationService,
         incomeOrchestrationService: IncomeOrchestrationService,
         expensesOrchestrationService: ExpenseOrchestrationService,
         savingsOrchestrationService: SavingsOrchestrationService,
-        savingStatisticsOrchestrationService: SavingStatisticsOrchestrationService
+        savingStatisticsOrchestrationService: SavingStatisticsOrchestrationService,
+        wealthProjectionOrchestrationService: WealthProjectionOrchestrationService
     ) {
         this.roleOrchestrationService = roleOrchestrationService;
         this.incomeOrchestrationService = incomeOrchestrationService;
         this.expensesOrchestrationService = expensesOrchestrationService;
         this.savingsOrchestrationService = savingsOrchestrationService;
         this.savingStatisticsOrchestrationService = savingStatisticsOrchestrationService;
+        this.wealthProjectionOrchestrationService = wealthProjectionOrchestrationService;
     }
 
     getAllRolesForBudget(budgetId: string) {
@@ -47,7 +51,15 @@ export class RoleAggregationService {
         const income = this.incomeOrchestrationService.createIncome(role, incomeTax, bonusTax);
         const expenses = this.expensesOrchestrationService.createExpenses(role);
         const savings = this.savingsOrchestrationService.createSavings(role, income, expenses);
-        this.savingStatisticsOrchestrationService.createSavingsStatistics(role, income, savings);
+        const projections = this.wealthProjectionOrchestrationService.calculateWealthProjections(
+            this.getAllRolesForBudget(budgetId)
+        );
+        this.savingStatisticsOrchestrationService.createSavingsStatistics(
+            role,
+            income,
+            savings,
+            projections
+        );
         return role;
     }
 
@@ -92,10 +104,15 @@ export class RoleAggregationService {
                 updatedIncome,
                 updatedExpenses
             );
+            const projections =
+                this.wealthProjectionOrchestrationService.calculateWealthProjections(
+                    this.getAllRolesForBudget(role.budgetId)
+                );
             this.savingStatisticsOrchestrationService.updateSavingsStatisticsByRole(
                 updatedDependantRole,
                 updatedIncome,
-                updatedSavings
+                updatedSavings,
+                projections
             );
             roles.push(updatedDependantRole);
         }
