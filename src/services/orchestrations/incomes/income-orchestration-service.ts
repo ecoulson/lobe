@@ -29,7 +29,7 @@ export class IncomeOrchestrationService {
         return this.incomeService.createIncome(income);
     }
 
-    updateIncome(role: Role, incomeTax: Tax, bonusTax: Tax) {
+    updateIncomeByRole(role: Role, incomeTax: Tax, bonusTax: Tax) {
         return this.incomeService.updateIncome(
             this.calculateIncome(role, incomeTax, bonusTax, this.getIncomeByRole(role))
         );

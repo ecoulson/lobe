@@ -1,16 +1,16 @@
 import { Money } from '../funds/money';
 
 export class ExpenseCategory {
-    public category: string;
+    public name: string;
     public totalSpent: Money;
 
     constructor(props?: Partial<ExpenseCategory>) {
-        const { category, totalSpent } = {
-            category: '',
+        const { name, totalSpent } = {
+            name: '',
             totalSpent: new Money(),
             ...props,
         };
-        this.category = category;
+        this.name = name;
         this.totalSpent = totalSpent;
     }
 }

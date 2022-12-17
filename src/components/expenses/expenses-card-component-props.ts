@@ -4,4 +4,5 @@ import { Role } from '../../models/roles/role';
 export interface ExpensesCardComponentProps {
     role: Role;
     expensesController: ExpensesController;
+    updateRole: (role: Role) => void;
 }

@@ -81,18 +81,18 @@ export class RoleAggregationService {
                 chronologicalRoles[i],
                 chronologicalRoles[i - 1]
             );
-            const updatedIncome = this.incomeOrchestrationService.updateIncome(
+            const updatedIncome = this.incomeOrchestrationService.updateIncomeByRole(
                 updatedDependantRole,
                 incomeTax,
                 bonusTax
             );
-            const updatedExpenses = this.expensesOrchestrationService.updateExpenses(role);
-            const updatedSavings = this.savingsOrchestrationService.updateSavings(
+            const updatedExpenses = this.expensesOrchestrationService.updateExpensesByRole(role);
+            const updatedSavings = this.savingsOrchestrationService.updateSavingsByRole(
                 updatedDependantRole,
                 updatedIncome,
                 updatedExpenses
             );
-            this.savingStatisticsOrchestrationService.updateSavingsStatistics(
+            this.savingStatisticsOrchestrationService.updateSavingsStatisticsByRole(
                 updatedDependantRole,
                 updatedIncome,
                 updatedSavings

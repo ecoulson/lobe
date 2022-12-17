@@ -76,7 +76,7 @@ export class SavingStatisticsOrchestrationService {
         return updatedStatistics;
     }
 
-    updateSavingsStatistics(role: Role, income: Income, updatedSavings: Savings) {
+    updateSavingsStatisticsByRole(role: Role, income: Income, updatedSavings: Savings) {
         return this.savingStatisticsService.updateSavingStatistics(
             this.calculateSavingsStatistics(
                 role,

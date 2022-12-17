@@ -9,6 +9,7 @@ import { ButtonComponent } from '../bases/button-component';
 export function BudgetDashboardRoleOverviewComponent({
     role,
     onAddRole,
+    updateRole,
 }: BudgetDashboardRoleOverviewComponentProps) {
     if (role === null) {
         return (
@@ -23,7 +24,7 @@ export function BudgetDashboardRoleOverviewComponent({
             <IncomeCardComponent role={role} />
             <SavingsCardComponent role={role} />
             <div className="col-span-1 md:col-span-2">
-                <ExpensesCardComponent role={role} />
+                <ExpensesCardComponent updateRole={updateRole} role={role} />
             </div>
             <StatisticsCardComponent role={role} />
         </>

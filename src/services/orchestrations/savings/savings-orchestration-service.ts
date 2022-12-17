@@ -68,7 +68,7 @@ export class SavingsOrchestrationService {
         return savings;
     }
 
-    updateSavings(role: Role, income: Income, expenses: Expenses) {
+    updateSavingsByRole(role: Role, income: Income, expenses: Expenses) {
         return this.savingsService.updateSavings(
             this.calculateSavings(role, income, expenses, this.getSavingsByRole(role))
         );

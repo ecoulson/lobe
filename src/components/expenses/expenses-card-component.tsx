@@ -7,65 +7,48 @@ import { DataComponentSize } from '../data/data-component-size';
 import { MoneyComponent } from '../funds/money-component';
 import { inject } from '../../clients/dependency-injection/inject';
 import { useEffect, useState } from 'react';
+import { MoneyInputComponent } from '../funds/money-input-component';
+import { Expenses } from '../../models/expenses/expenses';
 
 export const ExpensesCardComponent = inject<ExpensesCardComponentProps, 'expensesController'>(
     {
         expensesController: 'ExpensesController',
     },
-    ({ role, expensesController }: ExpensesCardComponentProps) => {
+    ({ role, expensesController, updateRole }: ExpensesCardComponentProps) => {
         const [expenses, setExpenses] = useState(expensesController.getExpensesByRole(role));
+
+        function updateExpenses(expenses: Expenses) {
+            setExpenses(expensesController.updateExpenses(expenses));
+            updateRole(role);
+        }
 
         useEffect(() => {
             setExpenses(expensesController.getExpensesByRole(role));
         }, [role, setExpenses, expensesController]);
+
         return (
             <CardComponent
                 headerType={CardComponentHeaderType.Expenses}
                 title="Expenses"
                 icon={<ExpensesIcon width={32} height={32} fill="white" />}
             >
-                <div className="flex justify-between">
-                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-                        <DataComponent
-                            label="Debt Payments"
-                            data={<MoneyComponent money={expenses.debtPayments.totalSpent} />}
-                        />
-                        <DataComponent
-                            label="Entertainment"
-                            data={<MoneyComponent money={expenses.entertainment.totalSpent} />}
-                        />
-                        <DataComponent
-                            label="Food"
-                            data={<MoneyComponent money={expenses.food.totalSpent} />}
-                        />
-                        <DataComponent
-                            label="Healthcare"
-                            data={<MoneyComponent money={expenses.healthcare.totalSpent} />}
-                        />
-                        <DataComponent
-                            label="Housing"
-                            data={<MoneyComponent money={expenses.housing.totalSpent} />}
-                        />
-                        <DataComponent
-                            label="Insurance"
-                            data={<MoneyComponent money={expenses.insurance.totalSpent} />}
-                        />
-                        <DataComponent
-                            label="Miscellaneous"
-                            data={<MoneyComponent money={expenses.miscellaneous.totalSpent} />}
-                        />
-                        <DataComponent
-                            label="Personal"
-                            data={<MoneyComponent money={expenses.personal.totalSpent} />}
-                        />
-                        <DataComponent
-                            label="Transportation"
-                            data={<MoneyComponent money={expenses.transportation.totalSpent} />}
-                        />
-                        <DataComponent
-                            label="Utilities"
-                            data={<MoneyComponent money={expenses.utilities.totalSpent} />}
-                        />
+                <div className="flex gap-x-4 justify-between">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        {expenses.categories.map((category) => (
+                            <DataComponent
+                                key={category.name}
+                                label={category.name}
+                                data={
+                                    <MoneyInputComponent
+                                        money={category.totalSpent}
+                                        onChange={(totalSpent) => {
+                                            category.totalSpent = totalSpent;
+                                            updateExpenses(expenses);
+                                        }}
+                                    />
+                                }
+                            />
+                        ))}
                     </div>
                     <div className="flex flex-col gap-y-8">
                         <DataComponent

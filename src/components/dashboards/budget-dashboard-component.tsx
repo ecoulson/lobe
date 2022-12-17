@@ -51,6 +51,9 @@ export const BudgetDashboardComponent = inject<
                             <BudgetDashboardRoleOverviewComponent
                                 onAddRole={() => setPage('Roles')}
                                 role={activeRole}
+                                updateRole={(role: Role) => {
+                                    setRoles(roleOverviewController.updateRole(role));
+                                }}
                             />
                         </div>
                     );

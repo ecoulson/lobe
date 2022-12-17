@@ -12,7 +12,6 @@ export const BudgetDashboardWealthOverviewComponent = inject<
         wealthProjectionController: 'WealthProjectionController',
     },
     ({ roles, wealthProjectionController }: BudgetDashboardWealthOverviewComponentProps) => {
-        console.log(wealthProjectionController.calculateWealthProjectionDataPoints(roles));
         return (
             <div className="col-span-full">
                 <CardComponent

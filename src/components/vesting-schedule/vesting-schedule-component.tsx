@@ -11,12 +11,12 @@ export function VestingScheduleComponent({
             data={
                 <div className="flex">
                     {yearlyVestingPercentage.map((percentage, i) => (
-                        <>
+                        <div className="flex" key={i}>
                             <PercentageComponent percision={0} percentage={percentage} />
                             {i === yearlyVestingPercentage.length - 1 ? null : (
                                 <span className="px-2">/</span>
                             )}
-                        </>
+                        </div>
                     ))}
                 </div>
             }

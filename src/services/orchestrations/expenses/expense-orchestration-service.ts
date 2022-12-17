@@ -1,4 +1,3 @@
-import { ExpenseCategory } from '../../../models/expenses/expense-category';
 import { Expenses } from '../../../models/expenses/expenses';
 import { Role } from '../../../models/roles/role';
 import { ExpensesService } from '../../foundations/expenses/expenses-service';
@@ -29,29 +28,30 @@ export class ExpenseOrchestrationService {
         return this.expensesService.createExpenses(expenses);
     }
 
-    updateExpenses(role: Role): Expenses {
+    updateExpenses(expenses: Expenses): Expenses {
+        return this.expensesService.updateExpenses(this.calculateExpenses(expenses));
+    }
+
+    updateExpensesByRole(role: Role): Expenses {
         return this.expensesService.updateExpenses(
             this.calculateExpenses(this.getExpensesByRole(role))
         );
     }
 
     private calculateExpenses(expenses: Expenses = new Expenses()) {
-        const totalExpenses =
-            this.getCategoryTotalExpenseAmount(expenses.debtPayments) +
-            this.getCategoryTotalExpenseAmount(expenses.entertainment) +
-            this.getCategoryTotalExpenseAmount(expenses.food) +
-            this.getCategoryTotalExpenseAmount(expenses.healthcare) +
-            this.getCategoryTotalExpenseAmount(expenses.housing) +
-            this.getCategoryTotalExpenseAmount(expenses.insurance) +
-            this.getCategoryTotalExpenseAmount(expenses.miscellaneous) +
-            this.getCategoryTotalExpenseAmount(expenses.personal) +
-            this.getCategoryTotalExpenseAmount(expenses.transportation) +
-            this.getCategoryTotalExpenseAmount(expenses.utilities);
+        const sortedCategories = [...expenses.categories];
+        sortedCategories.sort((categoryA, categoryB) => {
+            const totalSpentCategoryA = this.moneyService.getCurrencyAmount(categoryA.totalSpent);
+            const totalSpentCategoryB = this.moneyService.getCurrencyAmount(categoryB.totalSpent);
+            return totalSpentCategoryB - totalSpentCategoryA;
+        });
+        const totalExpenses = expenses.categories.reduce(
+            (sum, category) => sum + this.moneyService.getCurrencyAmount(category.totalSpent),
+            0
+        );
         expenses.totalExpenses = this.moneyService.createMoney(totalExpenses);
+        expenses.bottomCategory = sortedCategories[expenses.categories.length - 1].name;
+        expenses.topCategory = sortedCategories[0].name;
         return expenses;
-    }
-
-    private getCategoryTotalExpenseAmount(expenseCategory: ExpenseCategory) {
-        return this.moneyService.getCurrencyAmount(expenseCategory.totalSpent);
     }
 }

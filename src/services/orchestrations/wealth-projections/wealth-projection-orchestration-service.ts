@@ -37,32 +37,46 @@ export class WealthProjectionOrchestrationService {
             return [];
         }
         roles = [...roles].reverse();
-        const projections: TemporalWealthProjection[] = [];
-        let lastRoleEndYear = 0;
-        roles.forEach((role) => {
-            for (let year = 1; year <= role.estimatedYearsSpentInPosition; year++) {
-                console.log(projections[lastRoleEndYear - 1]);
-                projections.push(
-                    this.calculateWealthProjectionForRole(
-                        role,
-                        year,
-                        capitalGainsTax,
-                        bonusTax,
-                        projections[lastRoleEndYear - 1]
-                    )
-                );
-            }
-            lastRoleEndYear += role.estimatedYearsSpentInPosition;
-        });
-        projections.unshift(
+        const projections: TemporalWealthProjection[] = [
             new TemporalWealthProjection({
                 estimatedNetWorth: this.moneyService.getCurrencyAmount(
                     this.budgetParametersService.getParameters().initialNetWorth
                 ),
                 date: new Date(`1/1/${roles[0].startYear}`),
-            })
-        );
+            }),
+        ];
+        let lastRoleEndYear = 0;
+        roles.forEach((role) => {
+            this.calculateWealthProjectionForRole(
+                role,
+                projections,
+                capitalGainsTax,
+                bonusTax,
+                lastRoleEndYear
+            );
+            lastRoleEndYear += role.estimatedYearsSpentInPosition;
+        });
         return projections;
+    }
+
+    private calculateWealthProjectionForRole(
+        role: Role,
+        projections: TemporalWealthProjection[],
+        capitalGainsTax: Tax,
+        bonusTax: Tax,
+        lastRoleEndYear: number
+    ) {
+        for (let year = 1; year <= role.estimatedYearsSpentInPosition; year++) {
+            projections.push(
+                this.calculateWealthProjectionForYear(
+                    role,
+                    year,
+                    capitalGainsTax,
+                    bonusTax,
+                    projections[lastRoleEndYear]
+                )
+            );
+        }
     }
 
     getSavingsByRole(role: Role) {
@@ -71,7 +85,7 @@ export class WealthProjectionOrchestrationService {
             .find((saving) => saving.roleId === role.id) as Savings;
     }
 
-    private calculateWealthProjectionForRole(
+    private calculateWealthProjectionForYear(
         role: Role,
         year: number,
         capitalGainsTax: Tax,
@@ -92,7 +106,6 @@ export class WealthProjectionOrchestrationService {
             this.moneyService.getCurrencyAmount(role.signOnBonus) * (1 - bonusTax.rate.value / 100);
         const returnRate = budgetParameters.estimatedReturnRate.value / 100;
         const totalSaved = this.moneyService.getCurrencyAmount(savings.totalSaved);
-        console.log(principal, totalSaved);
         const principalReturn = principal * Math.pow(1 + returnRate, year);
         const savingsReturn =
             ((totalSaved * (Math.pow(1 + returnRate, year) - 1)) / returnRate) * (1 + returnRate);
