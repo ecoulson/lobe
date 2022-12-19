@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { inject } from '../../clients/dependency-injection/inject';
 import { BudgetParameters } from '../../models/budgets/budget-parameters';
 import { NumberInputComponent } from '../bases/number-input-component';
@@ -27,12 +27,11 @@ export const BudgetParametersEditorComponent = inject<
             value: BudgetParameters[K]
         ) {
             budgetParameters[key] = value;
-            setBudgetParameters(new BudgetParameters(budgetParameters));
+            const updatedBudgetParameters =
+                budgetParametersController.updateParameters(budgetParameters);
+            setBudgetParameters(updatedBudgetParameters);
+            onBudgetParametersChange(updatedBudgetParameters);
         }
-
-        useEffect(() => {
-            onBudgetParametersChange(budgetParametersController.updateParameters(budgetParameters));
-        }, [budgetParameters, budgetParametersController, onBudgetParametersChange]);
 
         return (
             <div>

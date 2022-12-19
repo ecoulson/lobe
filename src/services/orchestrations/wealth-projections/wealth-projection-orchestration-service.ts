@@ -37,11 +37,14 @@ export class WealthProjectionOrchestrationService {
             return [];
         }
         roles = [...roles].reverse();
+        const initialNetWorth = this.moneyService.getCurrencyAmount(
+            this.budgetParametersService.getParameters().initialNetWorth
+        );
         const projections: TemporalWealthProjection[] = [
             new TemporalWealthProjection({
-                estimatedNetWorth: this.moneyService.getCurrencyAmount(
-                    this.budgetParametersService.getParameters().initialNetWorth
-                ),
+                estimatedNetWorth: initialNetWorth,
+                estimatedNetWorthAfterTaxes:
+                    initialNetWorth * (1 - capitalGainsTax.rate.value / 100),
                 date: new Date(`1/1/${roles[0].startYear}`),
             }),
         ];
