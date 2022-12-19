@@ -1,4 +1,3 @@
-import { BudgetDashboardNavigationComponent } from './budget-dashboard-navigation-component';
 import { BudgetDashboardWealthOverviewComponent } from '../wealth-projections/budget-dashboard-wealth-overview-component';
 import { useEffect, useMemo, useState } from 'react';
 import { Role } from '../../models/roles/role';
@@ -8,6 +7,7 @@ import { RoleSelectorComponent } from '../roles/role-selector-component';
 import { BudgetDashboardRoleOverviewComponent } from '../roles/budget-dashboard-role-overview-component';
 import { BudgetDashboardRoleEditorComponent } from '../roles/budget-dashboard-role-editor-component';
 import { BudgetParametersComponent } from '../budget-parameters/budget-parameters-component';
+import { BudgetDashboardLayoutComponent } from './budget-dashboard-layout-component';
 
 export const BudgetDashboardComponent = inject<
     BudgetDashboardComponentProps,
@@ -33,12 +33,7 @@ export const BudgetDashboardComponent = inject<
             switch (page) {
                 case 'Overview':
                     return (
-                        <div className="grid gap-x-4 gap-y-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                            <BudgetDashboardNavigationComponent
-                                activeLink={page}
-                                links={links}
-                                onNavigation={setPage}
-                            />
+                        <>
                             <BudgetDashboardWealthOverviewComponent roles={roles} />
                             <RoleSelectorComponent
                                 roles={reversedRoles}
@@ -55,45 +50,31 @@ export const BudgetDashboardComponent = inject<
                                     setRoles(roleOverviewController.updateRole(role));
                                 }}
                             />
-                        </div>
+                        </>
                     );
                 case 'Roles':
                     return (
-                        <>
-                            <BudgetDashboardNavigationComponent
-                                activeLink={page}
-                                links={links}
-                                onNavigation={setPage}
-                            />
-                            <BudgetDashboardRoleEditorComponent
-                                roles={roles}
-                                budgetId={budgetId}
-                                onRoleChange={setRoles}
-                            />
-                        </>
-                    );
-                case 'Parameters':
-                    return (
-                        <>
-                            <BudgetDashboardNavigationComponent
-                                activeLink={page}
-                                links={links}
-                                onNavigation={setPage}
-                            />
-                            <BudgetParametersComponent />
-                        </>
-                    );
-                default:
-                    return (
-                        <BudgetDashboardNavigationComponent
-                            activeLink={page}
-                            links={links}
-                            onNavigation={setPage}
+                        <BudgetDashboardRoleEditorComponent
+                            roles={roles}
+                            budgetId={budgetId}
+                            onRoleChange={setRoles}
                         />
                     );
+                case 'Parameters':
+                    return <BudgetParametersComponent />;
+                default:
+                    return null;
             }
         }
 
-        return <div className="px-6 max-w-container mx-auto">{renderPage()}</div>;
+        return (
+            <BudgetDashboardLayoutComponent
+                onNavigation={setPage}
+                pageList={links}
+                currentPage={page}
+            >
+                {renderPage()}
+            </BudgetDashboardLayoutComponent>
+        );
     }
 );
