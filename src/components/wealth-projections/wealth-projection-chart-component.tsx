@@ -164,7 +164,7 @@ export function WealthProjectionChartComponent({
 
     return (
         <div ref={containerRef} className="flex w-max h-max justify-center">
-            <svg className="px-4" ref={ref} />
+            <svg className="" ref={ref} />
         </div>
     );
 }
