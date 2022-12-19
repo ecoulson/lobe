@@ -1,8 +1,8 @@
-import { inject } from '../../clients/dependency-injection/inject';
-import { Role } from '../../models/roles/role';
-import { ButtonComponent } from '../bases/button-component';
+import { inject } from '../../../clients/dependency-injection/inject';
+import { Role } from '../../../models/roles/role';
+import { ButtonComponent } from '../../bases/button-component';
+import { EditableRoleComponent } from '../../roles/editable-role-component';
 import { BudgetDashboardRoleEditorComponentProps } from './budget-dashboard-role-editor-component-props';
-import { EditableRoleComponent } from './editable-role-component';
 
 export const BudgetDashboardRoleEditorComponent = inject<
     BudgetDashboardRoleEditorComponentProps,

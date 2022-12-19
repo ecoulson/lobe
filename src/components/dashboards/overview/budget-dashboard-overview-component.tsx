@@ -1,16 +1,16 @@
-import { RoleOverviewCardComponent } from '../roles/role-overview-card-component';
-import { IncomeCardComponent } from '../incomes/income-card-component';
-import { SavingsCardComponent } from '../savings/savings-card-component';
-import { ExpensesCardComponent } from '../expenses/expenses-card-component';
-import { StatisticsCardComponent } from '../statistics/statistics-card-component';
-import { BudgetDashboardRoleOverviewComponentProps } from './budget-dashboard-role-overview-component-props';
-import { ButtonComponent } from '../bases/button-component';
+import { RoleOverviewCardComponent } from '../../roles/role-overview-card-component';
+import { IncomeCardComponent } from '../../incomes/income-card-component';
+import { SavingsCardComponent } from '../../savings/savings-card-component';
+import { ExpensesCardComponent } from '../../expenses/expenses-card-component';
+import { StatisticsCardComponent } from '../../statistics/statistics-card-component';
+import { BudgetDashboardOverviewComponentProps } from './budget-dashboard-overview-component-props';
+import { ButtonComponent } from '../../bases/button-component';
 
-export function BudgetDashboardRoleOverviewComponent({
+export function BudgetDashboardOverviewComponent({
     role,
     onAddRole,
     updateRole,
-}: BudgetDashboardRoleOverviewComponentProps) {
+}: BudgetDashboardOverviewComponentProps) {
     if (role === null) {
         return (
             <div className="flex w-full justify-center col-span-full">

@@ -4,10 +4,10 @@ import { Role } from '../../models/roles/role';
 import { BudgetDashboardComponentProps } from './budget-dashboard-component-props';
 import { inject } from '../../clients/dependency-injection/inject';
 import { RoleSelectorComponent } from '../roles/role-selector-component';
-import { BudgetDashboardRoleOverviewComponent } from '../roles/budget-dashboard-role-overview-component';
-import { BudgetDashboardRoleEditorComponent } from '../roles/budget-dashboard-role-editor-component';
-import { BudgetParametersComponent } from '../budget-parameters/budget-parameters-component';
+import { BudgetParametersEditorComponent } from '../budget-parameters/budget-parameters-editor-component';
 import { BudgetDashboardLayoutComponent } from './budget-dashboard-layout-component';
+import { BudgetDashboardOverviewComponent } from './overview/budget-dashboard-overview-component';
+import { BudgetDashboardRoleEditorComponent } from './role-editor/budget-dashboard-role-editor-component';
 
 export const BudgetDashboardComponent = inject<
     BudgetDashboardComponentProps,
@@ -49,7 +49,7 @@ export const BudgetDashboardComponent = inject<
                                     }
                                 }}
                             />
-                            <BudgetDashboardRoleOverviewComponent
+                            <BudgetDashboardOverviewComponent
                                 onAddRole={() => setPage('Roles')}
                                 role={activeRole}
                                 updateRole={(role: Role) => {
@@ -68,7 +68,7 @@ export const BudgetDashboardComponent = inject<
                     );
                 case 'Parameters':
                     return (
-                        <BudgetParametersComponent
+                        <BudgetParametersEditorComponent
                             onBudgetParametersChange={handleBudgetParametersChange}
                         />
                     );

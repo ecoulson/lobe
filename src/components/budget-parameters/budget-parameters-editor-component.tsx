@@ -4,17 +4,20 @@ import { BudgetParameters } from '../../models/budgets/budget-parameters';
 import { NumberInputComponent } from '../bases/number-input-component';
 import { MoneyInputComponent } from '../funds/money-input-component';
 import { PercentageInputComponent } from '../percentages/percentage-input-component';
-import { BudgetParametersComponentProps } from './budget-parameters-component-props';
+import { BudgetParametersEditorComponentProps } from './budget-parameters-editor-component-props';
 import { BudgetParameterFieldComponent } from './budget-parameters-field-component';
 
-export const BudgetParametersComponent = inject<
-    BudgetParametersComponentProps,
+export const BudgetParametersEditorComponent = inject<
+    BudgetParametersEditorComponentProps,
     'budgetParametersController'
 >(
     {
         budgetParametersController: 'BudgetParametersController',
     },
-    ({ budgetParametersController, onBudgetParametersChange }: BudgetParametersComponentProps) => {
+    ({
+        budgetParametersController,
+        onBudgetParametersChange,
+    }: BudgetParametersEditorComponentProps) => {
         const [budgetParameters, setBudgetParameters] = useState(
             budgetParametersController.getParameters()
         );
