@@ -15,11 +15,14 @@ export function WealthProjectionChartComponent({
             if (containerRef.current?.parentElement?.clientWidth) {
                 width = containerRef.current.parentElement.clientWidth;
             }
+            if (width > window.innerWidth) {
+                width = window.innerWidth - 100;
+            }
             const height = 400;
             const marginTop = 25;
-            const marginRight = 130;
+            const marginRight = 120;
             const marginBottom = 30;
-            const marginLeft = 100;
+            const marginLeft = 40;
             let color = '#AEB8FE';
             const strokeWidth = 2;
             const strokeLinecap = 'rounded';
@@ -49,7 +52,11 @@ export function WealthProjectionChartComponent({
                 .axisBottom(xScale)
                 .ticks(width / 120)
                 .tickSizeOuter(0);
-            const yAxis = d3.axisLeft(yScale).ticks(height / 40);
+            const yFormat = d3.format('.2s');
+            const yAxis = d3
+                .axisLeft(yScale)
+                .ticks(height / 40)
+                .tickFormat(yFormat);
 
             const preTaxLine = d3
                 .line<number>()
@@ -157,7 +164,7 @@ export function WealthProjectionChartComponent({
 
     return (
         <div ref={containerRef} className="flex w-max h-max justify-center">
-            <svg className="px-4" ref={ref} width="100%" height="100%" />
+            <svg className="px-4" ref={ref} />
         </div>
     );
 }
