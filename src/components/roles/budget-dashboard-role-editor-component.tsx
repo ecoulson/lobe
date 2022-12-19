@@ -18,11 +18,11 @@ export const BudgetDashboardRoleEditorComponent = inject<
         budgetId,
     }: BudgetDashboardRoleEditorComponentProps) => {
         function handleEdit(role: Role) {
-            onRoleChange(roleOverviewController.updateRole(role).reverse());
+            onRoleChange(roleOverviewController.updateRoles(role).reverse());
         }
 
         return (
-            <div>
+            <div className="col-span-full">
                 <div className="py-8">
                     <ButtonComponent
                         onClick={() =>

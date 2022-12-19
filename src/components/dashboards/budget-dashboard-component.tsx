@@ -29,6 +29,12 @@ export const BudgetDashboardComponent = inject<
             }
         }, [reversedRoles, activeRole, setActiveRole]);
 
+        function handleBudgetParametersChange() {
+            setRoles(
+                roles.reduce<Role[]>((_, role) => roleOverviewController.updateRoles(role), [])
+            );
+        }
+
         function renderPage() {
             switch (page) {
                 case 'Overview':
@@ -47,7 +53,7 @@ export const BudgetDashboardComponent = inject<
                                 onAddRole={() => setPage('Roles')}
                                 role={activeRole}
                                 updateRole={(role: Role) => {
-                                    setRoles(roleOverviewController.updateRole(role));
+                                    setRoles(roleOverviewController.updateRoles(role));
                                 }}
                             />
                         </>
@@ -61,7 +67,11 @@ export const BudgetDashboardComponent = inject<
                         />
                     );
                 case 'Parameters':
-                    return <BudgetParametersComponent />;
+                    return (
+                        <BudgetParametersComponent
+                            onBudgetParametersChange={handleBudgetParametersChange}
+                        />
+                    );
                 default:
                     return null;
             }

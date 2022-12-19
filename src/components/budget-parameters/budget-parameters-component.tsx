@@ -14,7 +14,7 @@ export const BudgetParametersComponent = inject<
     {
         budgetParametersController: 'BudgetParametersController',
     },
-    ({ budgetParametersController }: BudgetParametersComponentProps) => {
+    ({ budgetParametersController, onBudgetParametersChange }: BudgetParametersComponentProps) => {
         const [budgetParameters, setBudgetParameters] = useState(
             budgetParametersController.getParameters()
         );
@@ -28,8 +28,8 @@ export const BudgetParametersComponent = inject<
         }
 
         useEffect(() => {
-            budgetParametersController.updateParameters(budgetParameters);
-        }, [budgetParameters, budgetParametersController]);
+            onBudgetParametersChange(budgetParametersController.updateParameters(budgetParameters));
+        }, [budgetParameters, budgetParametersController, onBudgetParametersChange]);
 
         return (
             <div>
