@@ -18,7 +18,7 @@ export function BudgetDashboardNavigationLinkComponent({
 
     return (
         <div
-            className="px-2 py-1 flex items-center text-accent hover:cursor-pointer rounded-xl"
+            className="px-2 py-1 flex items-center text-accent hover:cursor-pointer rounded-xl hover:bg-accent hover:text-beige"
             onClick={() => setActive(text)}
         >
             <p onClick={() => setActive(text)} className="text-xl ">

@@ -20,7 +20,7 @@ export function WealthProjectionChartComponent({
             const marginRight = 130;
             const marginBottom = 30;
             const marginLeft = 100;
-            const color = '#AEB8FE';
+            let color = '#AEB8FE';
             const strokeWidth = 2;
             const strokeLinecap = 'rounded';
             const strokeLinejoin = 'rounded';
@@ -31,11 +31,12 @@ export function WealthProjectionChartComponent({
 
             const X = d3.map(yearlyWealthProjectionList, (x) => x.date);
             const Y = d3.map(yearlyWealthProjectionList, (y) => y.estimatedNetWorth);
+            const Y2 = d3.map(yearlyWealthProjectionList, (y) => y.estimatedNetWorthAfterTaxes);
             const I = d3.map(yearlyWealthProjectionList, (_, i) => i);
             const D = d3.map(
                 yearlyWealthProjectionList,
                 (_: TemporalWealthProjection, i: number): boolean => {
-                    return X[i] !== null && !isNaN(Y[i]);
+                    return X[i] !== null && !isNaN(Y[i]) && !isNaN(Y2[i]);
                 }
             );
 
@@ -46,16 +47,23 @@ export function WealthProjectionChartComponent({
             const yScale = d3.scaleLinear(yDomain, yRange);
             const xAxis = d3
                 .axisBottom(xScale)
-                .ticks(width / 80)
+                .ticks(width / 120)
                 .tickSizeOuter(0);
             const yAxis = d3.axisLeft(yScale).ticks(height / 40);
 
-            const line = d3
+            const preTaxLine = d3
                 .line<number>()
                 .defined((i) => D[i])
                 .curve(d3.curveLinear)
                 .x((i) => xScale(X[i]))
                 .y((i) => yScale(Y[i]));
+
+            const postTaxLine = d3
+                .line<number>()
+                .defined((i) => D[i])
+                .curve(d3.curveLinear)
+                .x((i) => xScale(X[i]))
+                .y((i) => yScale(Y2[i]));
 
             const svg = d3.select(ref.current);
             svg.selectAll('*').remove();
@@ -65,11 +73,22 @@ export function WealthProjectionChartComponent({
                 .attr('cy', height / 2)
                 .attr('r', 6)
                 .attr('fill', '#AEB8FE');
-
             svg.append('text')
                 .attr('x', width - 80)
                 .attr('y', height / 2)
-                .text('Net Worth')
+                .text('Pre-Tax')
+                .style('font-size', '15px')
+                .attr('alignment-baseline', 'middle');
+
+            svg.append('circle')
+                .attr('cx', width - 100)
+                .attr('cy', height / 2 + 30)
+                .attr('r', 6)
+                .attr('fill', '#FF8600');
+            svg.append('text')
+                .attr('x', width - 80)
+                .attr('y', height / 2 + 30)
+                .text('Post-Tax')
                 .style('font-size', '15px')
                 .attr('alignment-baseline', 'middle');
 
@@ -108,7 +127,7 @@ export function WealthProjectionChartComponent({
             svg.append('path')
                 .attr('fill', 'none')
                 .attr('stroke', 'currentColor')
-                .attr('d', line(I.filter((i) => D[i])));
+                .attr('d', preTaxLine(I.filter((i) => D[i])));
 
             svg.append('path')
                 .attr('fill', 'none')
@@ -117,7 +136,17 @@ export function WealthProjectionChartComponent({
                 .attr('stroke-linecap', strokeLinecap)
                 .attr('stroke-linejoin', strokeLinejoin)
                 .attr('stroke-opacity', strokeOpacity)
-                .attr('d', line(I));
+                .attr('d', preTaxLine(I));
+
+            color = '#FF8600';
+            svg.append('path')
+                .attr('fill', 'none')
+                .attr('stroke', color)
+                .attr('stroke-width', strokeWidth)
+                .attr('stroke-linecap', strokeLinecap)
+                .attr('stroke-linejoin', strokeLinejoin)
+                .attr('stroke-opacity', strokeOpacity)
+                .attr('d', postTaxLine(I));
 
             return svg.node();
         }
