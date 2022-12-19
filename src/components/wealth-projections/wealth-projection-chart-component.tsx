@@ -17,10 +17,10 @@ export function WealthProjectionChartComponent({
             }
             const height = 400;
             const marginTop = 25;
-            const marginRight = 30;
+            const marginRight = 130;
             const marginBottom = 30;
             const marginLeft = 100;
-            const color = 'currentColor';
+            const color = '#AEB8FE';
             const strokeWidth = 2;
             const strokeLinecap = 'rounded';
             const strokeLinejoin = 'rounded';
@@ -57,9 +57,23 @@ export function WealthProjectionChartComponent({
                 .x((i) => xScale(X[i]))
                 .y((i) => yScale(Y[i]));
 
-            const svg = d3
-                .select(ref.current)
-                .attr('width', width)
+            const svg = d3.select(ref.current);
+            svg.selectAll('*').remove();
+
+            svg.append('circle')
+                .attr('cx', width - 100)
+                .attr('cy', height / 2)
+                .attr('r', 6)
+                .attr('fill', '#AEB8FE');
+
+            svg.append('text')
+                .attr('x', width - 80)
+                .attr('y', height / 2)
+                .text('Net Worth')
+                .style('font-size', '15px')
+                .attr('alignment-baseline', 'middle');
+
+            svg.attr('width', width)
                 .attr('height', height)
                 .attr('viewBox', [0, 0, width, height])
                 .attr('style', 'max-width: 100%; height: auto; height: intrinsic;');
