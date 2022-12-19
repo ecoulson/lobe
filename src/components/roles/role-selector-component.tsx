@@ -37,7 +37,11 @@ export function RoleSelectorComponent({ onRoleSelection, roles }: RoleSelectorCo
                 </div>
                 <div className="px-2 py-2 border-2 border-gray bg-beige rounded-xl flex gap-x-6 items-center">
                     <div>
-                        <img alt="Google Logo" src="company.png" />
+                        <img
+                            className="h-8"
+                            alt="Google Logo"
+                            src={roles[selectedRoleIndex].companyLogo}
+                        />
                     </div>
                     <DataComponent
                         size={DataComponentSize.SMALL}

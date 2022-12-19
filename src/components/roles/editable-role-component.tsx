@@ -1,4 +1,5 @@
 import { Role } from '../../models/roles/role';
+import { FileInputComponent } from '../bases/file-input-component';
 import { InputComponent } from '../bases/input-component';
 import { NumberInputComponent } from '../bases/number-input-component';
 import { CardComponent } from '../card/card-component';
@@ -27,10 +28,22 @@ export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentPro
         );
     }
 
+    function handleCompanyLogoUpload(files: FileList | null) {
+        if (files) {
+            updateRole('companyLogo', URL.createObjectURL(files[0]));
+        }
+    }
+
     return (
         <CardComponent title={renderHeader()}>
             <div className="flex w-full">
-                <img className="w-16 h-16" alt="Google logo" src="company.png" />
+                <div>
+                    <img className="w-16 h-16" alt="Default logo" src={role.companyLogo} />
+                    <FileInputComponent
+                        accept={['.jpg', '.png', '.jpeg']}
+                        onChange={handleCompanyLogoUpload}
+                    />
+                </div>
                 <div
                     className={`grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 sm:grid-cols-1`}
                 >

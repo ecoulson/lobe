@@ -7,7 +7,10 @@ import { RoleOverviewCardComponentProps } from './role-overview-card-component-p
 
 export function RoleOverviewCardComponent({ role }: RoleOverviewCardComponentProps) {
     return (
-        <CardComponent title="Overview" icon={<img alt="google logo" src="company.png" />}>
+        <CardComponent
+            title="Overview"
+            icon={<img alt="google logo" className="h-8" src={role.companyLogo} />}
+        >
             <div className="flex gap-8 justify-between items-center">
                 <div className="flex flex-col gap-y-4">
                     <DataComponent label="Equity" data={<MoneyComponent money={role.equity} />} />

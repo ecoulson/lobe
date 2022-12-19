@@ -20,9 +20,11 @@ export class Role {
     public startYear: number;
     public endYear: number;
     public bonusTarget: Percentage;
+    public companyLogo: string;
 
     constructor(props?: Partial<Role>) {
         const {
+            companyLogo,
             bonusTarget,
             totalCompensation,
             equity,
@@ -54,6 +56,7 @@ export class Role {
             endAge: 0,
             endYear: 0,
             company: '',
+            companyLogo: 'default-company.png',
             state: '',
             maxMatched401KContributions: new Money(),
             matching401kPercentage: new Percentage(),
@@ -85,5 +88,6 @@ export class Role {
         this.company = company;
         this.state = state;
         this.bonusTarget = bonusTarget;
+        this.companyLogo = companyLogo;
     }
 }
