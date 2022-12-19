@@ -33,7 +33,7 @@ export function RoleSelectorComponent({ onRoleSelection, roles }: RoleSelectorCo
         <div className="col-span-full py-6 flex flex-col gap-y-2 justify-center items-center">
             <div className="flex justify-center gap-x-4 items-center">
                 <div onClick={handlePrevious} className="hover:cursor-pointer">
-                    <ChevronLeft />
+                    <ChevronLeft className="stroke-gray hover:stroke-accent" />
                 </div>
                 <div className="px-2 py-2 border-2 border-gray bg-beige rounded-xl flex gap-x-6 items-center">
                     <div>
@@ -54,7 +54,7 @@ export function RoleSelectorComponent({ onRoleSelection, roles }: RoleSelectorCo
                     </p>
                 </div>
                 <div onClick={handleNext} className="hover:cursor-pointer">
-                    <ChevronRight />
+                    <ChevronRight className="stroke-gray hover:stroke-accent" />
                 </div>
             </div>
             <p className="text-sm">
