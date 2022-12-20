@@ -34,7 +34,7 @@ export const StatisticsCardComponent = inject<
 
         return (
             <CardComponent title="Statistics" icon={<StatisticsIcon width={32} height={32} />}>
-                <div className="flex gap-8 items-center justify-between">
+                <div className="flex gap-8 items-center justify-between flex-wrap sm:flex-nowrap">
                     <div className="flex flex-col gap-y-4">
                         <DataComponent
                             label="Savings Percentage"

@@ -15,14 +15,11 @@ export function WealthProjectionChartComponent({
             if (containerRef.current?.parentElement?.clientWidth) {
                 width = containerRef.current.parentElement.clientWidth;
             }
-            if (width > window.innerWidth) {
-                width = window.innerWidth - 100;
-            }
             const height = 400;
-            const marginTop = 25;
-            const marginRight = 120;
+            const marginTop = 20;
+            const marginRight = width > 600 ? 120 : 50;
             const marginBottom = 30;
-            const marginLeft = 40;
+            const marginLeft = 50;
             let color = '#AEB8FE';
             const strokeWidth = 2;
             const strokeLinecap = 'rounded';
@@ -75,29 +72,31 @@ export function WealthProjectionChartComponent({
             const svg = d3.select(ref.current);
             svg.selectAll('*').remove();
 
-            svg.append('circle')
-                .attr('cx', width - 100)
-                .attr('cy', height / 2)
-                .attr('r', 6)
-                .attr('fill', '#AEB8FE');
-            svg.append('text')
-                .attr('x', width - 80)
-                .attr('y', height / 2)
-                .text('Pre-Tax')
-                .style('font-size', '15px')
-                .attr('alignment-baseline', 'middle');
+            if (width > 600) {
+                svg.append('circle')
+                    .attr('cx', width - 100)
+                    .attr('cy', height / 2)
+                    .attr('r', 6)
+                    .attr('fill', '#AEB8FE');
+                svg.append('text')
+                    .attr('x', width - 80)
+                    .attr('y', height / 2)
+                    .text('Pre-Tax')
+                    .style('font-size', '15px')
+                    .attr('alignment-baseline', 'middle');
 
-            svg.append('circle')
-                .attr('cx', width - 100)
-                .attr('cy', height / 2 + 30)
-                .attr('r', 6)
-                .attr('fill', '#FF8600');
-            svg.append('text')
-                .attr('x', width - 80)
-                .attr('y', height / 2 + 30)
-                .text('Post-Tax')
-                .style('font-size', '15px')
-                .attr('alignment-baseline', 'middle');
+                svg.append('circle')
+                    .attr('cx', width - 100)
+                    .attr('cy', height / 2 + 30)
+                    .attr('r', 6)
+                    .attr('fill', '#FF8600');
+                svg.append('text')
+                    .attr('x', width - 80)
+                    .attr('y', height / 2 + 30)
+                    .text('Post-Tax')
+                    .style('font-size', '15px')
+                    .attr('alignment-baseline', 'middle');
+            }
 
             svg.attr('width', width)
                 .attr('height', height)
@@ -125,7 +124,7 @@ export function WealthProjectionChartComponent({
                     g
                         .append('text')
                         .attr('x', -marginLeft)
-                        .attr('y', 10)
+                        .attr('y', 20)
                         .attr('fill', 'currentColor')
                         .attr('text-anchor', 'start')
                         .text('$ in USD')
@@ -163,7 +162,7 @@ export function WealthProjectionChartComponent({
     }, [yearlyWealthProjectionList]);
 
     return (
-        <div ref={containerRef} className="flex w-max h-max justify-center">
+        <div ref={containerRef} className="flex justify-center">
             <svg className="" ref={ref} />
         </div>
     );

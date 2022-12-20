@@ -11,7 +11,7 @@ export function RoleOverviewCardComponent({ role }: RoleOverviewCardComponentPro
             title="Overview"
             icon={<img alt="google logo" className="h-8" src={role.companyLogo} />}
         >
-            <div className="flex gap-8 justify-between items-center">
+            <div className="flex gap-8 justify-between items-center flex-wrap sm:flex-nowrap">
                 <div className="flex flex-col gap-y-4">
                     <DataComponent label="Equity" data={<MoneyComponent money={role.equity} />} />
                     <DataComponent
