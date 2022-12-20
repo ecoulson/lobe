@@ -32,6 +32,13 @@ export const StatisticsCardComponent = inject<
             return 'text-card-income';
         }
 
+        function getBalanceLabel() {
+            if (statistics.distanceFromSavingsGoal.sign === '-') {
+                return 'Over Budget By';
+            }
+            return 'Under Budget By';
+        }
+
         return (
             <CardComponent title="Statistics" icon={<StatisticsIcon width={32} height={32} />}>
                 <div className="flex gap-8 items-center justify-between flex-wrap sm:flex-nowrap">
@@ -61,7 +68,7 @@ export const StatisticsCardComponent = inject<
                     </div>
                     <div className="flex flex-col gap-y-8">
                         <DataComponent
-                            label="Left To Save"
+                            label={getBalanceLabel()}
                             size={DataComponentSize.LARGE}
                             data={
                                 <div className={getBalanceTextColor()}>

@@ -72,6 +72,79 @@ export function WealthProjectionChartComponent({
             const svg = d3.select(ref.current);
             svg.selectAll('*').remove();
 
+            const bisect = d3.bisector<TemporalWealthProjection, Date>((d) => d.date).left;
+            const focusPreTax = svg
+                .append('g')
+                .append('circle')
+                .style('fill', 'none')
+                .attr('stroke', 'black')
+                .attr('r', 8.5)
+                .style('opacity', 0)
+                .attr('stroke', '#AEB8FE');
+            const focusPreTaxText = svg
+                .append('g')
+                .append('text')
+                .style('opacity', 0)
+                .attr('text-anchor', 'left')
+                .attr('alignment-baseline', 'middle');
+
+            const focusPostTax = svg
+                .append('g')
+                .append('circle')
+                .style('fill', 'none')
+                .attr('stroke', 'black')
+                .attr('r', 8.5)
+                .style('opacity', 0)
+                .attr('stroke', '#FF8600');
+            const focusPostTaxText = svg
+                .append('g')
+                .append('text')
+                .style('opacity', 0)
+                .attr('text-anchor', 'left')
+                .attr('alignment-baseline', 'middle');
+
+            function mouseOver() {
+                focusPreTax.style('opacity', 1);
+                focusPreTaxText.style('opacity', 1);
+                focusPostTax.style('opacity', 1);
+                focusPostTaxText.style('opacity', 1);
+            }
+
+            function mouseMove(event: Event) {
+                const x0 = xScale.invert(d3.pointer(event, svg.node())[0]);
+                const i = bisect(yearlyWealthProjectionList, x0, 1);
+                const selectedData = yearlyWealthProjectionList[i];
+                focusPreTax
+                    .attr('cx', xScale(selectedData.date))
+                    .attr('cy', yScale(selectedData.estimatedNetWorth));
+                focusPreTaxText
+                    .html(
+                        selectedData.date.getUTCFullYear() +
+                            ': $' +
+                            selectedData.estimatedNetWorth.toFixed(2)
+                    )
+                    .attr('x', xScale(selectedData.date))
+                    .attr('y', yScale(selectedData.estimatedNetWorth) - 30);
+                focusPostTax
+                    .attr('cx', xScale(selectedData.date))
+                    .attr('cy', yScale(selectedData.estimatedNetWorthAfterTaxes));
+                focusPostTaxText
+                    .html(
+                        selectedData.date.getUTCFullYear() +
+                            ': $' +
+                            selectedData.estimatedNetWorthAfterTaxes.toFixed(2)
+                    )
+                    .attr('x', xScale(selectedData.date))
+                    .attr('y', yScale(selectedData.estimatedNetWorthAfterTaxes) + 30);
+            }
+
+            function mouseOut() {
+                focusPreTax.style('opacity', 0);
+                focusPreTaxText.style('opacity', 0);
+                focusPostTax.style('opacity', 0);
+                focusPostTaxText.style('opacity', 0);
+            }
+
             if (width > 600) {
                 svg.append('circle')
                     .attr('cx', width - 100)
@@ -124,7 +197,7 @@ export function WealthProjectionChartComponent({
                     g
                         .append('text')
                         .attr('x', -marginLeft)
-                        .attr('y', 20)
+                        .attr('y', 10)
                         .attr('fill', 'currentColor')
                         .attr('text-anchor', 'start')
                         .text('$ in USD')
@@ -153,6 +226,15 @@ export function WealthProjectionChartComponent({
                 .attr('stroke-linejoin', strokeLinejoin)
                 .attr('stroke-opacity', strokeOpacity)
                 .attr('d', postTaxLine(I));
+
+            svg.append('rect')
+                .style('fill', 'none')
+                .style('pointer-events', 'all')
+                .attr('width', width)
+                .attr('height', height)
+                .on('mouseover', mouseOver)
+                .on('mousemove', mouseMove)
+                .on('mouseout', mouseOut);
 
             return svg.node();
         }
