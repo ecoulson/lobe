@@ -35,7 +35,7 @@ export function VestingScheduleInputComponent({
             {vestingSchedule.map((percentage, i) => {
                 return (
                     <div className="flex gap-x-4" key={i}>
-                        <div className="w-1/6">
+                        <div className="w-1/2">
                             <PercentageInputComponent
                                 key={i}
                                 percision={1}
@@ -43,7 +43,7 @@ export function VestingScheduleInputComponent({
                                 onChange={(percentage) => updateVestingSchedule(percentage, i)}
                             />
                         </div>
-                        <div className="w-5/6">
+                        <div className="w-1/2">
                             <ButtonComponent onClick={() => removeFromVestingSchedule(i)}>
                                 Remove
                             </ButtonComponent>
