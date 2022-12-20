@@ -56,7 +56,7 @@ export class Role {
             endAge: 0,
             endYear: 0,
             company: '',
-            companyLogo: 'default-company.png',
+            companyLogo: 'default-company.svg',
             state: '',
             maxMatched401KContributions: new Money(),
             matching401kPercentage: new Percentage(),
