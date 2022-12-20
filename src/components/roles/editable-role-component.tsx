@@ -36,7 +36,7 @@ export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentPro
 
     return (
         <CardComponent title={renderHeader()}>
-            <div className="flex w-full">
+            <div className="flex flex-wrap sm:flex-nowrap gap-y-8">
                 <div>
                     <img className="w-16 h-16" alt="Default logo" src={role.companyLogo} />
                     <FileInputComponent
