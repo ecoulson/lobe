@@ -1,26 +1,27 @@
 import { Expenses } from '../../models/expenses/expenses';
+import { ExpensesBroker } from './expenses-broker';
 
-export class ExpenseBroker {
+export class InMemoryExpensesBroker implements ExpensesBroker {
     private expensesTable: Map<string, Expenses>;
 
     constructor() {
         this.expensesTable = new Map();
     }
 
-    listExpenses() {
+    selectAll() {
         return Array.from(this.expensesTable.values());
     }
 
-    saveExpenses(expenses: Expenses): Expenses {
+    save(expenses: Expenses): Expenses {
         this.expensesTable.set(expenses.id, expenses);
         return new Expenses(expenses);
     }
 
-    findExpensesById(id: string): Expenses {
+    selectById(id: string): Expenses {
         return new Expenses(this.expensesTable.get(id) as Expenses);
     }
 
-    deleteExpenses(expenses: Expenses): Expenses {
+    delete(expenses: Expenses): Expenses {
         this.expensesTable.delete(expenses.id);
         return new Expenses(expenses);
     }

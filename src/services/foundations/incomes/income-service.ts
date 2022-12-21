@@ -12,23 +12,23 @@ export class IncomeService {
     }
 
     listIncomes(): Income[] {
-        return this.incomeBroker.listIncomes();
+        return this.incomeBroker.selectAll();
     }
 
     createIncome(income: Income): Income {
         income.id = this.idBroker.generateId();
-        return this.incomeBroker.saveIncome(income);
+        return this.incomeBroker.save(income);
     }
 
     updateIncome(income: Income): Income {
-        return this.incomeBroker.saveIncome(income);
+        return this.incomeBroker.save(income);
     }
 
     getIncome(id: string): Income {
-        return this.incomeBroker.findIncomeById(id);
+        return this.incomeBroker.selectById(id);
     }
 
     removeIncome(income: Income): Income {
-        return this.incomeBroker.deleteIncome(income);
+        return this.incomeBroker.delete(income);
     }
 }

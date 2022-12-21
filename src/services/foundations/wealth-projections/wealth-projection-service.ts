@@ -13,18 +13,18 @@ export class WealthProjectionService {
 
     createWealthProjection(savings: WealthProjection): WealthProjection {
         savings.id = this.idBroker.generateId();
-        return this.wealthProjectionBroker.saveWealthProjection(savings);
+        return this.wealthProjectionBroker.save(savings);
     }
 
     updateWealthProjection(savings: WealthProjection): WealthProjection {
-        return this.wealthProjectionBroker.saveWealthProjection(savings);
+        return this.wealthProjectionBroker.save(savings);
     }
 
     getWealthProjection(id: string): WealthProjection {
-        return this.wealthProjectionBroker.findWealthProjectionById(id);
+        return this.wealthProjectionBroker.selectById(id);
     }
 
     removeWealthProjection(savings: WealthProjection): WealthProjection {
-        return this.wealthProjectionBroker.deleteWealthProjection(savings);
+        return this.wealthProjectionBroker.delete(savings);
     }
 }

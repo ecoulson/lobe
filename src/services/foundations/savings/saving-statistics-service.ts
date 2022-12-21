@@ -12,23 +12,23 @@ export class SavingStatisticsService {
     }
 
     listSavingStatistics() {
-        return this.savingStatisticsBroker.listSavingStatistics();
+        return this.savingStatisticsBroker.selectAll();
     }
 
     createSavingStatistics(savings: SavingStatistics): SavingStatistics {
         savings.id = this.idBroker.generateId();
-        return this.savingStatisticsBroker.saveSavingStatistics(savings);
+        return this.savingStatisticsBroker.save(savings);
     }
 
     updateSavingStatistics(savings: SavingStatistics): SavingStatistics {
-        return this.savingStatisticsBroker.saveSavingStatistics(savings);
+        return this.savingStatisticsBroker.save(savings);
     }
 
     getSavingStatistics(id: string): SavingStatistics {
-        return this.savingStatisticsBroker.findSavingStatisticsById(id);
+        return this.savingStatisticsBroker.selectById(id);
     }
 
     removeSavingStatistics(savings: SavingStatistics): SavingStatistics {
-        return this.savingStatisticsBroker.deleteSavingStatistics(savings);
+        return this.savingStatisticsBroker.delete(savings);
     }
 }

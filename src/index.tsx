@@ -1,13 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BudgetParametersBroker } from './brokers/budget-parameters/budget-parameters-broker';
 import { EventBroker } from './brokers/events/event-broker';
-import { ExpenseBroker } from './brokers/expenses/expense-broker';
 import { IdBroker } from './brokers/ids/id-broker';
-import { IncomeBroker } from './brokers/incomes/income-broker';
-import { RoleBroker } from './brokers/roles/role-broker';
-import { SavingStatisticsBroker } from './brokers/savings/saving-statistics-broker';
-import { SavingsBroker } from './brokers/savings/savings-broker';
+import { LocalStorageBroker } from './brokers/storage/local-storage-broker';
 import { DependencyInjectionClient } from './clients/dependency-injection/dependency-injection-client';
 import { BudgetDashboardComponent } from './components/dashboards/budget-dashboard-component';
 import { BudgetParametersController } from './controllers/budget-parameters/budget-parameters-controller';
@@ -43,6 +38,7 @@ import { WealthProjectionOrchestrationService } from './services/orchestrations/
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const container = new DependencyInjectionClient();
 const eventEmitter = new EventEmitter();
+const applicationId = 'wealthy_lobe';
 const budgetParameters = new BudgetParameters({
     currentAge: 18,
     targetPercentageOfIncomeToSave: new Percentage({
@@ -54,23 +50,51 @@ const budgetParameters = new BudgetParameters({
 });
 const eventBroker = new EventBroker(eventEmitter);
 const budgetParametersService = new BudgetParametersService(
-    new BudgetParametersBroker(budgetParameters)
+    new LocalStorageBroker({
+        applicationId,
+        collectionId: 'budget_parameters',
+    })
 );
+budgetParametersService.updateParameters(budgetParameters);
 const idBroker = new IdBroker();
 const moneyService = new MoneyService();
 const incomeOrchestrationService = new IncomeOrchestrationService(
-    new IncomeService(new IncomeBroker(), idBroker),
+    new IncomeService(
+        new LocalStorageBroker({
+            applicationId,
+            collectionId: 'income',
+        }),
+        idBroker
+    ),
     moneyService
 );
 const expensesOrchestrationService = new ExpenseOrchestrationService(
-    new ExpensesService(new ExpenseBroker(), idBroker),
+    new ExpensesService(
+        new LocalStorageBroker({
+            applicationId,
+            collectionId: 'expenses',
+        }),
+        idBroker
+    ),
     moneyService
 );
-const savingsService = new SavingsService(new SavingsBroker(), idBroker);
+const savingsService = new SavingsService(
+    new LocalStorageBroker({
+        applicationId,
+        collectionId: 'savings',
+    }),
+    idBroker
+);
 const savingsOrchestrationService = new SavingsOrchestrationService(savingsService, moneyService);
 const savingStatisticsOrchestrationService = new SavingStatisticsOrchestrationService(
     budgetParametersService,
-    new SavingStatisticsService(new SavingStatisticsBroker(), idBroker),
+    new SavingStatisticsService(
+        new LocalStorageBroker({
+            applicationId,
+            collectionId: 'saving_statistics',
+        }),
+        idBroker
+    ),
     moneyService
 );
 const wealthProjectionOrchestrationService = new WealthProjectionOrchestrationService(
@@ -83,7 +107,13 @@ container.register(
     new RoleOverviewController(
         new RoleAggregationService(
             new RoleOrchestrationService(
-                new RoleService(new RoleBroker(), idBroker),
+                new RoleService(
+                    new LocalStorageBroker({
+                        applicationId,
+                        collectionId: 'role',
+                    }),
+                    idBroker
+                ),
                 moneyService,
                 budgetParametersService
             ),

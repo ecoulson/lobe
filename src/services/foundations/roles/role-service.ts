@@ -12,23 +12,23 @@ export class RoleService {
     }
 
     listRoles(): Role[] {
-        return this.roleBroker.listRoles();
+        return this.roleBroker.selectAll();
     }
 
     createRole(role: Role): Role {
         role.id = this.idBroker.generateId();
-        return this.roleBroker.saveRole(role);
+        return this.roleBroker.save(role);
     }
 
     updateRole(role: Role): Role {
-        return this.roleBroker.saveRole(role);
+        return this.roleBroker.save(role);
     }
 
     getRole(id: string): Role {
-        return this.roleBroker.findRoleById(id);
+        return this.roleBroker.selectById(id);
     }
 
     removeRole(role: Role): Role {
-        return this.roleBroker.deleteRole(role);
+        return this.roleBroker.delete(role);
     }
 }

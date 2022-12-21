@@ -12,23 +12,23 @@ export class SavingsService {
     }
 
     listSavings() {
-        return this.savingsBroker.listSavings();
+        return this.savingsBroker.selectAll();
     }
 
     createSavings(savings: Savings): Savings {
         savings.id = this.idBroker.generateId();
-        return this.savingsBroker.saveSavings(savings);
+        return this.savingsBroker.save(savings);
     }
 
     updateSavings(savings: Savings): Savings {
-        return this.savingsBroker.saveSavings(savings);
+        return this.savingsBroker.save(savings);
     }
 
     getSavings(id: string): Savings {
-        return this.savingsBroker.findSavingsById(id);
+        return this.savingsBroker.selectById(id);
     }
 
     removeSavings(savings: Savings): Savings {
-        return this.savingsBroker.deleteSavings(savings);
+        return this.savingsBroker.delete(savings);
     }
 }

@@ -9,10 +9,10 @@ export class BudgetParametersService {
     }
 
     getParameters(): BudgetParameters {
-        return this.budgetParametersBroker.retrieveBudgetParameters();
+        return this.budgetParametersBroker.selectById('');
     }
 
     updateParameters(budgetParameters: BudgetParameters) {
-        return this.budgetParametersBroker.modifyBudgetParameters(budgetParameters);
+        return this.budgetParametersBroker.save(budgetParameters);
     }
 }
