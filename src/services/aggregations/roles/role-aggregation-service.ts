@@ -33,7 +33,7 @@ export class RoleAggregationService {
     }
 
     getAllRolesForBudget(budgetId: string) {
-        return this.roleOrchestrationService.getAllRolesForBudget(budgetId);
+        return [...this.getAllRolesInChronologicalOrder(budgetId)].reverse();
     }
 
     createRole(budgetId: string, previousRole?: Role) {
@@ -64,17 +64,7 @@ export class RoleAggregationService {
     }
 
     updateRoles(role: Role) {
-        const chronologicalRoles = this.roleOrchestrationService
-            .getAllRolesForBudget(role.budgetId)
-            .sort((a: Role, b: Role) => {
-                if (a.startYear < b.startYear) {
-                    return -1;
-                } else if (a.startYear === b.startYear) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            });
+        const chronologicalRoles = this.getAllRolesInChronologicalOrder(role.budgetId);
         const roleIndex = chronologicalRoles.findIndex((storedRole) => role.id === storedRole.id);
         const incomeTax = new Tax({
             rate: new Percentage({
@@ -117,5 +107,19 @@ export class RoleAggregationService {
             roles.push(updatedDependantRole);
         }
         return roles;
+    }
+
+    private getAllRolesInChronologicalOrder(budgetId: string) {
+        return this.roleOrchestrationService
+            .getAllRolesForBudget(budgetId)
+            .sort((a: Role, b: Role) => {
+                if (a.startYear < b.startYear) {
+                    return -1;
+                } else if (a.startYear === b.startYear) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            });
     }
 }
