@@ -33,7 +33,7 @@ export class RoleAggregationService {
     }
 
     getAllRolesForBudget(budgetId: string) {
-        return [...this.getAllRolesInChronologicalOrder(budgetId)].reverse();
+        return this.getAllRolesInChronologicalOrder(budgetId);
     }
 
     createRole(budgetId: string, previousRole?: Role) {
@@ -76,12 +76,11 @@ export class RoleAggregationService {
                 value: 40,
             }),
         });
-        const roles = chronologicalRoles.slice(0, roleIndex);
         chronologicalRoles[roleIndex] = role;
-        for (let i = roleIndex; i < chronologicalRoles.length; i++) {
+        for (let i = chronologicalRoles.length - 1; i >= 0; i--) {
             const updatedDependantRole = this.roleOrchestrationService.updateRole(
                 chronologicalRoles[i],
-                chronologicalRoles[i - 1]
+                chronologicalRoles[i + 1]
             );
             const updatedIncome = this.incomeOrchestrationService.updateIncomeByRole(
                 updatedDependantRole,
@@ -104,22 +103,26 @@ export class RoleAggregationService {
                 updatedSavings,
                 projections
             );
-            roles.push(updatedDependantRole);
+            chronologicalRoles[i] = updatedDependantRole;
         }
-        return roles;
+        return this.sortRolesReverseChronologically(chronologicalRoles);
     }
 
     private getAllRolesInChronologicalOrder(budgetId: string) {
-        return this.roleOrchestrationService
-            .getAllRolesForBudget(budgetId)
-            .sort((a: Role, b: Role) => {
-                if (a.startYear < b.startYear) {
-                    return -1;
-                } else if (a.startYear === b.startYear) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            });
+        return this.sortRolesReverseChronologically(
+            this.roleOrchestrationService.getAllRolesForBudget(budgetId)
+        );
+    }
+
+    private sortRolesReverseChronologically(roles: Role[]) {
+        return roles.sort((a: Role, b: Role) => {
+            if (a.startYear < b.startYear) {
+                return 1;
+            } else if (a.startYear === b.startYear) {
+                return 0;
+            } else {
+                return -1;
+            }
+        });
     }
 }

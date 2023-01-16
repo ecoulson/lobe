@@ -20,14 +20,13 @@ export const BudgetDashboardComponent = inject<
         const links = useMemo(() => ['Overview', 'Roles', 'Parameters'], []);
         const [page, setPage] = useState(links[0]);
         const [roles, setRoles] = useState(roleOverviewController.getAllRolesForBudget(budgetId));
-        const reversedRoles = useMemo(() => [...roles].reverse(), [roles]);
         const [activeRole, setActiveRole] = useState<Role | null>(null);
 
         useEffect(() => {
-            if (activeRole === null && reversedRoles.length > 0) {
-                setActiveRole(reversedRoles[0]);
+            if (activeRole === null && roles.length > 0) {
+                setActiveRole(roles[roles.length - 1]);
             }
-        }, [reversedRoles, activeRole, setActiveRole]);
+        }, [activeRole, setActiveRole]);
 
         function handleBudgetParametersChange() {
             setRoles(
@@ -42,7 +41,7 @@ export const BudgetDashboardComponent = inject<
                         <>
                             <BudgetDashboardWealthOverviewComponent roles={roles} />
                             <RoleSelectorComponent
-                                roles={reversedRoles}
+                                roles={roles}
                                 onRoleSelection={(role) => {
                                     if (role) {
                                         setActiveRole(role);

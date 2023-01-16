@@ -7,21 +7,19 @@ import { MoneyComponent } from '../funds/money-component';
 import { DataComponentSize } from '../data/data-component-size';
 
 export function RoleSelectorComponent({ onRoleSelection, roles }: RoleSelectorComponentProps) {
-    const [selectedRoleIndex, setSelectedRoleIndex] = useState(0);
-
-    useEffect(() => {
-        onRoleSelection(roles[selectedRoleIndex]);
-    }, [selectedRoleIndex, roles, onRoleSelection]);
+    const [selectedRoleIndex, setSelectedRoleIndex] = useState(roles.length - 1);
 
     function handlePrevious() {
-        if (selectedRoleIndex - 1 >= 0) {
-            setSelectedRoleIndex(selectedRoleIndex - 1);
+        if (selectedRoleIndex + 1 < roles.length) {
+            onRoleSelection(roles[selectedRoleIndex + 1]);
+            setSelectedRoleIndex(selectedRoleIndex + 1);
         }
     }
 
     function handleNext() {
-        if (selectedRoleIndex + 1 < roles.length) {
-            setSelectedRoleIndex(selectedRoleIndex + 1);
+        if (selectedRoleIndex - 1 >= 0) {
+            onRoleSelection(roles[selectedRoleIndex - 1]);
+            setSelectedRoleIndex(selectedRoleIndex - 1);
         }
     }
 
@@ -62,7 +60,7 @@ export function RoleSelectorComponent({ onRoleSelection, roles }: RoleSelectorCo
                 </div>
             </div>
             <p className="text-sm">
-                Role {selectedRoleIndex + 1} of {roles.length}
+                Role {roles.length - selectedRoleIndex} of {roles.length}
             </p>
         </div>
     );

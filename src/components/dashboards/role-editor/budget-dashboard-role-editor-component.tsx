@@ -18,7 +18,7 @@ export const BudgetDashboardRoleEditorComponent = inject<
         budgetId,
     }: BudgetDashboardRoleEditorComponentProps) => {
         function handleEdit(role: Role) {
-            onRoleChange(roleOverviewController.updateRoles(role).reverse());
+            onRoleChange(roleOverviewController.updateRoles(role));
         }
 
         return (
