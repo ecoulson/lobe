@@ -5,6 +5,7 @@ import { ExpensesCardComponent } from '../../expenses/expenses-card-component';
 import { StatisticsCardComponent } from '../../statistics/statistics-card-component';
 import { BudgetDashboardOverviewComponentProps } from './budget-dashboard-overview-component-props';
 import { ButtonComponent } from '../../bases/button-component';
+import { Role } from '../../../models/roles/role';
 
 export function BudgetDashboardOverviewComponent({
     role,
@@ -20,13 +21,13 @@ export function BudgetDashboardOverviewComponent({
     }
     return (
         <>
-            <RoleOverviewCardComponent role={role} />
-            <IncomeCardComponent role={role} />
-            <SavingsCardComponent role={role} />
+            <RoleOverviewCardComponent role={new Role(role)} />
+            <IncomeCardComponent role={new Role(role)} />
+            <SavingsCardComponent role={new Role(role)} />
             <div className="col-span-1 md:col-span-2">
-                <ExpensesCardComponent updateRole={updateRole} role={role} />
+                <ExpensesCardComponent updateRole={updateRole} role={new Role(role)} />
             </div>
-            <StatisticsCardComponent role={role} />
+            <StatisticsCardComponent role={new Role(role)} />
         </>
     );
 }
