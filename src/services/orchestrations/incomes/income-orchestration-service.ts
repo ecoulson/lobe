@@ -43,10 +43,7 @@ export class IncomeOrchestrationService {
     ) {
         const baseSalary = this.moneyService.getCurrencyAmount(role.baseSalary);
         if (isNaN(baseSalary)) {
-            return new Income({
-                id: income.id,
-                baseSalary: role.baseSalary,
-            });
+            income.baseSalary = role.baseSalary;
         }
         const yearly401kContributions = this.moneyService.getCurrencyAmount(
             role.maxMatched401KContributions
