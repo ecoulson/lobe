@@ -114,28 +114,30 @@ export function WealthProjectionChartComponent({
                 const x0 = xScale.invert(d3.pointer(event, svg.node())[0]);
                 const i = bisect(yearlyWealthProjectionList, x0, 1);
                 const selectedData = yearlyWealthProjectionList[i];
-                focusPreTax
-                    .attr('cx', xScale(selectedData.date))
-                    .attr('cy', yScale(selectedData.estimatedNetWorth));
-                focusPreTaxText
-                    .html(
-                        selectedData.date.getUTCFullYear() +
-                            ': $' +
-                            selectedData.estimatedNetWorth.toFixed(2)
-                    )
-                    .attr('x', xScale(selectedData.date))
-                    .attr('y', yScale(selectedData.estimatedNetWorth) - 30);
-                focusPostTax
-                    .attr('cx', xScale(selectedData.date))
-                    .attr('cy', yScale(selectedData.estimatedNetWorthAfterTaxes));
-                focusPostTaxText
-                    .html(
-                        selectedData.date.getUTCFullYear() +
-                            ': $' +
-                            selectedData.estimatedNetWorthAfterTaxes.toFixed(2)
-                    )
-                    .attr('x', xScale(selectedData.date))
-                    .attr('y', yScale(selectedData.estimatedNetWorthAfterTaxes) + 30);
+                if (selectedData) {
+                    focusPreTax
+                        .attr('cx', xScale(selectedData.date))
+                        .attr('cy', yScale(selectedData.estimatedNetWorth));
+                    focusPreTaxText
+                        .html(
+                            selectedData.date.getUTCFullYear() +
+                                ': $' +
+                                selectedData.estimatedNetWorth.toFixed(2)
+                        )
+                        .attr('x', xScale(selectedData.date))
+                        .attr('y', yScale(selectedData.estimatedNetWorth) - 30);
+                    focusPostTax
+                        .attr('cx', xScale(selectedData.date))
+                        .attr('cy', yScale(selectedData.estimatedNetWorthAfterTaxes));
+                    focusPostTaxText
+                        .html(
+                            selectedData.date.getUTCFullYear() +
+                                ': $' +
+                                selectedData.estimatedNetWorthAfterTaxes.toFixed(2)
+                        )
+                        .attr('x', xScale(selectedData.date))
+                        .attr('y', yScale(selectedData.estimatedNetWorthAfterTaxes) + 30);
+                }
             }
 
             function mouseOut() {
