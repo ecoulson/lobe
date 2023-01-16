@@ -58,7 +58,9 @@ export class SavingStatisticsOrchestrationService {
         updatedStatistics: SavingStatistics = new SavingStatistics()
     ) {
         const budgetParameters = this.budgetParametersService.getParameters();
-        const totalSaved = this.moneyService.getCurrencyAmount(updatedSavings.totalSaved);
+        const totalSaved =
+            (updatedSavings.totalSaved ? -1 : 1) *
+            this.moneyService.getCurrencyAmount(updatedSavings.totalSaved);
         const totalIncome = this.moneyService.getCurrencyAmount(currentIncome.totalIncome);
         const equity = this.moneyService.getCurrencyAmount(updatedSavings.equity);
         const contributionsTo401k = this.moneyService.getCurrencyAmount(
@@ -70,7 +72,7 @@ export class SavingStatisticsOrchestrationService {
             (budgetParameters.targetPercentageOfIncomeToSave.value / 100);
         const distanceFromGoal = totalSaved - goalToSave;
         let percentageSaved = (totalSaved / (totalIncome + equity + contributionsTo401k)) * 100;
-        if (isNaN(percentageSaved)) {
+        if (isNaN(percentageSaved) || !isFinite(percentageSaved)) {
             percentageSaved = 0;
         }
 
