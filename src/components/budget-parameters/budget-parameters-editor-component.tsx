@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { inject } from '../../clients/dependency-injection/inject';
 import { BudgetParameters } from '../../models/budgets/budget-parameters';
 import { NumberInputComponent } from '../bases/number-input-component';
+import { PercentageInputComponent } from '../bases/percentage-input-component';
 import { MoneyInputComponent } from '../funds/money-input-component';
-import { PercentageInputComponent } from '../percentages/percentage-input-component';
 import { BudgetParametersEditorComponentProps } from './budget-parameters-editor-component-props';
 import { BudgetParameterFieldComponent } from './budget-parameters-field-component';
 

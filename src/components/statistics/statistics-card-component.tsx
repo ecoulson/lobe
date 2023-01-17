@@ -2,12 +2,12 @@ import { StatisticsCardComponentProps } from './statistics-card-component-props'
 import { ReactComponent as StatisticsIcon } from '../../assets/statistics.svg';
 import { CardComponent } from '../card/card-component';
 import { DataComponent } from '../data/data-component';
-import { PercentageComponent } from '../percentages/percentage-component';
 import { DataComponentSize } from '../data/data-component-size';
 import { BalanceComponent } from '../funds/balance-component';
 import { MoneyComponent } from '../funds/money-component';
 import { inject } from '../../clients/dependency-injection/inject';
 import { useEffect, useState } from 'react';
+import { PercentageComponent } from '../bases/percentage-component';
 
 export const StatisticsCardComponent = inject<
     StatisticsCardComponentProps,

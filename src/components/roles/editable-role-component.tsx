@@ -2,10 +2,10 @@ import { Role } from '../../models/roles/role';
 import { FileInputComponent } from '../bases/file-input-component';
 import { InputComponent } from '../bases/input-component';
 import { NumberInputComponent } from '../bases/number-input-component';
+import { PercentageInputComponent } from '../bases/percentage-input-component';
 import { CardComponent } from '../card/card-component';
 import { DataComponent } from '../data/data-component';
 import { MoneyInputComponent } from '../funds/money-input-component';
-import { PercentageInputComponent } from '../percentages/percentage-input-component';
 import { VestingScheduleInputComponent } from '../vesting-schedule/vesting-schedule-input-component';
 import { EditableRoleComponentProps } from './editable-role-component-props';
 

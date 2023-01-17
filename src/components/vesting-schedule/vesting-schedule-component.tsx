@@ -1,5 +1,5 @@
+import { PercentageComponent } from '../bases/percentage-component';
 import { DataComponent } from '../data/data-component';
-import { PercentageComponent } from '../percentages/percentage-component';
 import { VestingScheduleComponentProps } from './vesting-schedule-component-props';
 
 export function VestingScheduleComponent({

@@ -1,6 +1,6 @@
 import { Percentage } from '../../models/statistics/percentage';
 import { ButtonComponent } from '../bases/button-component';
-import { PercentageInputComponent } from '../percentages/percentage-input-component';
+import { PercentageInputComponent } from '../bases/percentage-input-component';
 import { VestingScheduleInputComponentProps } from './vesting-schedule-input-component-props';
 
 export function VestingScheduleInputComponent({

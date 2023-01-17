@@ -2,8 +2,8 @@ import { CardComponent } from '../card/card-component';
 import { DataComponent } from '../data/data-component';
 import { VestingScheduleComponent } from '../vesting-schedule/vesting-schedule-component';
 import { MoneyComponent } from '../funds/money-component';
-import { PercentageComponent } from '../percentages/percentage-component';
 import { RoleOverviewCardComponentProps } from './role-overview-card-component-props';
+import { PercentageComponent } from '../bases/percentage-component';
 
 export function RoleOverviewCardComponent({ role }: RoleOverviewCardComponentProps) {
     return (
