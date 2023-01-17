@@ -37,7 +37,6 @@ import { WealthProjectionOrchestrationService } from './services/orchestrations/
 
 if (window.localStorage.length > 0 && !window.localStorage.getItem('migration_version')) {
     window.localStorage.clear();
-} else {
     window.localStorage.setItem('migration_version', '1');
 }
 
