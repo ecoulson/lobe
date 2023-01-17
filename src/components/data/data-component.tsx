@@ -41,7 +41,7 @@ export function DataComponent({
 
     return (
         <div>
-            <p className={getLabelSize()}>{label}</p>
+            <div className={getLabelSize()}>{label}</div>
             <div className={`${getTextStyle()} ${getDataSize()}`}>{data}</div>
         </div>
     );

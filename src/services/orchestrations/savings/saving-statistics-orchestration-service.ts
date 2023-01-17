@@ -59,7 +59,7 @@ export class SavingStatisticsOrchestrationService {
     ) {
         const budgetParameters = this.budgetParametersService.getParameters();
         const totalSaved =
-            (updatedSavings.totalSaved ? -1 : 1) *
+            (updatedSavings.totalSaved.sign === '-' ? -1 : 1) *
             this.moneyService.getCurrencyAmount(updatedSavings.totalSaved);
         const totalIncome = this.moneyService.getCurrencyAmount(currentIncome.totalIncome);
         const equity = this.moneyService.getCurrencyAmount(updatedSavings.equity);

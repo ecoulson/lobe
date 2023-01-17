@@ -58,7 +58,7 @@ export class SavingsOrchestrationService {
         savings.contributionsTo401k = this.moneyService.createMoney(
             contributionsTo401kWithMatching
         );
-        const totalSavedMoney = this.moneyService.createMoney(Math.abs(totalSaved));
+        const totalSavedMoney = this.moneyService.createMoney(totalSaved);
         savings.totalSaved = new Balance({
             sign: totalSaved < 0 ? '-' : '',
             currency: totalSavedMoney.currency,
@@ -69,7 +69,6 @@ export class SavingsOrchestrationService {
     }
 
     updateSavingsByRole(role: Role, income: Income, expenses: Expenses) {
-        console.log(role.id, expenses);
         return this.savingsService.updateSavings(
             this.calculateSavings(role, income, expenses, this.getSavingsByRole(role))
         );

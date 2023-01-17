@@ -105,8 +105,11 @@ export class WealthProjectionOrchestrationService {
         if (previousProjection) {
             principal = previousProjection.estimatedNetWorth;
         }
-        principal +=
-            this.moneyService.getCurrencyAmount(role.signOnBonus) * (1 - bonusTax.rate.value / 100);
+        if (year === 1) {
+            principal +=
+                this.moneyService.getCurrencyAmount(role.signOnBonus) *
+                (1 - bonusTax.rate.value / 100);
+        }
         const returnRate = budgetParameters.estimatedReturnRate.value / 100;
         wealthProjection.date = new Date(`1/1/${role.startYear + year}`);
 

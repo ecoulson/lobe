@@ -1,5 +1,6 @@
 import { Role } from '../../models/roles/role';
 import { FileInputComponent } from '../bases/file-input-component';
+import { InfoComponent } from '../bases/info-component';
 import { InputComponent } from '../bases/input-component';
 import { NumberInputComponent } from '../bases/number-input-component';
 import { PercentageInputComponent } from '../bases/percentage-input-component';
@@ -117,14 +118,25 @@ export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentPro
                         }
                     />
                     <DataComponent
-                        label="Vesting Schedule"
+                        label={
+                            <div className="flex gap-x-2">
+                                <InfoComponent
+                                    popoverChild={
+                                        'Vesting schedule is not currently used in the calculations'
+                                    }
+                                />
+                                <span>Vesting Schedule</span>
+                            </div>
+                        }
                         data={
-                            <VestingScheduleInputComponent
-                                vestingSchedule={role.vestingSchedule}
-                                onChange={(vestingSchedule) =>
-                                    updateRole('vestingSchedule', vestingSchedule)
-                                }
-                            />
+                            <>
+                                <VestingScheduleInputComponent
+                                    vestingSchedule={role.vestingSchedule}
+                                    onChange={(vestingSchedule) =>
+                                        updateRole('vestingSchedule', vestingSchedule)
+                                    }
+                                />
+                            </>
                         }
                     />
                     <DataComponent
