@@ -35,6 +35,12 @@ import { SavingStatisticsOrchestrationService } from './services/orchestrations/
 import { SavingsOrchestrationService } from './services/orchestrations/savings/savings-orchestration-service';
 import { WealthProjectionOrchestrationService } from './services/orchestrations/wealth-projections/wealth-projection-orchestration-service';
 
+if (window.localStorage.length > 0 && !window.localStorage.getItem('migration_version')) {
+    window.localStorage.clear();
+} else {
+    window.localStorage.setItem('migration_version', '1');
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const container = new DependencyInjectionClient();
 const eventEmitter = new EventEmitter();
