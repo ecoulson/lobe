@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { RoleSelectorComponentProps } from './role-selector-component-props';
 import { ReactComponent as ChevronLeft } from '../../assets/chevron-left.svg';
 import { ReactComponent as ChevronRight } from '../../assets/chevron-right.svg';

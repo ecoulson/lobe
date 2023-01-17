@@ -41,7 +41,10 @@ export function WealthProjectionChartComponent({
             );
 
             const xDomain = d3.extent(X) as [Date, Date];
-            const yDomain = [0, d3.max(Y) as number];
+            const yDomain = [
+                (d3.min(Y) as number) < 0 ? (d3.min(Y) as number) : 0,
+                d3.max(Y) as number,
+            ];
 
             const xScale = d3.scaleTime(xDomain, xRange);
             const yScale = d3.scaleLinear(yDomain, yRange);

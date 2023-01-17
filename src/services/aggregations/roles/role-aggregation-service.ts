@@ -87,7 +87,8 @@ export class RoleAggregationService {
                 incomeTax,
                 bonusTax
             );
-            const updatedExpenses = this.expensesOrchestrationService.updateExpensesByRole(role);
+            const updatedExpenses =
+                this.expensesOrchestrationService.updateExpensesByRole(updatedDependantRole);
             const updatedSavings = this.savingsOrchestrationService.updateSavingsByRole(
                 updatedDependantRole,
                 updatedIncome,

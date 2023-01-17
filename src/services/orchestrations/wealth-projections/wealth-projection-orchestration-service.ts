@@ -108,16 +108,26 @@ export class WealthProjectionOrchestrationService {
         principal +=
             this.moneyService.getCurrencyAmount(role.signOnBonus) * (1 - bonusTax.rate.value / 100);
         const returnRate = budgetParameters.estimatedReturnRate.value / 100;
-        const totalSaved = this.moneyService.getCurrencyAmount(savings.totalSaved);
-        const principalReturn = principal * Math.pow(1 + returnRate, year);
-        const savingsReturn =
-            ((totalSaved * (Math.pow(1 + returnRate, year) - 1)) / returnRate) * (1 + returnRate);
-        const expetedNetWorth = principalReturn + savingsReturn;
-        const expectedNetWorthAfterCapitalGains =
-            expetedNetWorth * (1 - capitalGainsTax.rate.value / 100);
-
         wealthProjection.date = new Date(`1/1/${role.startYear + year}`);
-        wealthProjection.estimatedNetWorth = expetedNetWorth;
+
+        const totalSaved = this.moneyService.getCurrencyAmount(savings.totalSaved);
+        let principalReturn = principal * Math.pow(1 + returnRate, year);
+        let savingsReturn =
+            ((totalSaved * (Math.pow(1 + returnRate, year) - 1)) / returnRate) * (1 + returnRate);
+        if (principalReturn < 0) {
+            principalReturn = principal;
+        }
+        if (savings.totalSaved.sign === '-') {
+            savingsReturn = -totalSaved;
+        }
+        const expectedNetWorth = principalReturn + savingsReturn;
+        let expectedNetWorthAfterCapitalGains =
+            expectedNetWorth * (1 - capitalGainsTax.rate.value / 100);
+        if (expectedNetWorth < 0) {
+            expectedNetWorthAfterCapitalGains = expectedNetWorth;
+        }
+
+        wealthProjection.estimatedNetWorth = expectedNetWorth;
         wealthProjection.estimatedNetWorthAfterTaxes = expectedNetWorthAfterCapitalGains;
         return wealthProjection;
     }

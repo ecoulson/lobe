@@ -26,7 +26,7 @@ export const BudgetDashboardComponent = inject<
             if (activeRole === null && roles.length > 0) {
                 setActiveRole(roles[roles.length - 1]);
             }
-        }, [activeRole, setActiveRole]);
+        }, [roles, activeRole, setActiveRole]);
 
         function handleBudgetParametersChange() {
             setRoles(
@@ -44,7 +44,7 @@ export const BudgetDashboardComponent = inject<
                                 roles={roles}
                                 onRoleSelection={(role) => {
                                     if (role) {
-                                        setActiveRole(role);
+                                        setActiveRole(new Role(role));
                                     }
                                 }}
                             />

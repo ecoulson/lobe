@@ -69,6 +69,7 @@ export class SavingsOrchestrationService {
     }
 
     updateSavingsByRole(role: Role, income: Income, expenses: Expenses) {
+        console.log(role.id, expenses);
         return this.savingsService.updateSavings(
             this.calculateSavings(role, income, expenses, this.getSavingsByRole(role))
         );
