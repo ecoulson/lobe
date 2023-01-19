@@ -8,7 +8,6 @@ export function WealthProjectionChartComponent({
 }: WealthProjectionChartComponentProps) {
     const ref = useRef<SVGSVGElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    console.log(yearlyWealthProjectionList);
 
     useEffect(() => {
         function createGraph() {

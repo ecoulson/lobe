@@ -32,7 +32,13 @@ export function EditableRoleComponent({ role, onEdit, onRemove }: EditableRoleCo
 
     function handleCompanyLogoUpload(files: FileList | null) {
         if (files) {
-            updateRole('companyLogo', URL.createObjectURL(files[0]));
+            const reader = new FileReader();
+            reader.addEventListener('load', () => {
+                if (reader.result) {
+                    updateRole('companyLogo', reader.result.toString());
+                }
+            });
+            reader.readAsDataURL(files[0]);
         }
     }
 

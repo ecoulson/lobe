@@ -33,7 +33,7 @@ export const ExpensesCardComponent = inject<ExpensesCardComponentProps, 'expense
                 icon={<ExpensesIcon width={32} height={32} fill="white" />}
             >
                 <div className="flex gap-x-4 justify-between flex-wrap sm:flex-nowrap gap-y-8">
-                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-3/4">
                         {expenses.categories.map((category) => (
                             <DataComponent
                                 key={category.name}
