@@ -69,14 +69,14 @@ export class WealthProjectionOrchestrationService {
         bonusTax: Tax,
         lastRoleEndYear: number
     ) {
-        for (let month = 1; month < role.estimatedYearsSpentInPosition * 12; month++) {
+        for (let month = 1; month <= role.estimatedYearsSpentInPosition * 12; month++) {
             projections.push(
                 this.calculateWealthProjectionForYear(
                     role,
                     month,
                     capitalGainsTax,
                     bonusTax,
-                    projections[lastRoleEndYear]
+                    projections[lastRoleEndYear * 12]
                 )
             );
         }
@@ -105,11 +105,8 @@ export class WealthProjectionOrchestrationService {
         if (previousProjection) {
             principal = previousProjection.estimatedNetWorth;
         }
-        if (month === 0) {
-            principal +=
-                this.moneyService.getCurrencyAmount(role.signOnBonus) *
-                (1 - bonusTax.rate.value / 100);
-        }
+        principal +=
+            this.moneyService.getCurrencyAmount(role.signOnBonus) * (1 - bonusTax.rate.value / 100);
         const returnRate = budgetParameters.estimatedReturnRate.value / 100;
         wealthProjection.date = new Date(role.startYear + Math.floor(month / 12), month % 12, 1);
 
