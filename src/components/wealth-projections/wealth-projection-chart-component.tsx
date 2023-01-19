@@ -8,6 +8,7 @@ export function WealthProjectionChartComponent({
 }: WealthProjectionChartComponentProps) {
     const ref = useRef<SVGSVGElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    console.log(yearlyWealthProjectionList);
 
     useEffect(() => {
         function createGraph() {
@@ -76,6 +77,13 @@ export function WealthProjectionChartComponent({
             svg.selectAll('*').remove();
 
             const bisect = d3.bisector<TemporalWealthProjection, Date>((d) => d.date).left;
+            const dateText = svg
+                .append('g')
+                .append('text')
+                .style('opacity', 0)
+                .attr('text-anchor', 'left')
+                .attr('alignment-baseline', 'middle');
+
             const focusPreTax = svg
                 .append('g')
                 .append('circle')
@@ -90,6 +98,11 @@ export function WealthProjectionChartComponent({
                 .style('opacity', 0)
                 .attr('text-anchor', 'left')
                 .attr('alignment-baseline', 'middle');
+            const focusPreTaxDot = svg
+                .append('circle')
+                .style('opacity', 0)
+                .attr('r', 6)
+                .attr('fill', '#AEB8FE');
 
             const focusPostTax = svg
                 .append('g')
@@ -105,49 +118,91 @@ export function WealthProjectionChartComponent({
                 .style('opacity', 0)
                 .attr('text-anchor', 'left')
                 .attr('alignment-baseline', 'middle');
+            const focusPostTaxDot = svg
+                .append('circle')
+                .attr('r', 6)
+                .attr('fill', '#FF8600')
+                .style('opacity', 0);
 
             function mouseOver() {
+                dateText.style('opacity', 1);
                 focusPreTax.style('opacity', 1);
                 focusPreTaxText.style('opacity', 1);
+                focusPreTaxDot.style('opacity', 1);
                 focusPostTax.style('opacity', 1);
                 focusPostTaxText.style('opacity', 1);
+                focusPostTaxDot.style('opacity', 1);
             }
 
             function mouseMove(event: Event) {
                 const x0 = xScale.invert(d3.pointer(event, svg.node())[0]);
-                const i = bisect(yearlyWealthProjectionList, x0, 1);
+                const i = bisect(yearlyWealthProjectionList, x0);
                 const selectedData = yearlyWealthProjectionList[i];
                 if (selectedData) {
+                    dateText
+                        .attr('x', xScale(selectedData.date) - 25)
+                        .attr('y', yScale(selectedData.estimatedNetWorthAfterTaxes) + 30)
+                        .html(
+                            `${selectedData.date.getDate()}/${
+                                selectedData.date.getMonth() + 1
+                            }/${selectedData.date.getFullYear()}`
+                        );
+
                     focusPreTax
                         .attr('cx', xScale(selectedData.date))
                         .attr('cy', yScale(selectedData.estimatedNetWorth));
                     focusPreTaxText
-                        .html(
-                            selectedData.date.getUTCFullYear() +
-                                ': $' +
-                                selectedData.estimatedNetWorth.toFixed(2)
-                        )
+                        .html(`$${d3.format('.3s')(selectedData.estimatedNetWorth)}`)
                         .attr('x', xScale(selectedData.date))
-                        .attr('y', yScale(selectedData.estimatedNetWorth) - 30);
+                        .attr('y', yScale(selectedData.estimatedNetWorthAfterTaxes) + 60);
+                    focusPreTaxDot
+                        .attr('cx', xScale(selectedData.date) - 15)
+                        .attr('cy', yScale(selectedData.estimatedNetWorthAfterTaxes) + 60);
+
                     focusPostTax
                         .attr('cx', xScale(selectedData.date))
                         .attr('cy', yScale(selectedData.estimatedNetWorthAfterTaxes));
                     focusPostTaxText
-                        .html(
-                            selectedData.date.getUTCFullYear() +
-                                ': $' +
-                                selectedData.estimatedNetWorthAfterTaxes.toFixed(2)
-                        )
+                        .html(`$${d3.format('.3s')(selectedData.estimatedNetWorthAfterTaxes)}`)
                         .attr('x', xScale(selectedData.date))
-                        .attr('y', yScale(selectedData.estimatedNetWorthAfterTaxes) + 30);
+                        .attr('y', yScale(selectedData.estimatedNetWorthAfterTaxes) + 90);
+                    focusPostTaxDot
+                        .attr('cx', xScale(selectedData.date) - 15)
+                        .attr('cy', yScale(selectedData.estimatedNetWorthAfterTaxes) + 90);
+
+                    const bottomOfText = focusPostTaxDot.node()?.getBoundingClientRect().bottom;
+                    const bottomOfGraph = svg.node()?.getBoundingClientRect().bottom;
+                    if (bottomOfText && bottomOfGraph && bottomOfGraph - bottomOfText <= 110) {
+                        dateText.attr('y', yScale(selectedData.estimatedNetWorthAfterTaxes) - 90);
+                        focusPreTaxText.attr(
+                            'y',
+                            yScale(selectedData.estimatedNetWorthAfterTaxes) - 60
+                        );
+                        focusPreTaxDot.attr(
+                            'cy',
+                            yScale(selectedData.estimatedNetWorthAfterTaxes) - 60
+                        );
+
+                        focusPostTaxText.attr(
+                            'y',
+                            yScale(selectedData.estimatedNetWorthAfterTaxes) - 30
+                        );
+                        focusPostTaxDot.attr(
+                            'cy',
+                            yScale(selectedData.estimatedNetWorthAfterTaxes) - 30
+                        );
+                    }
                 }
             }
 
             function mouseOut() {
+                dateText.style('opacity', 0);
                 focusPreTax.style('opacity', 0);
                 focusPreTaxText.style('opacity', 0);
+                focusPreTaxDot.style('opacity', 0);
                 focusPostTax.style('opacity', 0);
                 focusPostTaxText.style('opacity', 0);
+                focusPostTaxDot.style('opacity', 0);
             }
 
             if (width > 600) {

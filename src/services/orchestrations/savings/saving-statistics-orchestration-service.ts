@@ -77,10 +77,11 @@ export class SavingStatisticsOrchestrationService {
         }
 
         updatedStatistics.initialNetWorth = this.moneyService.createMoney(
-            wealthProjections[role.startAge - budgetParameters.currentAge].estimatedNetWorth
+            wealthProjections[(role.startAge - budgetParameters.currentAge) * 12].estimatedNetWorth
         );
         updatedStatistics.finalNetWorth = this.moneyService.createMoney(
-            wealthProjections[role.endAge - budgetParameters.currentAge].estimatedNetWorth
+            wealthProjections[(role.endAge - budgetParameters.currentAge) * 12 - 1]
+                .estimatedNetWorth
         );
         updatedStatistics.estimatedReturnRate = budgetParameters.estimatedReturnRate;
         updatedStatistics.agesWorked = [role.startAge, role.endAge];

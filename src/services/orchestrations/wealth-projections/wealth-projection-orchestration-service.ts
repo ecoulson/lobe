@@ -69,11 +69,11 @@ export class WealthProjectionOrchestrationService {
         bonusTax: Tax,
         lastRoleEndYear: number
     ) {
-        for (let year = 1; year <= role.estimatedYearsSpentInPosition; year++) {
+        for (let month = 1; month < role.estimatedYearsSpentInPosition * 12; month++) {
             projections.push(
                 this.calculateWealthProjectionForYear(
                     role,
-                    year,
+                    month,
                     capitalGainsTax,
                     bonusTax,
                     projections[lastRoleEndYear]
@@ -90,14 +90,14 @@ export class WealthProjectionOrchestrationService {
 
     private calculateWealthProjectionForYear(
         role: Role,
-        year: number,
+        month: number,
         capitalGainsTax: Tax,
         bonusTax: Tax,
         previousProjection?: TemporalWealthProjection
     ) {
         const wealthProjection = new TemporalWealthProjection();
         const savings = this.getSavingsByRole(role);
-        if (isNaN(year)) {
+        if (isNaN(month)) {
             return wealthProjection;
         }
         const budgetParameters = this.budgetParametersService.getParameters();
@@ -105,18 +105,19 @@ export class WealthProjectionOrchestrationService {
         if (previousProjection) {
             principal = previousProjection.estimatedNetWorth;
         }
-        if (year === 1) {
+        if (month === 0) {
             principal +=
                 this.moneyService.getCurrencyAmount(role.signOnBonus) *
                 (1 - bonusTax.rate.value / 100);
         }
         const returnRate = budgetParameters.estimatedReturnRate.value / 100;
-        wealthProjection.date = new Date(`1/1/${role.startYear + year}`);
+        wealthProjection.date = new Date(role.startYear + Math.floor(month / 12), month % 12, 1);
 
         const totalSaved = this.moneyService.getCurrencyAmount(savings.totalSaved);
-        let principalReturn = principal * Math.pow(1 + returnRate, year);
+        let principalReturn = principal * Math.pow(1 + returnRate, month / 12);
         let savingsReturn =
-            ((totalSaved * (Math.pow(1 + returnRate, year) - 1)) / returnRate) * (1 + returnRate);
+            ((totalSaved * (Math.pow(1 + returnRate, month / 12) - 1)) / returnRate) *
+            (1 + returnRate);
         if (principalReturn < 0) {
             principalReturn = principal;
         }
