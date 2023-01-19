@@ -46,7 +46,7 @@ export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentPro
                     />
                 </div>
                 <div
-                    className={`grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 sm:grid-cols-1`}
+                    className={`grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 sm:grid-cols-1 w-3/4`}
                 >
                     <DataComponent
                         label="Company"
@@ -118,28 +118,6 @@ export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentPro
                         }
                     />
                     <DataComponent
-                        label={
-                            <div className="flex gap-x-2">
-                                <InfoComponent
-                                    popoverChild={
-                                        'Vesting schedule is not currently used in the calculations'
-                                    }
-                                />
-                                <span>Vesting Schedule</span>
-                            </div>
-                        }
-                        data={
-                            <>
-                                <VestingScheduleInputComponent
-                                    vestingSchedule={role.vestingSchedule}
-                                    onChange={(vestingSchedule) =>
-                                        updateRole('vestingSchedule', vestingSchedule)
-                                    }
-                                />
-                            </>
-                        }
-                    />
-                    <DataComponent
                         label="Bonus Target"
                         data={
                             <PercentageInputComponent
@@ -173,6 +151,30 @@ export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentPro
                             />
                         }
                     />
+                    <div className="col-span-full">
+                        <DataComponent
+                            label={
+                                <div className="flex gap-x-2">
+                                    <InfoComponent
+                                        popoverChild={
+                                            'Vesting schedule is not currently used in the calculations'
+                                        }
+                                    />
+                                    <span>Vesting Schedule</span>
+                                </div>
+                            }
+                            data={
+                                <>
+                                    <VestingScheduleInputComponent
+                                        vestingSchedule={role.vestingSchedule}
+                                        onChange={(vestingSchedule) =>
+                                            updateRole('vestingSchedule', vestingSchedule)
+                                        }
+                                    />
+                                </>
+                            }
+                        />
+                    </div>
                 </div>
             </div>
         </CardComponent>

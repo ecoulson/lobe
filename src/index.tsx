@@ -43,6 +43,7 @@ if (window.localStorage.length > 0 && !window.localStorage.getItem('migration_ve
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const container = new DependencyInjectionClient();
 const eventEmitter = new EventEmitter();
+const eventBroker = new EventBroker(eventEmitter);
 const applicationId = 'wealthy_lobe';
 const budgetParameters = new BudgetParameters({
     currentAge: 18,
@@ -53,14 +54,15 @@ const budgetParameters = new BudgetParameters({
         value: 4.5,
     }),
 });
-const eventBroker = new EventBroker(eventEmitter);
 const budgetParametersService = new BudgetParametersService(
     new LocalStorageBroker({
         applicationId,
         collectionId: 'budget_parameters',
     })
 );
-budgetParametersService.updateParameters(budgetParameters);
+if (!budgetParametersService.getParameters()) {
+    budgetParametersService.updateParameters(budgetParameters);
+}
 const idBroker = new IdBroker();
 const moneyService = new MoneyService();
 const incomeOrchestrationService = new IncomeOrchestrationService(

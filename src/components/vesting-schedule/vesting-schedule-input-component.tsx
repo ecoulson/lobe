@@ -31,29 +31,32 @@ export function VestingScheduleInputComponent({
     }
 
     return (
-        <div className="flex flex-col gap-y-2 items-center">
-            {vestingSchedule.map((percentage, i) => {
-                return (
-                    <div className="flex gap-x-4" key={i}>
-                        <div className="w-1/2">
-                            <PercentageInputComponent
-                                key={i}
-                                percision={1}
-                                percentage={percentage}
-                                onChange={(percentage) => updateVestingSchedule(percentage, i)}
-                            />
+        <>
+            <div className="flex flex-row gap-y-2 items-center flex-wrap">
+                {vestingSchedule.map((percentage, i) => {
+                    return (
+                        <div className="flex gap-x-4" key={i}>
+                            <div className="w-1/2">
+                                <PercentageInputComponent
+                                    key={i}
+                                    percision={1}
+                                    percentage={percentage}
+                                    onChange={(percentage) => updateVestingSchedule(percentage, i)}
+                                />
+                            </div>
+                            <div className="w-1/2">
+                                <ButtonComponent onClick={() => removeFromVestingSchedule(i)}>
+                                    Remove
+                                </ButtonComponent>
+                            </div>
                         </div>
-                        <div className="w-1/2">
-                            <ButtonComponent onClick={() => removeFromVestingSchedule(i)}>
-                                Remove
-                            </ButtonComponent>
-                        </div>
-                    </div>
-                );
-            })}
+                    );
+                })}
+            </div>
+
             <div className="flex w-1/2">
                 <ButtonComponent onClick={addToVestingSchedule}>Add</ButtonComponent>
             </div>
-        </div>
+        </>
     );
 }
