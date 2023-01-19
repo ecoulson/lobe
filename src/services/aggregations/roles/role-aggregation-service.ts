@@ -109,6 +109,20 @@ export class RoleAggregationService {
         return this.sortRolesReverseChronologically(chronologicalRoles);
     }
 
+    removeRole(role: Role) {
+        const income = this.incomeOrchestrationService.getIncomeByRole(role);
+        this.incomeOrchestrationService.removeIncome(income);
+        const expenses = this.expensesOrchestrationService.getExpensesByRole(role);
+        this.expensesOrchestrationService.removeExpenses(expenses);
+        const savings = this.savingsOrchestrationService.getSavingsByRole(role);
+        this.savingsOrchestrationService.removeSavings(savings);
+        const savingStatistics =
+            this.savingStatisticsOrchestrationService.getSavingStatisticsByRole(role);
+        this.savingStatisticsOrchestrationService.removeSavingStatistics(savingStatistics);
+        this.roleOrchestrationService.removeRole(role);
+        return this.getAllRolesForBudget(role.budgetId);
+    }
+
     private getAllRolesInChronologicalOrder(budgetId: string) {
         return this.sortRolesReverseChronologically(
             this.roleOrchestrationService.getAllRolesForBudget(budgetId)

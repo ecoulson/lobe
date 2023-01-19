@@ -21,6 +21,10 @@ export const BudgetDashboardRoleEditorComponent = inject<
             onRoleChange(roleOverviewController.updateRoles(role));
         }
 
+        function handleRemove(role: Role) {
+            onRoleChange(roleOverviewController.removeRole(role));
+        }
+
         return (
             <div className="col-span-full">
                 <div className="py-8">
@@ -38,7 +42,12 @@ export const BudgetDashboardRoleEditorComponent = inject<
                 <div className="flex flex-col gap-y-8">
                     {roles.map((role) => {
                         return (
-                            <EditableRoleComponent key={role.id} role={role} onEdit={handleEdit} />
+                            <EditableRoleComponent
+                                key={role.id}
+                                role={role}
+                                onEdit={handleEdit}
+                                onRemove={handleRemove}
+                            />
                         );
                     })}
                 </div>

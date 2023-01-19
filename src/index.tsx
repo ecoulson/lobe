@@ -9,7 +9,7 @@ import { BudgetParametersController } from './controllers/budget-parameters/budg
 import { ExpensesController } from './controllers/expenses/expenses-controller';
 import { MoneyController } from './controllers/funds/money-controller';
 import { IncomeController } from './controllers/incomes/income-controller';
-import { RoleOverviewController } from './controllers/overviews/role-overview-controller';
+import { RoleController } from './controllers/roles/role-controller';
 import { SavingStatisticsController } from './controllers/savings/saving-statistics-controller';
 import { SavingsController } from './controllers/savings/savings-controller';
 import { WealthProjectionController } from './controllers/wealth-projections/wealth-projection-controller';
@@ -111,7 +111,7 @@ const wealthProjectionOrchestrationService = new WealthProjectionOrchestrationSe
 );
 container.register(
     'RoleOverviewController',
-    new RoleOverviewController(
+    new RoleController(
         new RoleAggregationService(
             new RoleOrchestrationService(
                 new RoleService(

@@ -1,7 +1,7 @@
 import { Role } from '../../models/roles/role';
 import { RoleAggregationService } from '../../services/aggregations/roles/role-aggregation-service';
 
-export class RoleOverviewController {
+export class RoleController {
     private readonly roleAggregationService: RoleAggregationService;
 
     constructor(roleAggregationService: RoleAggregationService) {
@@ -18,5 +18,9 @@ export class RoleOverviewController {
 
     updateRoles(role: Role) {
         return this.roleAggregationService.updateRoles(role);
+    }
+
+    removeRole(role: Role) {
+        return this.roleAggregationService.removeRole(role);
     }
 }

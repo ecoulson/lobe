@@ -1,4 +1,5 @@
 import { Role } from '../../models/roles/role';
+import { ButtonComponent } from '../bases/button-component';
 import { FileInputComponent } from '../bases/file-input-component';
 import { InfoComponent } from '../bases/info-component';
 import { InputComponent } from '../bases/input-component';
@@ -10,7 +11,7 @@ import { MoneyInputComponent } from '../funds/money-input-component';
 import { VestingScheduleInputComponent } from '../vesting-schedule/vesting-schedule-input-component';
 import { EditableRoleComponentProps } from './editable-role-component-props';
 
-export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentProps) {
+export function EditableRoleComponent({ role, onEdit, onRemove }: EditableRoleComponentProps) {
     function updateRole<K extends keyof Role>(key: K, value: Role[K]) {
         role[key] = value;
         onEdit(role);
@@ -37,7 +38,7 @@ export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentPro
 
     return (
         <CardComponent title={renderHeader()}>
-            <div className="flex flex-wrap sm:flex-nowrap gap-y-8">
+            <div className="flex flex-wrap sm:flex-nowrap gap-y-8 relative">
                 <div className="flex flex-col gap-y-8">
                     <img className="w-16 h-16" alt="Default logo" src={role.companyLogo} />
                     <FileInputComponent
@@ -176,6 +177,9 @@ export function EditableRoleComponent({ role, onEdit }: EditableRoleComponentPro
                         />
                     </div>
                 </div>
+            </div>
+            <div className="float-right">
+                <ButtonComponent onClick={() => onRemove(role)}>Remove Role</ButtonComponent>
             </div>
         </CardComponent>
     );

@@ -26,6 +26,9 @@ export const BudgetDashboardComponent = inject<
             if (activeRole === null && roles.length > 0) {
                 setActiveRole(roles[roles.length - 1]);
             }
+            if (roles.length === 0) {
+                setActiveRole(null);
+            }
         }, [roles, activeRole, setActiveRole]);
 
         function handleBudgetParametersChange() {

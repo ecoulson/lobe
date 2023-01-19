@@ -1,6 +1,6 @@
-import { RoleOverviewController } from '../../controllers/overviews/role-overview-controller';
+import { RoleController } from '../../controllers/roles/role-controller';
 
 export interface BudgetDashboardComponentProps {
-    roleOverviewController: RoleOverviewController;
+    roleOverviewController: RoleController;
     budgetId: string;
 }
